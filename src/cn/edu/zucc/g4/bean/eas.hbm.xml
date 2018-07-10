@@ -1,0 +1,19 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.edu.zucc.bean">
+	<class name="Teacher" table="teacher">
+		<id name="userId" type="string">
+			<column name="userId" />
+			<generator class="assigned" />
+		</id>
+		<property name="userName" type="string" column="userName" />
+		<property name="password" type="string">
+			<column name="password" />
+		</property>
+		<property name="type" type="string">
+			<column name="type" />
+		</property>
+		<property name="flag" type="int">
+			<column name="flag" />
+		</property>
+	</class>
+</hibernate-mapping>  
