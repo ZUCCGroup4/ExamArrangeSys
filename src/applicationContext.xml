@@ -48,7 +48,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mappingResources">
 			<list>
-				<value>cn/edu/zucc/bean/eas.hbm.xml</value>
+				<value>cn/edu/zucc/g4/bean/eas.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -69,5 +69,7 @@
 		read-only="false" /> </tx:attributes> </tx:advice> <aop:config> <aop:pointcut 
 		expression="execution(* cn.edu.zucc.ems.dao.*.*(..))" id="txPointCut" /> 
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut" /> </aop:config> -->
-
+	<bean id="userDAO" class="cn.edu.zucc.g4.dao.UserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
