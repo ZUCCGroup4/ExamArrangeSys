@@ -10,4 +10,75 @@
 			<column name="password" />
 		</property>
 	</class>
+	
+	<class name="TeacherBean" table="teacher">
+		<id name="teacher_id" type="string">
+			<column name="teacher_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="teacher_name" type="string" column="teacher_name" />
+	</class>
+	
+	<class name="StudentBean" table="student">
+		<id name="student_id" type="string">
+			<column name="student_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="student_name" type="string" column="student_name" />
+		<property name="classes" type="string" column="classes" />
+	</class>
+	
+	<class name="SelectionBean" table="selection">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="assigned" />
+		</id>
+		<property name="selection_id" type="string" column="selection_id" />
+		<property name="course_id" type="string" column="course_id" />
+		<property name="teacher_id" type="string" column="teacher_id" />
+		<property name="year" type="string" column="year" />
+		<property name="term" type="string" column="term" />
+	</class>
+	
+	<class name="Selection_detailBean" table="selection_detail">
+		<id name="selection_detail_id" type="int">
+			<column name="selection_detail_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="student_id" type="string" column="student_id" />
+		<property name="selection_id" type="string" column="selection_id" />
+	</class>
+	
+	<class name="LogBean" table="log">
+		<id name="log_id" type="int">
+			<column name="log_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="message" type="string" column="message" />
+		<property name="user_id" type="string" column="user_id" />
+	</class>
+	
+	<class name="CourseBean" table="course">
+		<id name="course_id" type="string">
+			<column name="log_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="course_name" type="string" column="course_name" />
+		<property name="department" type="string" column="department" />
+		<property name="check_type" type="string" column="check_type" />
+	</class>
+	
+	<class name="CheckBean" table="check">
+		<id name="check_id" type="int">
+			<column name="check_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="check_time" type="timestamp" column="check_time" />
+		<property name="check_place" type="string" column="check_place" />
+		<property name="invigilator_1" type="string" column="invigilator_1" />
+		<property name="invigilator_2" type="string" column="invigilator_2" />
+		<property name="selection_id" type="string" column="selection_id" />
+	</class>
+	
+	
 </hibernate-mapping>  
