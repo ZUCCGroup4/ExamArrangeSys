@@ -9,6 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.js</url-pattern>
+    <url-pattern>*.css</url-pattern>
+    <url-pattern>/assets/*"</url-pattern>
+    <url-pattern>/img/*</url-pattern>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping>
   <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
