@@ -15,7 +15,7 @@ public class LoginService {
 	UserDAO userDAO;
 	
 	public String Check(UserBean user) {
-		List<UserBean> list = userDAO.readALLUser();
+		List<UserBean> list = userDAO.listALLUser();
 		return "login";
 	}
 
