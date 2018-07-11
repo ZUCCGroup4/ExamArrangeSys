@@ -20,8 +20,14 @@ public class LoginController {
 	private LoginService loginService;
 	
 	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@RequestBody UserBean user, HttpServletRequest request) {
-		return loginService.Check(user);
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public boolean login(@RequestBody UserBean user, HttpServletRequest request) {
+		System.out.println("11");
+		System.out.println(user.getUser_id() + user.getPassword());
+		if(loginService.checkLogin(user).equals("success")) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 }
