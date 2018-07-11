@@ -1,19 +1,18 @@
 package cn.edu.zucc.g4.dao;
 
-import java.util.List; 
+import java.util.List;
 
-import org.hibernate.Session; 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.edu.zucc.g4.bean.UserBean;
+import cn.edu.zucc.g4.bean.StudentBean;
 
 @Repository
 @Transactional
-public class UserDAO {
-	
+public class StudentDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
@@ -21,31 +20,29 @@ public class UserDAO {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	/**
-	 * 遍历所有用户
+	/**遍历所有学生
 	 * @return
 	 */
-	public List<UserBean> listALLUser() {
+	public Object listAllStudent(){
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from UserBean";
-		List<UserBean> list = session.createQuery(hql).list();
+		String hql = "from StudentBean";
+		List<StudentBean> list = session.createQuery(hql).list();
 		return list;
 	}
 	
 	/**
-	 * 获取用户信息
-	 * @param userid
+	 * 获取学生信息
+	 * @param studentid
 	 * @return
 	 */
-	public UserBean getUser(String userid) {
+	public StudentBean getStudent(String studentid){
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		UserBean bean = session.get(UserBean.class, userid);
+		StudentBean bean = (StudentBean)session.get(StudentBean.class,studentid);
 		if(bean == null){
 			System.out.println("null");
 		}
 		return bean;
 	}
-
 }

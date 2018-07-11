@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.edu.zucc.g4.bean.UserBean;
+import cn.edu.zucc.g4.bean.CheckBean;
 
 @Repository
 @Transactional
-public class UserDAO {
+public class CheckDAO {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -22,26 +22,26 @@ public class UserDAO {
 	}
 	
 	/**
-	 * 遍历所有用户
+	 * 遍历所有考试安排
 	 * @return
 	 */
-	public List<UserBean> listALLUser() {
+	public List<CheckBean> listALLCheck() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from UserBean";
-		List<UserBean> list = session.createQuery(hql).list();
+		String hql = "from CheckBean";
+		List<CheckBean> list = session.createQuery(hql).list();
 		return list;
 	}
 	
 	/**
-	 * 获取用户信息
+	 * 获取考试安排信息
 	 * @param userid
 	 * @return
 	 */
-	public UserBean getUser(String userid) {
+	public CheckBean getUser(String checkid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		UserBean bean = session.get(UserBean.class, userid);
+		CheckBean bean = session.get(CheckBean.class, checkid);
 		if(bean == null){
 			System.out.println("null");
 		}
