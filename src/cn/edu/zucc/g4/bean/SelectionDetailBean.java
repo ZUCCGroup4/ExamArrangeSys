@@ -1,6 +1,6 @@
 package cn.edu.zucc.g4.bean;
 
-public class Selection_detailBean {
+public class SelectionDetailBean {
 
 	private int selection_detail_id;
 	private String student_id;

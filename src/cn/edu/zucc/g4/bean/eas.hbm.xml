@@ -40,7 +40,7 @@
 		<property name="term" type="string" column="term" />
 	</class>
 	
-	<class name="Selection_detailBean" table="selection_detail">
+	<class name="SelectionDetailBean" table="selection_detail">
 		<id name="selection_detail_id" type="int">
 			<column name="selection_detail_id" />
 			<generator class="assigned" />
@@ -60,7 +60,7 @@
 	
 	<class name="CourseBean" table="course">
 		<id name="course_id" type="string">
-			<column name="log_id" />
+			<column name="course_id" />
 			<generator class="assigned" />
 		</id>
 		<property name="course_name" type="string" column="course_name" />

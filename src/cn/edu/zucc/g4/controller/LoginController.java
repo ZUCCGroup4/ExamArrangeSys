@@ -1,6 +1,8 @@
 package cn.edu.zucc.g4.controller;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,6 @@ public class LoginController {
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestBody UserBean user, HttpServletRequest request) {
-		return loginService.Check();
+		return loginService.Check(user);
 	}
 }

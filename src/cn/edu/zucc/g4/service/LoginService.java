@@ -1,18 +1,21 @@
 package cn.edu.zucc.g4.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
+import cn.edu.zucc.g4.bean.UserBean;
 import cn.edu.zucc.g4.dao.UserDAO;
 
 @Service
 public class LoginService {
+	@Resource(name="userDAO")
+	UserDAO userDAO;
 	
-	@Autowired
-	private UserDAO userDAO;
-	
-	public String Check() {
-		userDAO.readALLUser();
+	public String Check(UserBean user) {
+		List<UserBean> list = userDAO.readALLUser();
 		return "login";
 	}
 
