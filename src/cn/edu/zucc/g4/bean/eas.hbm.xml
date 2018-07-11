@@ -29,7 +29,7 @@
 	</class>
 	
 	<class name="SelectionBean" table="selection">
-		<id name="id" type="int">
+		<id name="id" type="java.lang.Integer">
 			<column name="id" />
 			<generator class="assigned" />
 		</id>
@@ -41,7 +41,7 @@
 	</class>
 	
 	<class name="SelectionDetailBean" table="selection_detail">
-		<id name="selection_detail_id" type="int">
+		<id name="selection_detail_id" type="java.lang.Integer">
 			<column name="selection_detail_id" />
 			<generator class="assigned" />
 		</id>
@@ -50,7 +50,7 @@
 	</class>
 	
 	<class name="LogBean" table="log">
-		<id name="log_id" type="int">
+		<id name="log_id" type="java.lang.Integer">
 			<column name="log_id" />
 			<generator class="assigned" />
 		</id>
@@ -78,6 +78,26 @@
 		<property name="invigilator_1" type="string" column="invigilator_1" />
 		<property name="invigilator_2" type="string" column="invigilator_2" />
 		<property name="selection_id" type="string" column="selection_id" />
+	</class>
+	
+	<class name="SelectionRecordBean" table="view_selection_record">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="assigned" />
+		</id>
+		<property name="selection_id" type="string" column="selection_id" />
+		<property name="course_id" type="string" column="course_id" />
+		<property name="teacher_id" type="string" column="teacher_id" />
+		<property name="year" type="string" column="year" />
+		<property name="term" type="string" column="term" />
+		<property name="student_id" type="string" column="student_id" />
+		<property name="selection_detail_id" type="java.lang.Integer" column="selection_detail_id" />
+		<property name="student_name" type="string" column="student_name" />
+		<property name="classes" type="string" column="classes" />
+		<property name="teacher_name" type="string" column="teacher_name" />
+		<property name="course_name" type="string" column="course_name" />
+		<property name="department" type="string" column="department" />
+		<property name="check_type" type="string" column="check_type" />
 	</class>
 	
 	
