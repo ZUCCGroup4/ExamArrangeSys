@@ -2,6 +2,8 @@ package cn.edu.zucc.g4.controller;
 
 
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,13 +25,13 @@ public class LoginController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public boolean login(@RequestBody UserBean user, HttpServletRequest request) {
+	public boolean login(@RequestBody UserBean user, HttpSession session) {
 		
 		System.out.println(user.getUser_id() + user.getPassword());
 		
 		if(loginService.checkLogin(user).equals("success")) {
 			System.out.println(loginService.checkLogin(user).equals("success"));
-			request.getSession().setAttribute("userId", user.getUser_id());
+			session.setAttribute("userId", user.getUser_id());
 			
 			return true ;
 		}else {
