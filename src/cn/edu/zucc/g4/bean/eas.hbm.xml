@@ -56,6 +56,7 @@
 		</id>
 		<property name="message" type="string" column="message" />
 		<property name="user_id" type="string" column="user_id" />
+		<property name="log_time" type="timestamp" column="log_time" />
 	</class>
 	
 	<class name="CourseBean" table="course">

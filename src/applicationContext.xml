@@ -72,4 +72,7 @@
 	<bean id="userDAO" class="cn.edu.zucc.g4.dao.UserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="logDAO" class="cn.edu.zucc.g4.dao.LogDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

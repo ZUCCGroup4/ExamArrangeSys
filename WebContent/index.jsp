@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page language="java" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
 <html lang="en">
   <head>
@@ -60,20 +60,15 @@
                     </thead>
                     <tbody>
                      <%
-						List objlist=(List) request.getAttribute("objlists");
+						List objlist=(List) request.getAttribute("loglist");
 						if(objlist!=null){
 					         for(int i=0;i<objlist.size();i++){
 					         	LogBean user=(LogBean) objlist.get(i);
 					%>  
 						<tr>
-							<td align="left"><%=user.getStuid()%></td>
-							<td align="left"><%=user.getStuname()%></td>
-							<%if("man".equals(user.getStusex())) out.print("<td align=\"left\">男</td>");%>
-    						<%if("woman".equals(user.getStusex())) out.print("<td align=\"left\">女</td>");%>
-							<%out.print("<td align=\"left\" class=\"op\">"+
-    									"<div id=\"mod\"><a href=\"student?method=modifystudent&userid="+user.getStuid()+"\">修改</a></div></td>");%>
-							<%out.print("<td align=\"left\" class=\"op\">"+
-    									"<div id=\"del\"><a href=\"student?method=deletestudent&userid="+user.getStuid()+"\">删除</a></div></td>");%>
+							<td><%=user.getLog_time()%></td>
+							<td><%=user.getUser_id()%></td>
+							<td><%=user.getMessage()%></td>
 						</tr>
 						<% 
 									}
