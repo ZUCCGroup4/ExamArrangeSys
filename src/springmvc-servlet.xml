@@ -3,21 +3,113 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 
-	<context:component-scan
-		base-package="cn.edu.zucc" />
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	            http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	            http://www.springframework.org/schema/context
+	            http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	            http://www.springframework.org/schema/mvc
+	            http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+	            http://www.springframework.org/schema/aop 
+	            http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        		http://www.springframework.org/schema/tx 
+       			 http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<context:component-scan base-package="cn"></context:component-scan>
+	<mvc:annotation-driven />
+	<mvc:interceptors>
+		<bean class="cn.edu.zucc.g4.interceptor.LoginInterceptor"></bean>
+	</mvc:interceptors>
+
+
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />  <!--数据库连接驱动 -->
+		<property name="jdbcUrl"
+			value="jdbc:mysql://101.132.117.41:3306/examination_arrangement" />     <!--数据库地址 -->
+		<property name="user" value="root" />   <!--用户名 -->
+		<property name="password" value="root" />   <!--密码 -->
+		<property name="maxPoolSize" value="40" />      <!--最大连接数 -->
+		<property name="minPoolSize" value="1" />       <!--最小连接数 -->
+		<property name="initialPoolSize" value="10" />      <!--初始化连接池内的数据库连接 -->
+		<property name="maxIdleTime" value="20" />  <!--最大空闲时间 -->
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		lazy-init="false">
+		<!-- 注入datasource，给sessionfactoryBean内setdatasource提供数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+
+		<property name="mappingResources">
+			<list>
+				<value>
+					cn/edu/zucc/g4/bean/eas.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置Spring声明式事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 配置事务事务属性 -->
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 配置事务切点，并把切点和事务属性关联起来 -->
+	<aop:config>
+		<aop:pointcut
+			expression="execution(* cn.edu.zucc.g4.service.*.*(..))"
+			id="txPointcut" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut-ref="txPointcut" />
+	</aop:config>
+
+
+	<bean id="userDAO" class="cn.edu.zucc.g4.dao.UserDAO">
+	</bean>
+	<bean id="loginService"
+		class="cn.edu.zucc.g4.service.LoginService">
+	</bean>
+
+	<context:component-scan base-package="cn" />
 
 	<mvc:default-servlet-handler />
 
 	<mvc:annotation-driven />
 
-	<!-- <bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-		id="internalResourceViewResolver">
-		<property name="prefix" value="/" />
-		<property name="suffix" value=".jsp" />
-	</bean> -->
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/fonts/" mapping="/fonts/**" />
+	<mvc:resources location="/images/" mapping="/images/**" />
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="cn.edu.zucc.g4.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+		id="internalResourceViewResolver"> <property name="prefix" value="/" /> <property 
+		name="suffix" value=".jsp" /> </bean> -->
 </beans>
