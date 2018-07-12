@@ -1,6 +1,5 @@
 package cn.edu.zucc.g4.bean;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 public class CheckBean {
@@ -10,7 +9,7 @@ public class CheckBean {
     private String check_place;
     private String invigilator_1;
     private String invigilator_2;
-    private String invigilator_3;
+    private String selection_id;
 	public int getCheck_id() {
 		return check_id;
 	}
@@ -41,10 +40,11 @@ public class CheckBean {
 	public void setInvigilator_2(String invigilator_2) {
 		this.invigilator_2 = invigilator_2;
 	}
-	public String getInvigilator_3() {
-		return invigilator_3;
+	public String getSelection_id() {
+		return selection_id;
 	}
-	public void setInvigilator_3(String invigilator_3) {
-		this.invigilator_3 = invigilator_3;
+	public void setSelection_id(String selection_id) {
+		this.selection_id = selection_id;
 	}
+	
 }
