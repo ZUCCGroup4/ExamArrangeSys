@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.edu.zucc.g4.bean.SelectionDetailBean;
+import cn.edu.zucc.g4.bean.SelectionRecordBean;
 
 @Repository
 @Transactional
-public class SelectionDetailDAO {
+public class SelectionRecordDAO {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -22,30 +22,28 @@ public class SelectionDetailDAO {
 	}
 	
 	/**
-	 * 遍历所有选课详情
+	 * 遍历所有选课记录
 	 * @return
 	 */
-	public List<SelectionDetailBean> listALLLog() {
+	public List<SelectionRecordBean> listALLLog() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from SelectionDetailBean";
-		List<SelectionDetailBean> list = session.createQuery(hql).list();
+		String hql = "from SelectionRecordBean";
+		List<SelectionRecordBean> list = session.createQuery(hql).list();
 		return list;
 	}
 	
 	/**
-	 * 获取选课详情信息
-	 * @param selectiondetailid
+	 * 根据学号查询学生选课记录
+	 * @param studentid
 	 * @return
 	 */
-	public SelectionDetailBean getLog(int selectiondetailid) {
+	public List<SelectionRecordBean> getCourseByStudentId(int studentid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		SelectionDetailBean bean = session.get(SelectionDetailBean.class, selectiondetailid);
-		if(bean == null){
-			System.out.println("null");
-		}
-		return bean;
+		String hql = "from SelectionRecordBean where studend_id = '" + studentid + "'";
+		List<SelectionRecordBean> list = session.createQuery(hql).list();
+		return list;
 	}
 
 }

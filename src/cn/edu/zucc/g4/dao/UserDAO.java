@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session; 
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.edu.zucc.g4.bean.UserBean;
 
 @Repository
-@Transactional
 public class UserDAO {
 	
 	@Autowired
@@ -26,10 +26,11 @@ public class UserDAO {
 	 * @return
 	 */
 	public List<UserBean> listALLUser() {
-		this.setSessionFactory(sessionFactory);
+		
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from UserBean";
-		List<UserBean> list = session.createQuery(hql).list();
+		Query query= session.createQuery(hql);
+		List<UserBean> list = query.list();
 		return list;
 	}
 	
@@ -39,7 +40,7 @@ public class UserDAO {
 	 * @return
 	 */
 	public UserBean getUser(String userid) {
-		this.setSessionFactory(sessionFactory);
+//		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		UserBean bean = session.get(UserBean.class, userid);
 		if(bean == null){
