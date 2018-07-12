@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="utf-8"%>
+<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">  
-    <title>Visual Admin Dashboard - Maps</title>
+    <title>考试时间安排</title>
     <meta name="description" content="">
     <meta name="author" content="templatemo">
     
@@ -33,7 +35,7 @@
         </div>
         <nav class="templatemo-left-nav">
           <ul>
-            <li><a href="index.html"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
+            <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
             <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
             <li><a href="login.html"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
           </ul>

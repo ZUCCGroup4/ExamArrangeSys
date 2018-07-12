@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">  
-    <title>Visual Admin Dashboard - Home</title>
+    <title>选择安排学期</title>
     <meta name="description" content="">
     <meta name="author" content="templatemo">
     
@@ -29,8 +29,8 @@
         </div>
         <nav class="templatemo-left-nav">          
           <ul>
-            <li><a href="#" class="active"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-            <li><a href="select-join.jsp"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+            <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
+            <li><a href="#"  class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
             <li><a href="login.html"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
           </ul>  
         </nav>
@@ -49,32 +49,20 @@
           <div class="templatemo-flex-row flex-content-row">
             <div class="col-1">
               <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
-                <div class="panel-heading templatemo-position-relative"><h2 class="text-uppercase">日志</h2></div>
+                <div class="panel-heading templatemo-position-relative"><h2 class="text-uppercase">选择学期</h2></div>
                 <div class="table-responsive">
                   <table class="table table-striped table-bordered">
                     <thead>
                       <tr>
-                        <td>操作时间</td>
-                        <td>操作用户</td>
-                        <td>说明</td>
+                        <td>学期</td>
+                        <td>详情</td>
                       </tr>
                     </thead>
                     <tbody>
-                      <%
-						List objlist=(List) request.getAttribute("loglist");
-						if(objlist!=null){
-					         for(int i=0;i<objlist.size();i++){
-					        	 LogBean loglist=(LogBean) objlist.get(i);
-					%>  
-						<tr>
-							<td align="left"><%=loglist.getLog_time()%></td>
-							<td align="left"><%=loglist.getUser_id()%></td>
-							<td align="left"><%=loglist.getMessage()%></td>
-						</tr>
-						<% 
-									}
-						    }
-						%>
+                      <tr>
+                        <td><a href="text-manager1.jsp">2018/7 - 2019/7</td>
+                        <td>未完成选课</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
