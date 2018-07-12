@@ -25,7 +25,7 @@ public class StudentDAO {
 	 */
 	public Object listAllStudent(){
 		this.setSessionFactory(sessionFactory);
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.openSession();
 		String hql = "from StudentBean";
 		List<StudentBean> list = session.createQuery(hql).list();
 		return list;

@@ -38,7 +38,7 @@ public class SelectionRecordDAO {
 	 * @param studentid
 	 * @return
 	 */
-	public List<SelectionRecordBean> getCourseByStudentId(int studentid) {
+	public List<SelectionRecordBean> getCourseByStudentId(String studentid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from SelectionRecordBean where studend_id = '" + studentid + "'";
