@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.zucc.g4.bean.UserBean;
 import cn.edu.zucc.g4.dao.UserDAO;
