@@ -23,7 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			throws Exception {
 		String url = request.getRequestURI();
 		
-		if(url.indexOf("/login")>=0){
+		if(url.indexOf("/login")>=0 || url.indexOf("/test")>=0){
 			
 			return true;
 		}

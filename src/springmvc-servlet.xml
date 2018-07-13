@@ -90,6 +90,18 @@
 	<bean id="loginService"
 		class="cn.edu.zucc.g4.service.LoginService">
 	</bean>
+	<bean id="StudentDAO" class="cn.edu.zucc.g4.dao.StudentDAO">
+	</bean>
+	<bean id="CheckClassMap" class="cn.edu.zucc.g4.service.CheckClassMap">
+	</bean>
+	<bean id="SelectionRecordDAO" class="cn.edu.zucc.g4.dao.SelectionRecordDAO">
+	</bean>
+	<bean id="CourseDAO" class="cn.edu.zucc.g4.dao.CourseDAO">
+	</bean>
+	<bean id="SelectionDetailDAO" class="cn.edu.zucc.g4.dao.SelectionDetailDAO">
+	</bean>
+	<bean id="SelectionDAO" class="cn.edu.zucc.g4.dao.SelectionDAO">
+	</bean>
 
 	<context:component-scan base-package="cn" />
 

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.edu.zucc.g4.bean.StudentBean;
 
 @Repository
-@Transactional
 public class StudentDAO {
 	@Autowired
 	private SessionFactory sessionFactory;

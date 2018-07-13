@@ -41,10 +41,23 @@ public class SelectionRecordDAO {
 	public List<SelectionRecordBean> getCourseByStudentId(String studentid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from SelectionRecordBean where studend_id = '" + studentid + "'";
+		String hql = "from SelectionRecordBean where student_id = '" + studentid + "'";
 		List<SelectionRecordBean> list = session.createQuery(hql).list();
 		return list;
 	}
+//	
+//	/**
+//	 * 根据学号查询学生选课记录
+//	 * @param studentid
+//	 * @return
+//	 */
+//	public List<SelectionRecordBean> getCourseByStudentId(String studentid) {
+//		this.setSessionFactory(sessionFactory);
+//		Session session = sessionFactory.getCurrentSession();
+//		String hql = "from SelectionRecordBean where student_id = '" + studentid + "'";
+//		List<SelectionRecordBean> list = session.createQuery(hql).list();
+//		return list;
+//	}
 
 }
 
