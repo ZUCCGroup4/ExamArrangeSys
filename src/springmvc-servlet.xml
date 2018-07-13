@@ -102,6 +102,16 @@
 	<bean id="selectjoinService"
 		class="cn.edu.zucc.g4.service.SelectionjoinService">
 	</bean>
+	<bean id="studentDAO" class="cn.edu.zucc.g4.dao.StudentDAO">
+	</bean>
+	<bean id="checkClassMap" class="cn.edu.zucc.g4.service.CheckClassMap">
+	</bean>
+	<bean id="selectionRecordDAO" class="cn.edu.zucc.g4.dao.SelectionRecordDAO">
+	</bean>
+	<bean id="courseDAO" class="cn.edu.zucc.g4.dao.CourseDAO">
+	</bean>
+	<bean id="selectionDetailDAO" class="cn.edu.zucc.g4.dao.SelectionDetailDAO">
+	</bean>
 
 	<context:component-scan base-package="cn" />
 

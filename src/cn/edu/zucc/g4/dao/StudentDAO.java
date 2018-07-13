@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.edu.zucc.g4.bean.StudentBean;
 
 @Repository
-@Transactional
 public class StudentDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -25,7 +24,7 @@ public class StudentDAO {
 	 */
 	public Object listAllStudent(){
 		this.setSessionFactory(sessionFactory);
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.openSession();
 		String hql = "from StudentBean";
 		List<StudentBean> list = session.createQuery(hql).list();
 		return list;
