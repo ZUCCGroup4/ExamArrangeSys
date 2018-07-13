@@ -25,13 +25,15 @@ public class LoginController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public boolean login(@RequestBody UserBean user, HttpSession session) {
+	public boolean login(@RequestBody UserBean user, HttpSession session, HttpServletRequest request) {
 		
-		System.out.println(user.getUser_id() + user.getPassword());
+		System.out.println("用户名：" + user.getUser_id() + " 密码：" + user.getPassword());
 		
 		if(loginService.checkLogin(user).equals("success")) {
 			System.out.println(loginService.checkLogin(user).equals("success"));
+
 			session.setAttribute("userId", user.getUser_id());
+			request.setAttribute("log", user.getUser_id() + "登录成功！");
 			
 			return true ;
 		}else {
@@ -42,9 +44,32 @@ public class LoginController {
 	
 	@RequestMapping("index")
 	public ModelAndView toIndex(HttpServletRequest request) {
-		System.out.println("222222222222222222");
+		System.out.println("toindex");
+		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("index.jsp");
+		return modelAndView;
+	}
+	
+	@RequestMapping("outlogin")
+	public ModelAndView outLogin(HttpSession session) {
+		System.out.println("outLogin");
+		
+		session.invalidate();
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("login.html");
+	
+		return modelAndView;
+	}
+	
+	@RequestMapping("manager")
+	public ModelAndView toManager(HttpServletRequest request) {
+		System.out.println("manager");
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("text-manager1.jsp");
+		
 		return modelAndView;
 	}
 }
