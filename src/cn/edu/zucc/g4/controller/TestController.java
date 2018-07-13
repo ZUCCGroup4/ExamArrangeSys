@@ -40,7 +40,7 @@ public class TestController {
 //	}
 	
 	
-	@Resource(name="CheckClassMap")
+	@Resource(name="checkClassMap")
 	CheckClassMap cc;
 	@RequestMapping("test")
 	public ModelAndView toIndex(HttpServletRequest request) {
