@@ -30,8 +30,8 @@
         <nav class="templatemo-left-nav">          
           <ul>
             <li><a href="#" class="active"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-            <li><a href="selectionjoin"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
-            <li><a href="login.html"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
+            <li><a href="manager"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+            <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
           </ul>  
         </nav>
       </div>
