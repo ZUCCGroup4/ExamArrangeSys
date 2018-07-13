@@ -90,9 +90,9 @@
       </div>
       <nav class="templatemo-left-nav">
         <ul>
-          <li><a href="index.html"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
+          <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
           <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
-          <li><a href="login.html"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
+          <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
         </ul>
       </nav>
     </div>
@@ -185,8 +185,7 @@
     <script src="jqvmap/maps/continents/jquery.vmap.africa.js" type="text/javascript"></script>
     <script src="jqvmap/maps/continents/jquery.vmap.asia.js" type="text/javascript"></script>
     <script src="jqvmap/maps/continents/jquery.vmap.australia.js" type="text/javascript"></script>
-    <script src="jqvmap/maps/continents/jquery.vmap.europe.js" type="text/javascript"></scrip
-    <script src="jqvmap/maps/continents/jquery.vmap.north-america.js" type="text/javascript"></script>t>
+    <script src="jqvmap/maps/continents/jquery.vmap.europe.js" type="text/javascript"></script>
     <script src="jqvmap/maps/continents/jquery.vmap.south-america.js" type="text/javascript"></script>
     <script src="jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
     <script type="text/javascript">

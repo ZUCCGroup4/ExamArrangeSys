@@ -72,7 +72,7 @@
       <nav class="templatemo-left-nav">
         <ul>
           <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-          <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+          <li><a href="selectionjoin" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
           <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
         </ul>
       </nav>
@@ -82,16 +82,16 @@
         <div class="row">
           <nav class="templatemo-top-nav col-lg-12 col-md-12">
             <ul class="text-uppercase">
-              <li><a>第一步 考试时间安排</a></li>
-              <li><a>第二步 考试地点安排 </a></li>
-              <li><a class="active">第三步 监考老师安排</a></li>
+              <li><a href="text-manager1-2.jsp" class="active">第一步 考试时间安排</a></li>
+              <li><a href="text-manager2.jsp" class="active">第二步 考试地点安排  </a></li>
+              <li><a href="#" class="active">第三步 监考老师安排</a></li>
             </ul>
           </nav>
         </div>
       </div>
       <div class="templatemo-content-container">
         <div class="templatemo-content-widget white-bg">
-          <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
+          <h2 class="margin-bottom-10" style="text-align: center;">2017-2018学年 第2学期</h2>
           <h3 class="margin-bottom-10" style="text-align: center;">监考老师安排</h3>
         </div>
         <script>
@@ -122,7 +122,7 @@
             <input type="submit" class="templatemo-blue-button" value="查找">
           </div>
         </form>
-        <form action="text-manager-finally.html" class="templatemo-login-form">
+        <form action="text-manager-finally.jsp" class="templatemo-login-form">
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
               <div class="table-responsive">
@@ -138,20 +138,30 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                    <td><button id="modify">修改</button></td>
-                  </tr>
-                  </tbody>
+                     <%
+						List objlist=(List) request.getAttribute("list");
+						  if(objlist!=null){
+					          for(int i=0;i<objlist.size();i++){
+					        	 ViewCheckBean list=(ViewCheckBean) objlist.get(i);
+					%>  
+						<tr>
+							<td><%=list.getCheck_time()%></td>
+							<td><%=list.getCourse_id()%></td>
+							<td><%=list.getCourse_name()%></td>
+							<td><%=list.getCheck_place()%></td>
+							<td>翁文勇</td>
+							<td><button id="modify">修改</button></td>
+						</tr>
+						<% 
+									}
+						    }
+						%>
+                    </tbody>
                 </table>
               </div>
             </div>
           </div>
-          <a href="text-manager2.html" class="step" id="lststep" style="line-height: 33px">上一步</a>
+          <a href="text-manager2.jsp" class="step" id="lststep" style="line-height: 33px">上一步</a>
           <!--<button class="step" id="lststep">上一步</button>-->
           <input type="submit" class="step" id="nxtstep" value="下一步">
         </form>

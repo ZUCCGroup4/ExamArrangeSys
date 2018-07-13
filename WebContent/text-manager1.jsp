@@ -37,7 +37,7 @@
         <nav class="templatemo-left-nav">
           <ul>
             <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-            <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+            <li><a href="selectionjoin" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
             <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
           </ul>
         </nav>
@@ -47,18 +47,18 @@
           <div class="row">
             <nav class="templatemo-top-nav col-lg-12 col-md-12">
               <ul class="text-uppercase">
-                <li><a class="active">第一步 考试时间安排</a></li>
-                <li><a>第二步 考试地点安排  </a></li>
-                <li><a>第三步 监考老师安排</a></li>
+                <li><a href="#" class="active">第一步 考试时间安排</a></li>
+                <li><a href="text-manager2.jsp" class="active">第二步 考试地点安排  </a></li>
+                <li><a href="text-manager3.jsp" class="active">第三步 监考老师安排</a></li>
               </ul>
             </nav> 
           </div>
         </div>
         <div class="templatemo-content-container">
           <div class="templatemo-content-widget white-bg">
-            <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
+            <h2 class="margin-bottom-10" style="text-align: center;">2017-2018学年 第2学期</h2>
           </div>
-          <form action="text-manager1-2.html" class="templatemo-login-form">
+          <form action="text-manager1-2.jsp" class="templatemo-login-form">
             <div class="templatemo-content-widget white-bg">
               <h2 class="margin-bottom-10" style="font-weight: bolder">考试周安排</h2>
               <h2 style="margin-left: 20%;display: inline-block">开始日期</h2>
