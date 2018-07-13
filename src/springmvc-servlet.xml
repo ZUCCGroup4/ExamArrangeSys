@@ -96,6 +96,12 @@
 	<bean id="logService"
 		class="cn.edu.zucc.g4.service.LogService">
 	</bean>
+	
+	<bean id="selectionDAO" class="cn.edu.zucc.g4.dao.SelectionDAO">
+	</bean>
+	<bean id="selectjoinService"
+		class="cn.edu.zucc.g4.service.SelectionjoinService">
+	</bean>
 
 	<context:component-scan base-package="cn" />
 

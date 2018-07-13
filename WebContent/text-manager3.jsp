@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="utf-8"%>
+<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
 <html lang="en">
   <head>
     <meta charset="utf-8">

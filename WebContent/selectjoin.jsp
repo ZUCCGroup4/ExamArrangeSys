@@ -54,15 +54,27 @@
                   <table class="table table-striped table-bordered">
                     <thead>
                       <tr>
+                        <td>学年</td>
                         <td>学期</td>
-                        <td>详情</td>
+                        <td>选择</td>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><a href="text-manager1.jsp">2018/7 - 2019/7</td>
-                        <td>未完成选课</td>
-                      </tr>
+                     <%
+						List objlist=(List) request.getAttribute("terlist");
+						  if(objlist!=null){
+					          for(int i=0;i<objlist.size();i++){
+					        	 SelectionBean termlist=(SelectionBean) objlist.get(i);
+					%>  
+						<tr>
+							<td><%=termlist.getYear()%></td>
+							<td><%=termlist.getTerm()%></td>
+							<td><a href="text-manager1.jsp">进入</td>
+						</tr>
+						<% 
+									}
+						    }
+						%>
                     </tbody>
                   </table>
                 </div>

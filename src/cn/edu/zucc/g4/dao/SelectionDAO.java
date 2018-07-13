@@ -47,6 +47,14 @@ public class SelectionDAO {
 		}
 		return bean;
 	}
+	//获取学期列表
+	public List listAllTerm(){
+		this.setSessionFactory(sessionFactory);
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from SelectionBean group by 'year',term";
+		List<SelectionBean> list = session.createQuery(hql).list();
+		return list;
+	}
 
 }
 
