@@ -1,6 +1,6 @@
 package cn.edu.zucc.g4.interceptor;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +11,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.zucc.g4.bean.LogBean;
-import cn.edu.zucc.g4.dao.LogDAO;
 import cn.edu.zucc.g4.service.LogService;
 
 public class LogInterceptor implements HandlerInterceptor {
@@ -22,7 +21,8 @@ public class LogInterceptor implements HandlerInterceptor {
 		String log = (String)request.getAttribute("log_msg");
 		if(log!=null&&!log.equals("")){
 			LogBean logBean=new LogBean();
-			logBean.setLog_time(new Date());
+			Timestamp time = new Timestamp(System.currentTimeMillis());
+			logBean.setLog_time(time);
 			logBean.setMessage(log);
 			logBean.setUser_id((String)request.getSession().getAttribute("userId"));
 			logService.addLog(logBean);
