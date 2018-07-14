@@ -41,7 +41,10 @@ public class TestController {
 	
 	
 	@Resource(name="checkClassMap")
-	CheckClassMap cc;
+	public CheckClassMap cc;
+	
+	public static ArrayList<ArrayList<String>> examlist;
+	
 	@RequestMapping("test")
 	public ModelAndView toIndex(HttpServletRequest request) {
 		cc.LoadCheckClassMap();
@@ -49,9 +52,19 @@ public class TestController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("test.jsp");
 		int out = cc.abs("022", "029");
-		ArrayList<ArrayList<String>> examlist = cc.initializeExam(40);
+		examlist = cc.initializeExam(40);
 		modelAndView.addObject("name",out);
 		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("test2")
+	public ModelAndView test2(javax.servlet.http.HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println(examlist.size());
+		modelAndView.setViewName("test.jsp");
+		return modelAndView;
+		
 	}
 
 }

@@ -58,13 +58,13 @@
           <div class="templatemo-content-widget white-bg">
             <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
           </div>
-          <form action="text-manager1-2.html" class="templatemo-login-form">
+          <form action="toManager1-2" class="templatemo-login-form">
             <div class="templatemo-content-widget white-bg">
               <h2 class="margin-bottom-10" style="font-weight: bolder">考试周安排</h2>
               <h2 style="margin-left: 20%;display: inline-block">开始日期</h2>
-              <input type="date" style="width: 200px;">
+              <input type="date" name="starttime" style="width: 200px;">
               <h2 style="margin-left: 10%;display: inline-block">结束日期</h2>
-              <input type="date" style="width: 200px;">
+              <input type="date" name="endtime" style="width: 200px;">
               <br>
               <div style="text-align: right">
                 <input type="submit" class="templatemo-blue-button" value="自动生成安排表">
