@@ -40,7 +40,7 @@ public class TestController {
 //	}
 	
 	
-	@Resource(name="CheckClassMap")
+	@Resource(name="checkClassMap")
 	CheckClassMap cc;
 	@RequestMapping("test")
 	public ModelAndView toIndex(HttpServletRequest request) {
@@ -50,6 +50,16 @@ public class TestController {
 		modelAndView.setViewName("test.jsp");
 		int out = cc.abs("022", "029");
 		ArrayList<ArrayList<String>> examlist = cc.initializeExam(40);
+//		ArrayList<ArrayList<String>> newexamlist = cc.optimizeExam(examlist);
+		ArrayList<ArrayList<String>> newexamlist = cc.planExamClass(examlist);
+		for(int i=0;i<examlist.size();i++) {
+			System.out.print("时间块"+i+"的考试有:");
+			for(int j=0;j<examlist.get(i).size();j++) {
+				System.out.print(examlist.get(i).get(j)+"     ");
+			}
+			System.out.print("一共"+examlist.get(i).size()+"门考试\n");
+		}
+		
 		modelAndView.addObject("name",out);
 		return modelAndView;
 	}

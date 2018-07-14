@@ -145,7 +145,7 @@ public class CheckClassMap {
 
 				if(list.get(j).size()==0) {//此时间块已有的课程数若为0则直接加入新课程
 					list.get(j).add(courseList.get(i).getCourse_id());
-					System.out.println(courseList.get(i).getCourse_id()+"安排在第"+j+"场考试");
+//					System.out.println(courseList.get(i).getCourse_id()+"安排在第"+j+"场考试");
 					break;
 				}
 				else {
@@ -160,7 +160,7 @@ public class CheckClassMap {
 						}else {
 							if(x==list.get(j).size()-1) {//如果所有课程都不冲突则直接添加一门新课程并跳出遍历
 								list.get(j).add(courseList.get(i).getCourse_id());
-								System.out.println(courseList.get(i).getCourse_id()+"安排在第"+j+"场考试");
+//								System.out.println(courseList.get(i).getCourse_id()+"安排在第"+j+"场考试");
 								j=parts;//跳出遍历时间块直接进入下一门课程
 								break;
 							}
@@ -172,5 +172,66 @@ public class CheckClassMap {
 			
 		}
 		return list;
+	}
+	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){
+		ArrayList<ArrayList<String>> newlist = list;
+		ArrayList<Integer> sizelist = new ArrayList<Integer>();
+		ArrayList<Integer> oldindexlist = new ArrayList<Integer>();
+		ArrayList<Integer> newindexlist = new ArrayList<Integer>();
+		for(int i=0;i<list.size();i++) {//初始化时间块大小序列
+			sizelist.add(list.get(i).size());
+			oldindexlist.add(i);
+		}
+		for(int i=0;i<list.size();i++) {//整理时间块大小序列
+//			int minindex = indexlist2.get(0);
+			int min = 0;
+			for(int j=0;j<oldindexlist.size();j++) {
+				if(list.get(min).size()>newlist.get(j).size()) {
+//					minindex=indexlist2.get(j);
+					min=j;
+				}
+					
+			}
+			newindexlist.add(oldindexlist.get(min));
+			oldindexlist.remove(min);
+			sizelist.remove(min);
+		}
+		for(int i=0;i<newindexlist.size();i++) {//按从小到打的顺序遍历未优化的list,i为newindexlist时间块大小序列的下标
+			for(int j =0;j<list.get(newindexlist.get(i)).size();j++) {//遍历小时间块,j为时间块中某一门课程id的下标
+				for(int x =newindexlist.size();x<newindexlist.size();x--) {//按从大到小的顺序遍历未优化的list,x为newindexlist时间块大小序列的下标
+					if(list.get(newindexlist.get(i)).size()<= list.get(newindexlist.get(x)).size()-1) {//判断大时间块是否比小时间块多两门以上课程
+						if(x!=i) {
+							for(int m =0;m<list.get(newindexlist.get(x)).size();m++) {//遍历大时间块,m为时间块中某一门课程id的下标
+								if(this.abs(list.get(newindexlist.get(i)).get(j), list.get(newindexlist.get(x)).get(m))==1) {//如果两个时间块
+//									中的一门课程相互冲突则跳出此大块的遍历
+									break;
+								}
+								if(m==list.get(newindexlist.get(x)).size()-1) {//如果直到最后一个都未冲突跳出则
+									
+								}
+							}
+						}else break;//如果大时间块等于小时间块则遍历下一个小时间块
+						
+					}
+					else;//如果大时间块并未比小时间快大两门以上课程则遍历下一个时间块
+				}
+				this.abs(list.get(i).get(j), class2id)
+			}
+			list.get(newindexlist.get(i)).get(index)
+		}
+		return newlist;
+	}
+	public ArrayList<ArrayList<String>>  planExamClass(ArrayList<ArrayList<String>> list){
+		HashMap<String, Integer> classes = new HashMap<String, Integer>();
+		ArrayList<Object[]> capacitylist=sddao.getClassCapacity();
+		for(int i=0;i<capacitylist.size();i++) {//建立容量视图
+			Object[] object1 = (Object[])capacitylist.get(i);
+        	String claid = (String)object1[0];
+        	int capacity=(int)object1[1];
+			classes.put(claid, capacity);
+		}
+		for(int i=0;i<list.size();i++) {
+			
+		}
 	}
 }
