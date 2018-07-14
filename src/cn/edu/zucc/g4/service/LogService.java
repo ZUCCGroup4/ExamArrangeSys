@@ -19,5 +19,8 @@ public class LogService {
 		return loglist;
 	}
 	
-
+	public void addLog(LogBean logBean){
+		logDAO.addLog(logBean);
+		
+	}
 }

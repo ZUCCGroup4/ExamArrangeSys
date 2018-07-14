@@ -47,6 +47,10 @@ public class LogDAO {
 		}
 		return bean;
 	}
+	public void addLog(LogBean logBean){
+		sessionFactory.getCurrentSession().save(logBean);
+		
+	}
 
 }
 

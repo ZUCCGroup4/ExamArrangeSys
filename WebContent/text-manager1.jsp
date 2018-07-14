@@ -36,7 +36,7 @@
         <nav class="templatemo-left-nav">
           <ul>
             <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-            <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+            <li><a href="selectionjoin" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
             <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
           </ul>
         </nav>
@@ -46,19 +46,21 @@
           <div class="row">
             <nav class="templatemo-top-nav col-lg-12 col-md-12">
               <ul class="text-uppercase">
-                <li><a class="active">第一步 考试时间安排</a></li>
-                <li><a>第二步 考试地点安排  </a></li>
-                <li><a>第三步 监考老师安排</a></li>
+                <li><a href="#" class="active">第一步 考试时间安排</a></li>
+                <li><a href="text-manager2.jsp" class="active">第二步 考试地点安排  </a></li>
+                <li><a href="text-manager3.jsp" class="active">第三步 监考老师安排</a></li>
               </ul>
             </nav> 
           </div>
         </div>
         <div class="templatemo-content-container">
           <div class="templatemo-content-widget white-bg">
+
             <%String year= (String) session.getAttribute("year");
             String term= (String) session.getAttribute("term");
           %>
             <h2 class="margin-bottom-10" style="text-align: center;"><%=year%>学年 第<%=term%>学期</h2>
+
           </div>
           <form action="testtimearrange" class="templatemo-login-form">
             <div class="templatemo-content-widget white-bg">

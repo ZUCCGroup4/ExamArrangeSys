@@ -68,7 +68,7 @@
       <nav class="templatemo-left-nav">
         <ul>
           <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-          <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+          <li><a href="selectionjoin" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
           <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
         </ul>
       </nav>
@@ -78,15 +78,16 @@
         <div class="row">
           <nav class="templatemo-top-nav col-lg-12 col-md-12">
             <ul class="text-uppercase">
-              <li><a>第一步 考试时间安排</a></li>
-              <li><a  class="active">第二步 考试地点安排  </a></li>
-              <li><a>第三步 监考老师安排</a></li>
+              <li><a href="text-manager1-2.jsp" class="active">第一步 考试时间安排</a></li>
+              <li><a href="#" class="active">第二步 考试地点安排  </a></li>
+              <li><a href="text-manager3.jsp" class="active">第三步 监考老师安排</a></li>
             </ul>
           </nav>
         </div>
       </div>
       <div class="templatemo-content-container">
         <div class="templatemo-content-widget white-bg">
+
            <%String year= (String) session.getAttribute("year");
             String term= (String) session.getAttribute("term");
           %>
@@ -121,7 +122,7 @@
             <input type="submit" class="templatemo-blue-button" value="查找">
           </div>
         </form>
-        <form action="text-manager3.html" class="templatemo-login-form">
+        <form action="text-manager3.jsp" class="templatemo-login-form">
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
               <div class="table-responsive">
@@ -158,7 +159,11 @@
               </div>
             </div>
           </div>
+<<<<<<< HEAD
           <a href="testtimearrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
+=======
+          <a href="text-manager1-2.jsp" class="step" id="lststep" style="line-height: 33px">上一步</a>
+>>>>>>> branch 'master' of https://github.com/ZUCCGroup4/ExamArrangeSys.git
           <!--<button class="step" id="lststep">上一步</button>-->
           <a href="testteacherarrange" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
         </form>
