@@ -41,7 +41,10 @@ public class TestController {
 	
 	
 	@Resource(name="checkClassMap")
-	CheckClassMap cc;
+	public CheckClassMap cc;
+	
+	public static ArrayList<ArrayList<String>> examlist;
+
 	@RequestMapping("test")
 	public ModelAndView toIndex(HttpServletRequest request) {
 		cc.LoadCheckClassMap();
@@ -49,7 +52,8 @@ public class TestController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("test.jsp");
 		int out = cc.abs("022", "029");
-		ArrayList<ArrayList<String>> examlist = cc.initializeExam(40);
+
+		examlist = cc.initializeExam(40);
 //		ArrayList<ArrayList<String>> newexamlist = cc.optimizeExam(examlist);
 		ArrayList<ArrayList<String>> newexamlist = cc.planExamClass(examlist);
 		for(int i=0;i<examlist.size();i++) {
@@ -59,9 +63,19 @@ public class TestController {
 			}
 			System.out.print("一共"+examlist.get(i).size()+"门考试\n");
 		}
-		
+
 		modelAndView.addObject("name",out);
 		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("test2")
+	public ModelAndView test2(javax.servlet.http.HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println(examlist.get(0).get(0));
+		modelAndView.setViewName("test.jsp");
+		return modelAndView;
+		
 	}
 
 }

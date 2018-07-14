@@ -9,7 +9,7 @@ public class CheckBean {
     private String check_place;
     private String invigilator_1;
     private String invigilator_2;
-    private String selection_id;
+    private String course_id;
 	public int getCheck_id() {
 		return check_id;
 	}
@@ -40,11 +40,12 @@ public class CheckBean {
 	public void setInvigilator_2(String invigilator_2) {
 		this.invigilator_2 = invigilator_2;
 	}
-	public String getSelection_id() {
-		return selection_id;
+	public String getCourse_id() {
+		return course_id;
 	}
-	public void setSelection_id(String selection_id) {
-		this.selection_id = selection_id;
+	public void setCourse_id(String course_id) {
+		this.course_id = course_id;
 	}
+	
 	
 }

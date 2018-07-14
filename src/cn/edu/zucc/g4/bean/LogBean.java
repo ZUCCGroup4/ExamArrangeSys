@@ -1,19 +1,13 @@
 package cn.edu.zucc.g4.bean;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class LogBean {
 
 	private int log_id;
 	private String message;
 	private String user_id;
-	private Timestamp log_time;
-	public Timestamp getLog_time() {
-		return log_time;
-	}
-	public void setLog_time(Timestamp log_time) {
-		this.log_time = log_time;
-	}
+	private Date log_time;
 	public int getLog_id() {
 		return log_id;
 	}
@@ -32,4 +26,12 @@ public class LogBean {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
+	public Date getLog_time() {
+		return log_time;
+	}
+	public void setLog_time(Date log_time) {
+		this.log_time = log_time;
+	}
+	
+	
 }

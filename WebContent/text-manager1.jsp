@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
 <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -37,7 +36,7 @@
         <nav class="templatemo-left-nav">
           <ul>
             <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-            <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+            <li><a href="selectionjoin" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
             <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
           </ul>
         </nav>
@@ -47,24 +46,28 @@
           <div class="row">
             <nav class="templatemo-top-nav col-lg-12 col-md-12">
               <ul class="text-uppercase">
-                <li><a class="active">第一步 考试时间安排</a></li>
-                <li><a>第二步 考试地点安排  </a></li>
-                <li><a>第三步 监考老师安排</a></li>
+                <li><a href="#" class="active">第一步 考试时间安排</a></li>
+                <li><a href="text-manager2.jsp" class="active">第二步 考试地点安排  </a></li>
+                <li><a href="text-manager3.jsp" class="active">第三步 监考老师安排</a></li>
               </ul>
             </nav> 
           </div>
         </div>
         <div class="templatemo-content-container">
           <div class="templatemo-content-widget white-bg">
-            <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
+            <%String year= (String) session.getAttribute("year");
+            String term= (String) session.getAttribute("term");
+          %>
+            <h2 class="margin-bottom-10" style="text-align: center;"><%=year%>学年 第<%=term%>学期</h2>
+
           </div>
-          <form action="text-manager1-2.html" class="templatemo-login-form">
+          <form action="testtimearrange" class="templatemo-login-form">
             <div class="templatemo-content-widget white-bg">
               <h2 class="margin-bottom-10" style="font-weight: bolder">考试周安排</h2>
               <h2 style="margin-left: 20%;display: inline-block">开始日期</h2>
-              <input type="date" style="width: 200px;">
+              <input type="date" name="starttime" style="width: 200px;">
               <h2 style="margin-left: 10%;display: inline-block">结束日期</h2>
-              <input type="date" style="width: 200px;">
+              <input type="date" name="endtime" style="width: 200px;">
               <br>
               <div style="text-align: right">
                 <input type="submit" class="templatemo-blue-button" value="自动生成安排表">

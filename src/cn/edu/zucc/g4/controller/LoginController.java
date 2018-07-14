@@ -37,7 +37,7 @@ public class LoginController {
 			System.out.println(loginService.checkLogin(user).equals("success"));
 
 			session.setAttribute("userId", user.getUser_id());
-			request.setAttribute("log", user.getUser_id() + "登录成功！");
+			request.setAttribute("log_msg", user.getUser_id() + "登录成功");
 			
 			return true ;
 		}else {
