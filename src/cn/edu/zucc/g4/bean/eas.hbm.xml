@@ -69,8 +69,8 @@
 		<property name="check_type" type="string" column="check_type" />
 	</class>
 	
-	<class name="CheckBean" table="check">
-		<id name="check_id" type="int">
+	<class name="CheckBean" table="testcheck">
+		<id name="check_id" type="java.lang.Integer">
 			<column name="check_id" />
 			<generator class="assigned" />
 		</id>
@@ -78,7 +78,7 @@
 		<property name="check_place" type="string" column="check_place" />
 		<property name="invigilator_1" type="string" column="invigilator_1" />
 		<property name="invigilator_2" type="string" column="invigilator_2" />
-		<property name="selection_id" type="string" column="selection_id" />
+		<property name="course_id" type="string" column="course_id" />
 	</class>
 	
 	<class name="SelectionRecordBean" table="view_selection_record">
@@ -101,5 +101,24 @@
 		<property name="check_type" type="string" column="check_type" />
 	</class>
 	
+	<class name="ViewCheckBean" table="view_check">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="assigned" />
+		</id>
+		<property name="teacher_id" type="string" column="teacher_id" />
+		<property name="check_place" type="string" column="check_place" />
+		<property name="invigilator_1" type="string" column="invigilator_1" />
+		<property name="year" type="string" column="year" />
+		<property name="term" type="string" column="term" />
+		<property name="invigilator_2" type="string" column="invigilator_2" />
+		<property name="check_id" type="java.lang.Integer" column="check_id" />
+		<property name="selection_id" type="string" column="selection_id" />
+		<property name="department" type="string" column="department" />
+		<property name="check_type" type="string" column="check_type" />
+		<property name="course_name" type="string" column="course_name" />
+		<property name="course_id" type="string" column="course_id" />
+		<property name="check_time" type="timestamp" column="check_time" />
+	</class>
 	
 </hibernate-mapping>  

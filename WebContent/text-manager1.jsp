@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
 <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -56,9 +55,12 @@
         </div>
         <div class="templatemo-content-container">
           <div class="templatemo-content-widget white-bg">
-            <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
+            <%String year= (String) session.getAttribute("year");
+            String term= (String) session.getAttribute("term");
+          %>
+            <h2 class="margin-bottom-10" style="text-align: center;"><%=year%>学年 第<%=term%>学期</h2>
           </div>
-          <form action="text-manager1-2.html" class="templatemo-login-form">
+          <form action="testtimearrange" class="templatemo-login-form">
             <div class="templatemo-content-widget white-bg">
               <h2 class="margin-bottom-10" style="font-weight: bolder">考试周安排</h2>
               <h2 style="margin-left: 20%;display: inline-block">开始日期</h2>

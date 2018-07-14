@@ -30,7 +30,7 @@
         <nav class="templatemo-left-nav">          
           <ul>
             <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-            <li><a href="#"  class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+            <li><a href="selectionjoin"  class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
             <li><a href="login.html"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
           </ul>  
         </nav>
@@ -69,7 +69,8 @@
 						<tr>
 							<td><%=termlist.getYear()%></td>
 							<td><%=termlist.getTerm()%></td>
-							<td><a href="text-manager1.jsp">进入</td>
+							<%out.print("<td>"+
+    									"<a href=\"testweekarrange?year="+termlist.getYear()+"&term="+termlist.getTerm()+"\">进入</a></td>");%>
 						</tr>
 						<% 
 									}

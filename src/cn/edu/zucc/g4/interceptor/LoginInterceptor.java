@@ -29,7 +29,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 		}
 		HttpSession  session = request.getSession();
 		String userId = (String) session.getAttribute("userId");
-		
 		if(userId==null||userId.equals("")){
 			request.getRequestDispatcher("login.html").forward(request, response);;
 			return false;

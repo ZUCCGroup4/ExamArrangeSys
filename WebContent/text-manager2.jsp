@@ -87,7 +87,10 @@
       </div>
       <div class="templatemo-content-container">
         <div class="templatemo-content-widget white-bg">
-          <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
+           <%String year= (String) session.getAttribute("year");
+            String term= (String) session.getAttribute("term");
+          %>
+            <h2 class="margin-bottom-10" style="text-align: center;"><%=year%>学年 第<%=term%>学期</h2>
           <h3 class="margin-bottom-10" style="text-align: center;">考试地点安排</h3>
         </div>
         <script>
@@ -133,21 +136,31 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                    <td><button id="modify">修改</button></td>
-                  </tr>
+                   <%
+						List objlist=(List) request.getAttribute("terlist");
+						  if(objlist!=null){
+					          for(int i=0;i<objlist.size();i++){
+					        	 ViewCheckBean list=(ViewCheckBean) objlist.get(i);
+					%>  
+						<tr>
+							<td><%=list.getCheck_time()%></td>
+							<td><%=list.getCourse_id()%></td>
+							<td><%=list.getCourse_name()%></td>
+							<td><%=list.getCheck_place()%></td>
+							<td><button id="modify">修改</button></td>
+						</tr>
+						<% 
+									}
+						    }
+						%>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-          <a href="text-manager1-2.html" class="step" id="lststep" style="line-height: 33px">上一步</a>
+          <a href="testtimearrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
           <!--<button class="step" id="lststep">上一步</button>-->
-          <input type="submit" class="step" id="nxtstep" value="下一步">
+          <a href="testteacherarrange" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
         </form>
         <footer class="text-right">
           <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.zucc.g4.bean.CheckBean;
+import cn.edu.zucc.g4.bean.ViewCheckBean;
 
 @Repository
 @Transactional
@@ -25,11 +26,11 @@ public class CheckDAO {
 	 * 遍历所有考试安排
 	 * @return
 	 */
-	public List<CheckBean> listALLCheck() {
+	public List<ViewCheckBean> listALLCheck() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from CheckBean";
-		List<CheckBean> list = session.createQuery(hql).list();
+		String hql = "from ViewCheckBean";
+		List<ViewCheckBean> list = session.createQuery(hql).list();
 		return list;
 	}
 	
