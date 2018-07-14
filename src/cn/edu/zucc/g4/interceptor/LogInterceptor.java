@@ -12,20 +12,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.zucc.g4.bean.LogBean;
 import cn.edu.zucc.g4.dao.LogDAO;
+import cn.edu.zucc.g4.service.LogService;
 
 public class LogInterceptor implements HandlerInterceptor {
-	@Resource(name="logDAO")
-	LogDAO logDAO;
+	@Resource(name="logService")
+	LogService logService;
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		System.out.println(444);
 		String log = (String)request.getAttribute("log_msg");
 		if(log!=null&&!log.equals("")){
 			LogBean logBean=new LogBean();
 			logBean.setLog_time(new Date());
 			logBean.setMessage(log);
 			logBean.setUser_id((String)request.getSession().getAttribute("userId"));
-			logDAO.addLog(logBean);
+			logService.addLog(logBean);
 		}
 	}
 
