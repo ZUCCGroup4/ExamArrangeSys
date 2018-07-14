@@ -112,6 +112,8 @@
 	</bean>
 	<bean id="selectionDetailDAO" class="cn.edu.zucc.g4.dao.SelectionDetailDAO">
 	</bean>
+	<bean id="logDAO" class="cn.edu.zucc.g4.dao.LogDAO">
+	</bean>
 
 	<context:component-scan base-package="cn" />
 
@@ -128,6 +130,10 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<bean class="cn.edu.zucc.g4.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="cn.edu.zucc.g4.interceptor.LogInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
 
