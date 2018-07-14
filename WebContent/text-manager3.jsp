@@ -164,11 +164,8 @@
               </div>
             </div>
           </div>
-<<<<<<< HEAD
           <a href="testclassarrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
-=======
-          <a href="text-manager2.jsp" class="step" id="lststep" style="line-height: 33px">上一步</a>
->>>>>>> branch 'master' of https://github.com/ZUCCGroup4/ExamArrangeSys.git
+
           <!--<button class="step" id="lststep">上一步</button>-->
           <input type="submit" class="step" id="nxtstep" value="下一步">
         </form>
