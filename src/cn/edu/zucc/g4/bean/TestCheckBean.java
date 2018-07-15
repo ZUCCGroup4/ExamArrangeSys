@@ -9,6 +9,12 @@ public class TestCheckBean {
 	private String invigilator1;
 	private String invigilator2;
 	private String courseId;
+	public TestCheckBean() {
+		
+	}
+	public TestCheckBean(String courseId) {
+		this.setCourseId(courseId);
+	}
 	public int getCheckId() {
 		return checkId;
 	}

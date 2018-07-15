@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.bean.UserBean;
 import cn.edu.zucc.g4.service.CheckClassMap;
 import cn.edu.zucc.g4.service.LoginService;
@@ -43,7 +44,7 @@ public class TestController {
 	@Resource(name="checkClassMap")
 	public CheckClassMap cc;
 	
-	public static ArrayList<ArrayList<String>> examlist;
+	public static ArrayList<ArrayList<TestCheckBean>> examlist;
 
 	@RequestMapping("test")
 	public ModelAndView toIndex(HttpServletRequest request) {
@@ -55,11 +56,12 @@ public class TestController {
 
 		examlist = cc.initializeExam(40);
 //		ArrayList<ArrayList<String>> newexamlist = cc.optimizeExam(examlist);
-		ArrayList<ArrayList<String>> newexamlist = cc.planExamClass(examlist);
+		
+		ArrayList<ArrayList<TestCheckBean>> newexamlist = cc.planExamClass(examlist);
 		for(int i=0;i<examlist.size();i++) {
 			System.out.print("时间块"+i+"的考试有:");
 			for(int j=0;j<examlist.get(i).size();j++) {
-				System.out.print(examlist.get(i).get(j)+"     ");
+				System.out.print(newexamlist.get(i).get(j).getCourseId()+":"+newexamlist.get(i).get(j).getCheckPlace()+"     ");
 			}
 			System.out.print("一共"+examlist.get(i).size()+"门考试\n");
 		}

@@ -36,22 +36,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String url = request.getRequestURI();
-		
-		if(url.indexOf("/login")>=0){
-			
-			return true;
-		}
-		HttpSession  session = request.getSession();
-		String userId = (String) session.getAttribute("userId");
-		
-		if(userId==null||userId.equals("")){
-			request.getRequestDispatcher("login.html").forward(request, response);;
-			return false;
-		}
-		else{
-			return true;
-		}
+		return true;
 	}
 	
 }
