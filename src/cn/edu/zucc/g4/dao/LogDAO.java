@@ -28,7 +28,7 @@ public class LogDAO {
 	public List<LogBean> listALLLog() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from LogBean";
+		String hql = "from LogBean order by log_id desc";
 		List<LogBean> list = session.createQuery(hql).list();
 		return list;
 	}

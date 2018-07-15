@@ -21,4 +21,6 @@ public class TestTimeService {
 		List<ViewCheckBean> terlist = checkDAO.listALLCheck();
 		return terlist;
 	}
+	
+	public 
 }

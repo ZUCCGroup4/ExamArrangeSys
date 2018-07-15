@@ -150,7 +150,7 @@
 							<td><%=list.getCheck_time()%></td>
 							<td><%=list.getCourse_id()%></td>
 							<td><%=list.getCourse_name()%></td>
-							<td><button id="modify">修改</button></td>
+							<td><button id="modify" >修改</button></td>
 						</tr>
 						<% 
 									}
