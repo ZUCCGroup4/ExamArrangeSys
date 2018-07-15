@@ -112,12 +112,14 @@
 	</bean>
 	<bean id="selectionDetailDAO" class="cn.edu.zucc.g4.dao.SelectionDetailDAO">
 	</bean>
-	
-	
 	<bean id="checkDAO" class="cn.edu.zucc.g4.dao.CheckDAO">
 	</bean>
 	<bean id="testTimeService"
 		class="cn.edu.zucc.g4.service.TestTimeService">
+	</bean>
+	<bean id="testCheckDAO" class="cn.edu.zucc.g4.dao.TestCheckDAO">
+	</bean>
+	<bean id="classRoomDAO" class="cn.edu.zucc.g4.dao.ClassRoomDAO">
 	</bean>
 
 	<context:component-scan base-package="cn" />

@@ -120,5 +120,26 @@
 		<property name="course_id" type="string" column="course_id" />
 		<property name="check_time" type="timestamp" column="check_time" />
 	</class>
+
+	<class name="TestCheckBean" table="testcheck">
+		<id name="checkId" type="java.lang.Integer">
+			<column name="check_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="checkTime" type="timestamp" column="check_time" />
+		<property name="checkPlace" type="string" column="check_place" />
+		<property name="invigilator1" type="string" column="invigilator_1" />
+		<property name="invigilator2" type="string" column="invigilator_2" />
+		<property name="courseId" type="string" column="course_id" />
+	</class>
 	
+	<class name="ClassRoomBean" table="classroom">
+		<id name="classRoomId" type="java.lang.Integer">
+			<column name="classroom_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="classRoomName" type="string" column="classroom_name" />
+		<property name="size" type="java.lang.Integer" column="size" />
+	</class>
+
 </hibernate-mapping>  
