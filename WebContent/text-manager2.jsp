@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
-<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
+<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -142,9 +142,11 @@
 						  if(objlist!=null){
 					          for(int i=0;i<objlist.size();i++){
 					        	 ViewCheckBean list=(ViewCheckBean) objlist.get(i);
+					        	 SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					        	 String TimeString = time.format(list.getCheck_time());
 					%>  
 						<tr>
-							<td><%=list.getCheck_time()%></td>
+							<td><%=TimeString%></td>
 							<td><%=list.getCourse_id()%></td>
 							<td><%=list.getCourse_name()%></td>
 							<td><%=list.getCheck_place()%></td>
