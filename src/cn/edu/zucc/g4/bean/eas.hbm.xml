@@ -131,6 +131,7 @@
 		<property name="invigilator1" type="string" column="invigilator_1" />
 		<property name="invigilator2" type="string" column="invigilator_2" />
 		<property name="courseId" type="string" column="course_id" />
+		<property name="courseName" type="string" column="course_name" />
 	</class>
 	
 	<class name="ClassRoomBean" table="classroom">

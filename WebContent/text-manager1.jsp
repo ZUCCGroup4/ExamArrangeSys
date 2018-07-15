@@ -61,7 +61,7 @@
             <h2 class="margin-bottom-10" style="text-align: center;"><%=year%>学年 第<%=term%>学期</h2>
 
           </div>
-          <form action="testtimearrange" class="templatemo-login-form">
+          <form action="toManager1-2" class="templatemo-login-form">
             <div class="templatemo-content-widget white-bg">
               <h2 class="margin-bottom-10" style="font-weight: bolder">考试周安排</h2>
               <h2 style="margin-left: 20%;display: inline-block">开始日期</h2>
