@@ -202,15 +202,15 @@
 									<tbody>
 
 										<%
-											ArrayList<ArrayList<String>> objlist = (ArrayList<ArrayList<String>>) request.getAttribute("examlist");
+											ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
 											if (objlist != null) {
 												for (int i = 0; i < objlist.size(); i++) {
 													for (int j = 0; j < objlist.get(i).size(); j++) {
 										%>
 										<tr>
-											<td>考试时间段<%=i%></td>
-											<td><%=objlist.get(i).get(j)%></td>
-											<td>未知</td>
+											<td><%=objlist.get(i).get(j).getCheckTime()%></td>
+											<td><%=objlist.get(i).get(j).getCourseId()%></td>
+											<td><%=objlist.get(i).get(j).getCourseName()%></td>
 											<td><button id="modify">修改</button></td>
 										</tr>
 										<%

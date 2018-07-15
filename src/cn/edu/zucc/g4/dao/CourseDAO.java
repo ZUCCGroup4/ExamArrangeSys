@@ -48,7 +48,7 @@ public class CourseDAO {
 	 * @param logid
 	 * @return
 	 */
-	public CourseBean getCourse(int courseid) {
+	public CourseBean getCourse(String courseid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		CourseBean bean = session.get(CourseBean.class, courseid);
