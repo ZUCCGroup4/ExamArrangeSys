@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.zucc.g4.service.CheckClassMap;
@@ -21,8 +22,7 @@ public class ManagerController {
 	
 	public static ArrayList<ArrayList<String>> examlist;
 	
-	
-	
+	@ResponseBody
 	@RequestMapping("toManager1-2")
 	public ModelAndView toManagerOT(HttpServletRequest request){
 		ModelAndView modelAndView = new ModelAndView();
@@ -36,9 +36,11 @@ public class ManagerController {
 		
 		day = new DateUtil().getDay(startTime, endTime);
 		
-		System.out.println(day);
+		System.out.println(day+"天");
 		
-		examlist = checkClassMap.initializeExam(40);
+		examlist = checkClassMap.initializeExam((int)(day*3));
+		
+		request.setAttribute("examlist", examlist);
 		
 		modelAndView.setViewName("text-manager1-2.jsp");
 		return modelAndView;

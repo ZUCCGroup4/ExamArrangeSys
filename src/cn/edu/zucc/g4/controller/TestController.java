@@ -61,7 +61,7 @@ public class TestController {
 	@RequestMapping("test2")
 	public ModelAndView test2(javax.servlet.http.HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		System.out.println(examlist.size());
+		System.out.println(examlist.get(0).get(0));
 		modelAndView.setViewName("test.jsp");
 		return modelAndView;
 		

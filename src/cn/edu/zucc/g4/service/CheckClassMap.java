@@ -46,7 +46,7 @@ public class CheckClassMap {
 	}
 	public void LoadCheckClassMap(){
 //		stuList = (ArrayList<StudentBean>) studao.listAllStudent();//加载学生表
-		courseList = (ArrayList<CourseBean>) csdao.listALLCourse();//加载课程表
+		courseList = (ArrayList<CourseBean>) csdao.listCourseByType();//加载课程表
 //		selectionList = (ArrayList<SelectionBean>) srdao.listALLLog();//加载选课表
 //		sdList = (ArrayList<SelectionDetailBean>) sddao.listALLLog();//加载选课信息表
 		ArrayList slist = (ArrayList) srdao.listallselection();
