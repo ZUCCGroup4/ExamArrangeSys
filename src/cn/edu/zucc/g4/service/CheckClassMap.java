@@ -270,7 +270,7 @@ public class CheckClassMap {
 					temp.setCourseId(list.get(i).get(j).getCourseId());
 					temp.setCheckPlace(clalist.get(sum).getClassRoomName());
 					temp.setCheckTime(list.get(i).get(j).getCheckTime());
-					
+					temp.setCourseName(list.get(i).get(j).getCourseName());
 					temp.setInvigilator1(list.get(i).get(j).getInvigilator1());
 					temp.setInvigilator2(list.get(i).get(j).getInvigilator2());
 					newTClist.get(i).add(temp);
