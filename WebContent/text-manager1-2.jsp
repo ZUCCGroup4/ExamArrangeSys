@@ -227,7 +227,7 @@
 						style="line-height: 33px">上一步</a>
 
 					<!--<button class="step" id="lststep">上一步</button>-->
-					<a href="testclassarrange" class="step" id="nxtstep"
+					<a href="toManager2" class="step" id="nxtstep"
 						style="line-height: 33px">下一步</a>
 					<!--  <input type="submit" class="step" id="nxtstep" value="下一步"> -->
 				</form>
