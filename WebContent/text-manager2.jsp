@@ -182,7 +182,7 @@
 					<a href="toManager1-2" class="step" id="lststep"
 						style="line-height: 33px">上一步</a>
 					<!--<button class="step" id="lststep">上一步</button>-->
-					<a href="testteacherarrange" class="step" id="nxtstep"
+					<a href="toManager3" class="step" id="nxtstep"
 						style="line-height: 33px">下一步</a>
 				</form>
 				<footer class="text-right">

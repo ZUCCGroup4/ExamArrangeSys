@@ -75,7 +75,7 @@ public class ManagerController {
 	public ModelAndView toManagerThree(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 
-		//examlist = checkClassMap.planExamClass(examlist);
+		examlist = checkClassMap.planExamTeacher(examlist);
 
 		modelAndView.addObject("examlist", examlist);
 

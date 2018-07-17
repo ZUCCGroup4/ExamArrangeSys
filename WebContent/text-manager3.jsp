@@ -171,7 +171,7 @@
 											<td><%=objlist.get(i).get(j).getCourseId()%></td>
 											<td><%=objlist.get(i).get(j).getCourseName()%></td>
 											<td><%=objlist.get(i).get(j).getCheckPlace()%></td>
-											<td><%=objlist.get(i).get(j).getCheckPlace()%></td>
+											<td><%=objlist.get(i).get(j).getInvigilator1()%> 和 <%=objlist.get(i).get(j).getInvigilator2()%></td>
 											<td><button id="modify">修改</button></td>
 										</tr>
 										<%
@@ -187,7 +187,7 @@
 					<a href="text-manager2.jsp" class="step" id="lststep"
 						style="line-height: 33px">上一步</a>
 					<!--<button class="step" id="lststep">上一步</button>-->
-					<a href="text-manager2.jsp" class="step" id="lststep"
+					<a href="text-manager2.jsp" class="step" id="nxtstep"
 						style="line-height: 33px">下一步</a>
 				</form>
 				<footer class="text-right">
