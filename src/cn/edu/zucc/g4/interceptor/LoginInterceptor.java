@@ -24,7 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 		System.out.println(333);
 		String url = request.getRequestURI();
 		
-		if(url.indexOf("/login")>=0 || url.indexOf("/test")>=0){
+		if(url.indexOf("/login")>=0 || url.indexOf("/test")>=0 || url.indexOf("/test2")>=0){
 			
 			return true;
 		}

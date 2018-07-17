@@ -9,6 +9,7 @@ public class TestCheckBean {
 	private String invigilator1;
 	private String invigilator2;
 	private String courseId;
+	private String courseName;
 	public TestCheckBean() {
 		
 	}
@@ -50,5 +51,11 @@ public class TestCheckBean {
 	}
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
+	}
+	public String getCourseName() {
+		return courseName;
+	}
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 }

@@ -39,7 +39,7 @@ public class CheckDAO {
 	 * @param userid
 	 * @return
 	 */
-	public CheckBean getUser(String checkid) {
+	public CheckBean getCheck(String checkid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		CheckBean bean = session.get(CheckBean.class, checkid);
