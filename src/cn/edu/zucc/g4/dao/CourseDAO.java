@@ -35,12 +35,20 @@ public class CourseDAO {
 		return list;
 	}
 	
+	public List<CourseBean> listCourseByType() {
+		this.setSessionFactory(sessionFactory);
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from CourseBean where check_type = '考试'";
+		List<CourseBean> list = session.createQuery(hql).list();
+		return list;
+	}
+	
 	/**
 	 * 获取日志信息
 	 * @param logid
 	 * @return
 	 */
-	public CourseBean getCourse(int courseid) {
+	public CourseBean getCourse(String courseid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		CourseBean bean = session.get(CourseBean.class, courseid);

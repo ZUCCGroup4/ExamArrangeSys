@@ -1,5 +1,6 @@
 package cn.edu.zucc.g4.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -47,6 +48,17 @@ public class SelectionDetailDAO {
 		}
 		return bean;
 	}
+
+	public ArrayList<Object[]> getClassCapacity() {//获取所有课程的容量,并按照从大到小顺序返回一个LIST
+		// TODO Auto-generated method stub
+		this.setSessionFactory(sessionFactory);
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "select sb.course_id , count(sd.student_id) from SelectionDetailBean sd , "+
+		"SelectionBean sb where sd.selection_id = sb.selection_id group by sb.course_id order by count(sd.student_id) DESC";
+		ArrayList<Object[]> list = (ArrayList<Object[]>) session.createQuery(hql).list();
+		return list;
+	}
+	
 
 }
 

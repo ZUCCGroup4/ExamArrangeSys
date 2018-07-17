@@ -1,28 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="utf-8"%>
+	pageEncoding="utf-8"%>
 <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">  
-    <title>Visual Admin Dashboard - Maps</title>
-    <meta name="description" content="">
-    <meta name="author" content="templatemo">
-    
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,300,400italic,700' rel='stylesheet' type='text/css'>
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet" type="text/css" /> 
-    <link href="css/templatemo-style.css" rel="stylesheet">
-    
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visual Admin Dashboard - Maps</title>
+<meta name="description" content="">
+<meta name="author" content="templatemo">
+
+<link
+	href='http://fonts.useso.com/css?family=Open+Sans:400,300,400italic,700'
+	rel='stylesheet' type='text/css'>
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet"
+	type="text/css" />
+<link href="css/templatemo-style.css" rel="stylesheet">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+<<<<<<< HEAD
     <style>
       #modify {
         border-radius: 5px;
@@ -285,28 +289,28 @@
         });  
       } // end function drawMaps
 
-      $(document).ready(function() {
 
-        if($.browser.mozilla) {
-          //refresh page on browser resize
-          // http://www.sitepoint.com/jquery-refresh-page-browser-resize/
-          $(window).bind('resize', function(e)
-          {
-            if (window.RT) clearTimeout(window.RT);
-            window.RT = setTimeout(function()
-            {
-              this.location.reload(false); /* false to get page from cache */
-            }, 200);
-          });      
-        } else {
-          $(window).resize(function(){
-            drawMaps();
-          });  
-        }
-        
-        drawMaps();
+		$(document).ready(function() {
 
-      });
-    </script>
-  </body>
+			if ($.browser.mozilla) {
+				//refresh page on browser resize
+				// http://www.sitepoint.com/jquery-refresh-page-browser-resize/
+				$(window).bind('resize', function(e) {
+					if (window.RT)
+						clearTimeout(window.RT);
+					window.RT = setTimeout(function() {
+						this.location.reload(false); /* false to get page from cache */
+					}, 200);
+				});
+			} else {
+				$(window).resize(function() {
+					drawMaps();
+				});
+			}
+
+			drawMaps();
+
+		});
+	</script>
+</body>
 </html>

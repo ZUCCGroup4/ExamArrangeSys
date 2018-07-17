@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="utf-8"%>
-<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
+	pageEncoding="utf-8"%>
+<%@ page
+	import="java.util.*,cn.edu.zucc.g4.bean.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -279,29 +281,27 @@
           selectedRegion: 'MO'
         });  
       } // end function drawMaps
+		$(document).ready(function() {
 
-      $(document).ready(function() {
+			if ($.browser.mozilla) {
+				//refresh page on browser resize
+				// http://www.sitepoint.com/jquery-refresh-page-browser-resize/
+				$(window).bind('resize', function(e) {
+					if (window.RT)
+						clearTimeout(window.RT);
+					window.RT = setTimeout(function() {
+						this.location.reload(false); /* false to get page from cache */
+					}, 200);
+				});
+			} else {
+				$(window).resize(function() {
+					drawMaps();
+				});
+			}
 
-        if($.browser.mozilla) {
-          //refresh page on browser resize
-          // http://www.sitepoint.com/jquery-refresh-page-browser-resize/
-          $(window).bind('resize', function(e)
-          {
-            if (window.RT) clearTimeout(window.RT);
-            window.RT = setTimeout(function()
-            {
-              this.location.reload(false); /* false to get page from cache */
-            }, 200);
-          });      
-        } else {
-          $(window).resize(function(){
-            drawMaps();
-          });  
-        }
-        
-        drawMaps();
+			drawMaps();
 
-      });
-    </script>
-  </body>
+		});
+	</script>
+</body>
 </html>

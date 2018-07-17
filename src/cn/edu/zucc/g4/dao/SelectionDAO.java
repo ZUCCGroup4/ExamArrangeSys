@@ -67,12 +67,35 @@ public class SelectionDAO {
 		" b.selection_id=a.selection_id order by b.student_id";
 		List<Object[]> list = session.createQuery(hql).list();
 		long endtime = System.currentTimeMillis();
-		System.out.println((endtime-starttime)/1000);
+		System.out.println("数据库耗时:"+(endtime-starttime)/1000+"秒");
 		return list;
 	}
 	public List loadselectionlist() {
 		return null;
 		
+	}
+	public List loadcla_tealist() {
+		long starttime = System.currentTimeMillis();
+		this.setSessionFactory(sessionFactory);
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "SELECT course_id , teacher_id FROM SelectionBean  order by teacher_id DESC";
+		List<Object[]> list = session.createQuery(hql).list();
+		long endtime = System.currentTimeMillis();
+		System.out.println("数据库耗时:"+(endtime-starttime)/1000+"秒");
+		return list;
+		
+	}
+
+	public List<String> loadtealist() {
+		// TODO Auto-generated method stub
+		long starttime = System.currentTimeMillis();
+		this.setSessionFactory(sessionFactory);
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "SELECT teacher_id FROM SelectionBean  group by teacher_id";
+		List<String> list = session.createQuery(hql).list();
+		long endtime = System.currentTimeMillis();
+		System.out.println("数据库耗时:"+(endtime-starttime)/1000+"秒");
+		return list;
 	}
 
 }
