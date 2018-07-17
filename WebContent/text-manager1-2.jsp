@@ -142,7 +142,7 @@
                     <td>修改</td>
                   </tr>
                   </thead>
-                  <form action="text-manager2.jsp" class="templatemo-login-form">
+                 
 	                  <tbody id="tablevalue">
 	 <%-- 
 	                   <%
@@ -162,7 +162,7 @@
 							    }
 							%> --%>
 	                  </tbody> 
-                  </form> 
+                  
                 </table>
               </div>
             </div>
@@ -295,38 +295,29 @@
           selectedRegion: 'MO'
         });  
       } // end function drawMaps
-.colgroup1, .colgroup2 {
-	width: 15%;
-}
 
-.colgroup3, .colgroup4, .colgroup5, .colgroup6 {
-	width: 14%;
-}
-      });
     </script>
     <script type="text/javascript">
         //数据
-        console.log('run');
-        var testdata=[];
-        List objlist=(List) request.getAttribute("terlist");
-       <%--  <%
-							List obj=(List) request.getAttribute("terlist");
-							  if(obj!=null){
-						          for(int i=0;i<obj.size();i++){
-						        	 ViewCheckBean list=(ViewCheckBean) obj.get(i);
-						%>   --%>
-									<%-- var tmp = {time: ,id: };
-									testdata.add();
-									testdata[<%=i%>].time = '<%=list.getCheck_time()%>';
-						        	testdata[<%=i%>].id = <%=list.getCourse_id()%>;
-						        	testdata[<%=i%>].name =<%=list.getCourse_name()%>;
-						        	console.log(testdata[<%=i%>].time); --%>
-						        	JSONObject json = JSONObject.fromObject(objlist)
-							
-							
+        alert(1);
+         var testdata=[];
+       <%
+       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
+      		 for(int i=0;i<objlist.size();i++) {
+      			 for(int j=0;j<objlist.get(i).size();j++) {
+		%>    			 
+      		 		var tmp = {time:<%="'"+objlist.get(i).get(j).getCheckTime()+"'"%>, 
+      		 				id:<%="'"+objlist.get(i).get(j).getCourseId()+"'"%>, 
+      		 				name:<%="'"+objlist.get(i).get(j).getCourseName()+"'"%>};
+      		 		testdata.push(tmp);
+      		 		
+		<%
+      			 }
+      		 }
+      	%>
      
-        var f0 = new loadtable(json);
-        function loadtable(json){
+        var f0 = new loadtable(testdata);
+        function loadtable(testdata){
           //操作节点
           var search_msg=document.getElementById('search_msg'),
 //              keyword=document.getElementById('keyword'),
