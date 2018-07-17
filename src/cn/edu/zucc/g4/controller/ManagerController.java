@@ -18,39 +18,55 @@ import cn.edu.zucc.g4.util.DateUtil;
 
 @Controller
 public class ManagerController {
-	
-	@Resource(name="checkClassMap")
+
+	@Resource(name = "checkClassMap")
 	public CheckClassMap checkClassMap;
-	
-	@Resource(name="testTimeService")
+
+	@Resource(name = "testTimeService")
 	public TestTimeService testTimeService;
-	
+
 	public static ArrayList<ArrayList<TestCheckBean>> examlist;
-	
+
 	@ResponseBody
 	@RequestMapping("toManager1-2")
-	public ModelAndView toManagerOT(HttpServletRequest request){
+	public ModelAndView toManagerOT(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		
+
 		checkClassMap.LoadCheckClassMap();
-		
+
 		long day = 0;
-		
-		String startTime = request.getParameter("starttime");
-		String endTime = request.getParameter("endtime");
-		
-		day = new DateUtil().getDay(startTime, endTime);//时间换算成考试时间块
-		
-		System.out.println(day+"天");
-		
-		examlist = checkClassMap.initializeExam((int)(day*3));//安排考试时间
-		
-		examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
-		
-		examlist = testTimeService.setCourseName(examlist);
-		
+		if (examlist.isEmpty()) {
+			String startTime = request.getParameter("starttime");
+			String endTime = request.getParameter("endtime");
+
+			day = new DateUtil().getDay(startTime, endTime);// 时间换算成考试时间块
+
+			System.out.println(day + "天");
+
+			examlist = checkClassMap.initializeExam((int) (day * 3));// 安排考试时间
+
+			examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
+
+			examlist = testTimeService.setCourseName(examlist);
+		}
+
 		modelAndView.addObject("examlist", examlist);
+
+		modelAndView.setViewName("text-manager1-2.jsp");
+		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("toManager2")
+	public ModelAndView toManagerTwo(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+
+		checkClassMap.LoadCheckClassMap();
+
 		
+
+		modelAndView.addObject("examlist", examlist);
+
 		modelAndView.setViewName("text-manager1-2.jsp");
 		return modelAndView;
 	}
