@@ -179,11 +179,16 @@ public class CheckClassMap {
 		}
 		return list;
 	}
-	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){
+	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){//时间安排优化函数optimizeExam
 		ArrayList<ArrayList<String>> newlist = list;
 		ArrayList<Integer> sizelist = new ArrayList<Integer>();
 		ArrayList<Integer> oldindexlist = new ArrayList<Integer>();
 		ArrayList<Integer> newindexlist = new ArrayList<Integer>();
+		int classnum = 0;//定义时间段平均课程数
+		for(int i=0;i<list.size();i++) {
+			classnum+=list.get(i).size();
+		}
+		classnum = classnum/list.size();
 		for(int i=0;i<list.size();i++) {//初始化时间块大小序列
 			sizelist.add(list.get(i).size());
 			oldindexlist.add(i);
@@ -203,8 +208,10 @@ public class CheckClassMap {
 			sizelist.remove(min);
 		}
 		for(int i=0;i<newindexlist.size();i++) {//按从小到打的顺序遍历未优化的list,i为newindexlist时间块大小序列的下标
-			if(list.get(newindexlist.get(i)).size()==0) {//如果时间块中的课程为0,则直接从其他时间块拉课程
-				
+			if(list.get(newindexlist.get(i)).size()==0) {//如果时间块中的课程为0,则直接从最大时间块拉课程
+				for(int j =0;j<list.get(newindexlist.get(i)).size();j++) {//遍历最大时间块,抽出课程到小时间块
+					
+				}
 			}
 			for(int j =0;j<list.get(newindexlist.get(i)).size();j++) {//遍历小时间块,j为时间块中某一门课程id的下标
 				for(int x =newindexlist.size();x<newindexlist.size();x--) {//按从大到小的顺序遍历未优化的list,x为newindexlist时间块大小序列的下标
@@ -218,11 +225,11 @@ public class CheckClassMap {
 //									中的一门课程相互冲突则跳出此大块的遍历
 									break;
 								}
-								if(m==list.get(newindexlist.get(x)).size()-1) {//如果直到最后一个都未冲突跳出则将大时间块中的课程移进小时间块
+								if(m==list.get(newindexlist.get(x)).size()-1) {//如果直到最后一个都未冲突跳出并将大时间块中的课程移进小时间块
 									list.get(newindexlist.get(i)).add(list.get(newindexlist.get(x)).get(m));
 									list.get(newindexlist.get(x)).remove(m);
-									if(list.get(newindexlist.get(i)).size()<=list.get(newindexlist.get(x)).size()-1)//如果小时间块还是小于等于大时间块的课程数-1,则重新
-										m=0;
+//									if(list.get(newindexlist.get(i)).size()<=list.get(newindexlist.get(x)).size()-1)//如果小时间块还是小于等于大时间块的课程数-1,则重新
+//										m=0;
 								}
 							}
 						}else break;//如果大时间块等于小时间块则遍历下一个小时间块
@@ -254,7 +261,10 @@ public class CheckClassMap {
 				for(int x=0;x<num;x++) {//将教室信息加入安排数据中并加入新安排表
 					TestCheckBean temp = new TestCheckBean();
 					temp.setCourseId(list.get(i).get(j).getCourseId());
-					temp.setCheckPlace(clalist.get(sum).getClassRoomName());;
+					temp.setCheckPlace(clalist.get(sum).getClassRoomName());
+					temp.setCheckTime(list.get(i).get(j).getCheckTime());
+					temp.setInvigilator1(list.get(i).get(j).getInvigilator1());
+					temp.setInvigilator2(list.get(i).get(j).getInvigilator2());
 					newTClist.get(i).add(temp);
 					sum++;
 					if(sum>=clalist.size()) {//如果被安排的教室数大于现有课程数则返回null并提示教室不足
