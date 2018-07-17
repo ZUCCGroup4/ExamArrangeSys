@@ -270,6 +270,7 @@ public class CheckClassMap {
 	public ArrayList<ArrayList<TestCheckBean>> planExamTeacher(ArrayList<ArrayList<TestCheckBean>> list){//本函数返回一个安排好教师的LIST如果教师数不够则返回null
 		List<Object[]> templist = srdao.loadcla_tealist();//获取教师列表
 		List<String> originaltealist = srdao.loadtealist();//获取原本教师表序列
+		List<String> tealist = originaltealist;//新建临时教师表序列
 		ArrayList<String[]> cla_tealist = new ArrayList<String[]>();
 		for(int i=0;i<templist.size();i++) {//将从数据库拿到的Object的List转存进String的List
 			String[] temp =  new String[2] ;
@@ -286,10 +287,10 @@ public class CheckClassMap {
 //		String nowclaid = null;//定义一个指针保存上次操作的课程的id
 		
 		for(int i=0;i<list.size();i++) {//遍历时间段
-			List<String> tealist = new ArrayList<String>();//新建临时教师表序列
-			for(int j=0;j<originaltealist.size();j++) {//每次重置临时教师表序列
-				tealist.add(originaltealist.get(j));
-			}
+			
+//			for(int j=0;j<originaltealist.size();j++) {//每次重置临时教师表序列
+//				tealist.add(originaltealist.get(j));
+//			}
 			ArrayList<String> blacklist = new ArrayList<String>();//对每个时间段列出一个教师黑名单,黑名单中的教师不可监考该
 			ArrayList<String> availablelist = new ArrayList<String>();//对每个时间段列出一个可用教师名单
 			if(list.get(i).size()==0) {
