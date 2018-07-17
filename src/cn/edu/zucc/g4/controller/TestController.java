@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +46,7 @@ public class TestController {
 	public static ArrayList<ArrayList<TestCheckBean>> examlist;
 
 	@RequestMapping("test")
-	public ModelAndView toIndex(HttpServletRequest request) {
+	public ModelAndView toIndex(javax.servlet.http.HttpServletRequest request) {
 		cc.LoadCheckClassMap();
 		System.out.println("222222222222222222");
 		ModelAndView modelAndView = new ModelAndView();

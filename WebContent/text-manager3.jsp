@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
 <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
@@ -59,6 +60,44 @@
         background-color: darkblue;
       }
     </style>
+    <script>
+      var op = 0;//0代表只读、1代表可修改状态
+      function changevalue() {
+          var tr = document.getElementById("tablevalue").childNodes;
+          if(op == 0) {
+              op = 1;
+              for(var i = 0; i < 2; i ++) {
+                  if(tr[i].localName == "td")
+                      tr[i].innerHTML = "<input type=\"text\" value=\"1111\">";
+              }
+              for(var i = 2; i < tr.length - 2; i ++) {
+                  if(i >= 5 && i <= 6) continue;
+                  if(tr[i].localName == "td")
+                      tr[i].innerHTML = "<select class=\"form-control\"></select>";
+              }
+          }
+          else {
+              op = 0;
+              for(var i = 0; i < tr.length - 2; i ++) {
+                  if(tr[i].localName == "td")
+                    tr[i].innerHTML = "1111";
+              }
+          }
+      }
+      (function($){
+          function loadteacher() {
+              $.ajax({
+                  dataType:"json",    //数据类型
+                  contentType: "application/x-www-form-urlencoded;charset=utf-8", //内容格式
+                  url:"/getteacher",
+                  type:"POST", //传输方式
+                  success:function(data,textStatus){
+                      alert("教师数据得到成功");
+                  }
+              });
+          }
+      })(jq172);
+    </script>
   </head>
   <body>
     <div class="templatemo-flex-row">
@@ -98,33 +137,93 @@
           <h3 class="margin-bottom-10" style="text-align: center;">监考老师安排</h3>
         </div>
         <script>
+        //三种搜索框
             function changedate(value) {
                 var ipt = document.getElementById("search");
                 if(value == "date") {
-                    ipt.innerHTML = "<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
-                        "&nbsp&nbsp到&nbsp&nbsp<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
+                    ipt.innerHTML = "<input id=\"date1\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
+                        "&nbsp&nbsp到&nbsp&nbsp<input id=\"date2\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
                 }
                 else if(value == "name") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
+                    ipt.innerHTML = "<input id=\"name\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
                 }
                 else if(value == "ID") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
+                    ipt.innerHTML = "<input id=\"selectID\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
                 }
             }
         </script>
-        <form action="search" class="templatemo-login-form">
+        <script>
+				function searchList() {
+					var selectnid = $("#selectnid").val();//三种搜索下拉框
+					if(selectnid=="ID"){//id搜索
+						var searchid = $("#selectID").val();//编号搜索输入框
+						if(searchid == ""){
+							$("tr td").show();
+						}
+						$("tr td").each(function() {
+							var cid = $(this).attr("cid");
+							if(cid.indexOf(searchid) != -1) {
+								$(this).show();
+							} else {
+								$(this).hide();
+							}
+						});
+					}
+					else if(selectnid=="name"){//name搜索
+						var searchname = $("#name").val();//名称搜索输入框
+						if(searchname == ""){
+							$("tr td").show();
+						}
+						$("tr td").each(function() {
+							var cname = $(this).attr("cname");
+							if(cname.indexOf(searchname) != -1) {
+								$(this).show();
+							} else {
+								$(this).hide();
+							}
+						});
+					}
+					else if(selectnid=="date"){//date搜索
+						var searchdate1 = $("#date1").val();//1号日期输入框
+						searchdate1 = searchdate1.replace(/\D/g,'');
+						alert(searchdate1);
+						var searchdate2 = $("#date2").val();//2号日期输入框
+						searchdate2 = searchdate2.replace(/\D/g,'');
+						alert(searchdate2);
+						if(searchdate1 == ""&&searchdate2 == ""){
+							$("tr").show();
+						}
+						$(".shuju").each(function() {
+							var tdate = $(this).attr("data-tdate");
+							if(tdate){
+								if(tdate>=searchdate1&&tdate<=searchdate2){
+									$(this).show();
+								}else{
+									$(this).hide();
+								}
+							}
+							/* if(cname.indexOf(searchname) != -1) {
+								$(this).show();
+							} else {
+								$(this).hide();
+							} */
+							
+							
+						});
+					}
+				}
+		</script>
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
               <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
-            <select class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
+            <select id="selectnid" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
               <option value="name">按课程名称查找</option>
               <option value="ID">按课程ID查找</option>
               <option value="date">按日期查找</option>
             </select>
-            <input type="submit" class="templatemo-blue-button" value="查找">
+            <button class="templatemo-blue-button" onclick="searchList()">查找</button>
           </div>
-        </form>
         <form action="text-manager-finally.jsp" class="templatemo-login-form">
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
@@ -143,19 +242,25 @@
                   <tbody>
                   <%
 						List objlist=(List) request.getAttribute("terlist");
+                        List testlist=objlist;
+                  
 						  if(objlist!=null){
 					          for(int i=0;i<objlist.size();i++){
 					        	 ViewCheckBean list=(ViewCheckBean) objlist.get(i);
+					        	 SimpleDateFormat time=new SimpleDateFormat("yyyyMMdd");
+					        	 String strdate=time.format(list.getCheck_time());
+					        	 
 					%>  
-						<tr>
+						<tr class="shuju" data-tdate='<%=strdate%>' data-cid=<%=list.getCourse_id()%> data-cname=<%=list.getCourse_name()%>>
 							<td><%=list.getCheck_time()%></td>
-							<td><%=list.getCourse_id()%></td>
-							<td><%=list.getCourse_name()%></td>
+							<td ><%=list.getCourse_id()%></td>
+							<td ><%=list.getCourse_name()%></td>
 							<td><%=list.getCheck_place()%></td>
 							<td>翁文勇</td>
 							<td><button id="modify">修改</button></td>
 						</tr>
 						<% 
+						
 									}
 						    }
 						%>
@@ -164,11 +269,8 @@
               </div>
             </div>
           </div>
-<<<<<<< HEAD
+
           <a href="testclassarrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
-=======
-          <a href="text-manager2.jsp" class="step" id="lststep" style="line-height: 33px">上一步</a>
->>>>>>> branch 'master' of https://github.com/ZUCCGroup4/ExamArrangeSys.git
           <!--<button class="step" id="lststep">上一步</button>-->
           <input type="submit" class="step" id="nxtstep" value="下一步">
         </form>
