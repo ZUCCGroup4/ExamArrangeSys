@@ -160,10 +160,17 @@
               </div>
             </div>
           </div>
+           <div id="search_msg" class="text-right" style="margin-right: 10px;">
+          共有<span id="allnum">27</span>条考试安排记录；
+          <button class="fy_btn" data="firstPage">首页</button>|<button class="fy_btn" data="prev">上一页</button>
+          第<span id="nowPage">1</span>/<span id="allPage">3</span>页
+          <button class="fy_btn" data="next">下一页</button>|<button data="lastPage" class="fy_btn">尾页</button>
+          转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
+        </div>
           <a href="testtimearrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
           <!--<button class="step" id="lststep">上一步</button>-->
-          <a href="testteacherarrange" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
+          <a href="toManager3" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
         <footer class="text-right">
           <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>
         </footer>
@@ -304,7 +311,7 @@
 	
 	 <script type="text/javascript">
         //数据
-        alert(1);
+       
          var testdata=[];
        <%
        ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");

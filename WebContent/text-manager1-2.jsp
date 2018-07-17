@@ -178,7 +178,7 @@
             <a href="selectionjoin" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
             <!--<button class="step" id="lststep">上一步</button>-->
-            <a href="testclassarrange" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
+            <a href="toManager2" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
            <!--  <input type="submit" class="step" id="nxtstep" value="下一步"> -->
           <footer class="text-right">
             <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>
@@ -299,7 +299,7 @@
     </script>
     <script type="text/javascript">
         //数据
-        alert(1);
+       
          var testdata=[];
        <%
        ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
