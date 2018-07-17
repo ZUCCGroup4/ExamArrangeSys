@@ -209,7 +209,14 @@ public class CheckClassMap {
 		}
 		for(int i=0;i<newindexlist.size();i++) {//按从小到打的顺序遍历未优化的list,i为newindexlist时间块大小序列的下标
 			if(list.get(newindexlist.get(i)).size()==0) {//如果时间块中的课程为0,则直接从最大时间块拉课程
-				for(int j =0;j<list.get(newindexlist.get(i)).size();j++) {//遍历最大时间块,抽出课程到小时间块
+				for(int j =newindexlist.size()-1;j>=0;j--) {//反向遍历优化序列(从最大开始遍历)
+					if(j==i) {
+						break;
+					}
+					for(int x =newindexlist.size();x<newindexlist.size();x--) {
+						list.get(i).add(list.get(newindexlist.get(j)).get(x));//将最大序列中的
+						list.get(newindexlist.get(j)).remove(x);
+					}
 					
 				}
 			}
@@ -263,6 +270,7 @@ public class CheckClassMap {
 					temp.setCourseId(list.get(i).get(j).getCourseId());
 					temp.setCheckPlace(clalist.get(sum).getClassRoomName());
 					temp.setCheckTime(list.get(i).get(j).getCheckTime());
+					
 					temp.setInvigilator1(list.get(i).get(j).getInvigilator1());
 					temp.setInvigilator2(list.get(i).get(j).getInvigilator2());
 					newTClist.get(i).add(temp);
