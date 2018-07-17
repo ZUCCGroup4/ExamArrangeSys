@@ -72,6 +72,7 @@
 							<td align="left"><%=loglist.getMessage()%></td>
 						</tr>
 						<% 
+						
 									}
 						    }
 						%>

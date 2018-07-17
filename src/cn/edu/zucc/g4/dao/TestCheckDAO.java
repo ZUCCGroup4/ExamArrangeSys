@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.edu.zucc.g4.bean.LogBean;
+import cn.edu.zucc.g4.bean.TestCheckBean;
 
 @Repository
 @Transactional
-public class LogDAO {
+public class TestCheckDAO {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -21,36 +21,16 @@ public class LogDAO {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	/**
-	 * 遍历所有日志
-	 * @return
-	 */
-	public List<LogBean> listALLLog() {
+	public List<TestCheckBean> loadAllTestCheck(){
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from LogBean order by log_id desc";
-		List<LogBean> list = session.createQuery(hql).list();
+		List<TestCheckBean> list = session.createQuery("from TestCheckBean").list();
 		return list;
 	}
 	
-	/**
-	 * 获取日志信息
-	 * @param logid
-	 * @return
-	 */
-	public LogBean getLog(int logid) {
+	public void addTestCheck() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		LogBean bean = session.get(LogBean.class, logid);
-		if(bean == null){
-			System.out.println("null");
-		}
-		return bean;
-	}
-	public void addLog(LogBean logBean){
-		sessionFactory.getCurrentSession().save(logBean);
-		
 	}
 
 }
-
