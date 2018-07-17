@@ -21,9 +21,9 @@
 
 	<context:component-scan base-package="cn"></context:component-scan>
 	<mvc:annotation-driven />
-	<mvc:interceptors>
+	<!-- <mvc:interceptors>
 		<bean class="cn.edu.zucc.g4.interceptor.LoginInterceptor"></bean>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 
 
 
