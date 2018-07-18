@@ -357,11 +357,12 @@
                       }
 
                       var c_tr = document.createElement('tr');
+                      c_tr.className="tbl";
                       c_tr.id = 'row'+this[i].rowid;
                       c_tr.innerHTML='<td>'+this[i].time+'</td>'+
                           '<td>'+this[i].id+'</td>'+
                           '<td>'+this[i].name+'</td>'+
-                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                          '<td><button id="modify">修改</button></td>';
                       templist.appendChild(c_tr);
 
                   }
@@ -429,6 +430,60 @@
                 })(i);
             }
         }
+        
+    	 $(document).ready(function(){
+			  $(".tbl").each(function(){  
+	
+			      var tmp=$(this).children().eq(5);  
+			      var btn=tmp.children();
+			      var op = 0;
+			      
+			      var modifyuser=$(this).children().eq(3).children();
+			      modifyuser.bind("click",function(){ 
+			    	  var tr=modifyuser.parent().parent();
+			    	  var courseId=modifyuser.parent().parent().children("td").get(0).innerHTML; 
+			    	  alert(coursId);
+			    	  if(op == 0) {
+		                    op = 1;
+		                    $.ajax({
+						         url: "modifytime/"+courseId,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(data){
+						        	 var text = "<select class=\"form-control\">";
+						        	 for(var i =0 ; i<data.size;i++) {
+						        		 if(data[i] == courseId) 
+						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+						        		 else 
+						        			 text = text + "<option>"+data[i]+"</option>";
+						        	 }
+						        	 tr.children("td").get(0).innerHTML = text+"</select>";
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});
+		                }
+		                else {
+		                    op = 0;
+		                    for(var i = 0; i < tr.children().length - 1; i ++) {
+		                        if(i >= 1 && i <= 2) continue;
+		                        if(tr[i].localName == "td");
+		                        tr.children("td").get(i).innerHTML = tr[i].firstChild.value;
+		                    }
+		                }
+			    	  
+			   
+				       
+			      })
+			  })
+    	 }) 
     </script>
   </body>
 </html>

@@ -114,6 +114,26 @@
                     ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
                 }
             }
+            var op = 0;
+            function changevalue(rowid) {
+                var tr = rowid.childNodes;
+                if(op == 0) {
+                    op = 1;
+                    for(var i = 0; i < tr.length - 1; i ++) {
+                        if(i >= 1 && i <= 2) continue;
+                        if(tr[i].localName == "td")
+                            tr[i].innerHTML = "<select class=\"form-control\"><option>"+tr[i].innerHTML+"</option></select>";
+                    }
+                }
+                else {
+                    op = 0;
+                    for(var i = 0; i < tr.length - 1; i ++) {
+                        if(i >= 1 && i <= 2) continue;
+                        if(tr[i].localName == "td");
+                          tr[i].innerHTML = tr[i].firstChild.value;
+                    }
+                }
+            }
         </script>
         <form action="search" class="templatemo-login-form">
           <div class="templatemo-content-widget white-bg">
@@ -381,7 +401,7 @@
                       }
 
                       var c_tr = document.createElement('tr');
-                      c_tr.id = 'row'+this[i].rowid;
+                      c_tr.id = 'row'+i;
                       c_tr.innerHTML='<td>'+this[i].time+'</td>'+
                           '<td>'+this[i].id+'</td>'+
                           '<td>'+this[i].name+'</td>'+
