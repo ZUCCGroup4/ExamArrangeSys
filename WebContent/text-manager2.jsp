@@ -4,8 +4,6 @@
 	import="java.util.*,cn.edu.zucc.g4.bean.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-<<<<<<< HEAD
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -81,9 +79,9 @@
         <div class="row">
           <nav class="templatemo-top-nav col-lg-12 col-md-12">
             <ul class="text-uppercase">
-              <li><a href="text-manager1-2.jsp" class="active">第一步 考试时间安排</a></li>
-              <li><a href="#" class="active">第二步 考试地点安排  </a></li>
-              <li><a href="text-manager3.jsp" class="active">第三步 监考老师安排</a></li>
+              <li><a href="text-manager1-2.jsp" >第一步 考试时间安排</a></li>
+              <li><a href="#" >第二步 考试地点安排  </a></li>
+              <li><a href="text-manager3.jsp" >第三步 监考老师安排</a></li>
             </ul>
           </nav>
         </div>
@@ -168,7 +166,7 @@
           <button class="fy_btn" data="next">下一页</button>|<button data="lastPage" class="fy_btn">尾页</button>
           转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
         </div>
-          <a href="testtimearrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
+          <a href="backManager1-2" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
           <!--<button class="step" id="lststep">上一步</button>-->
           <a href="toManager3" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
@@ -316,7 +314,8 @@
        
          var testdata=[];
        <%
-       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
+       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist2");
+       System.out.println("JSP"+objlist.get(0).get(0).getCourseName());
       		 for(int i=0;i<objlist.size();i++) {
       			 for(int j=0;j<objlist.get(i).size();j++) {
 		%>    			 
