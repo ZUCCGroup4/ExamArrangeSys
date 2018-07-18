@@ -52,6 +52,7 @@ public class CheckClassMap {
 //		this.LoadCheckClassMap();
 	}
 	public void LoadCheckClassMap(){
+		long starttime = System.currentTimeMillis();
 //		stuList = (ArrayList<StudentBean>) studao.listAllStudent();//加载学生表
 		courseList = (ArrayList<CourseBean>) csdao.listCourseByType();//加载课程表
 //		selectionList = (ArrayList<SelectionBean>) srdao.listALLLog();//加载选课表
@@ -91,6 +92,7 @@ public class CheckClassMap {
         
         int index1;//定义数据的下标
         int index2;//定义之后一条数据的下标
+        ArrayList<Integer> idnexlist = new ArrayList<Integer>();//新建下标缓存表存储下标数据
         for(int i=0;i<slist.size()-1;i++) {//遍历拿到的8W条选课表
         	Object[] object1 = (Object[])slist.get(i);
         	Object[] object2 = (Object[])slist.get(i+1);
@@ -101,11 +103,18 @@ public class CheckClassMap {
         	
         	
         	if(stuid1.equals(stuid2)) {//两条数据的学生id如果匹配则修改相应邻接矩阵的值
+        		
         		if(csmap.containsKey(claid1)&&csmap.containsKey(claid2)) {//从Hashmap中通过课程号拿到相应下标
         			index1=csmap.get(claid1);
             		index2=csmap.get(claid2);
-            		edges[index1][index2]=1;//将邻接矩阵中相应的值置为1;
-            		edges[index2][index1]=1;
+        			if(idnexlist.size()==0) {//如果缓存表中无数据则两条数据都加入
+        				idnexlist.add(index2);
+        				idnexlist.add(index2);
+        			}else {//否则加入后一条数据
+        				idnexlist.add(index2);
+        			}
+//            		edges[index1][index2]=1;//将邻接矩阵中相应的值置为1;
+//            		edges[index2][index1]=1;
         		}
         		else {
         			System.out.println("课程表和选课表中的课程id相互不对应:");
@@ -116,10 +125,50 @@ public class CheckClassMap {
         			}
         			
         		}
+        	}else {//如果两条数据的学生id不同则提交缓存表并把第二条数据存入新的缓存表
+        		if(csmap.containsKey(claid1)&&csmap.containsKey(claid2)) {
+        			index1=csmap.get(claid1);
+            		index2=csmap.get(claid2);
+            		if(idnexlist.size()==0) {//如果缓存表中无数据则说明该学生只有一门课,则将第一门课程下标加入
+            			idnexlist.add(index1);
+            		}
+//            		idnexlist.add(index1);
+            		for(int j=0;j<idnexlist.size()-1;j++) {//遍历缓存表所有下标并建立邻接矩阵
+            			for(int x=j+1;x<idnexlist.size();x++) {
+            				edges[idnexlist.get(j)][idnexlist.get(x)]=1;//将邻接矩阵中相应的值置为1;
+                    		edges[idnexlist.get(x)][idnexlist.get(j)]=1;
+            			}
+            		}
+            		idnexlist.clear();//清空缓存表
+            		idnexlist.add(index2);//加入第二条数据
+        		}else {
+	    			System.out.println("课程表和选课表中的课程id相互不对应:");
+	    			if(csmap.containsKey(claid1)) {
+	    				System.out.println(claid2);
+	    			}else {
+	    				System.out.println(claid1);
+	    			}
+        		
+        		}
+	    		if(csmap.containsKey(claid1)&&csmap.containsKey(claid2)) {
+	    			if(i==slist.size()-2) {//如果已经遍历到最后一条数据则直接提交缓存表
+	            		for(int j=0;j<idnexlist.size()-1;j++) {//遍历缓存表所有下标并建立邻接矩阵
+	            			for(int x=j+1;x<idnexlist.size();x++) {
+	            				edges[idnexlist.get(j)][idnexlist.get(x)]=1;//将邻接矩阵中相应的值置为1;
+	                    		edges[idnexlist.get(x)][idnexlist.get(j)]=1;
+	            			}
+	            		}
+	            	}
+	    		}
+	    		else {
+	    			System.out.println("课程表和选课表中的课程id相互不对应:");
+	    			if(csmap.containsKey(claid1)) {
+	    				System.out.println(claid2);
+	    			}else {
+	    				System.out.println(claid1);
+	    			}
+	    		}
         	}
-        	
-        	
-        	
         }
 //        for(int i=0;i<mapsize;i++) {//输出邻接矩阵
 //        	System.out.print("     ");
@@ -134,8 +183,19 @@ public class CheckClassMap {
 //        	System.out.print("\n");
 //        }
         
+        
+        long endtime = System.currentTimeMillis();
+		System.out.println("创建矩阵耗时:"+(endtime-starttime)/1000+"秒");
     }
-	public int abs(String class1id,String class2id) {//通过两个classid检验
+	public int abs(String class1id,String class2id) {//通过两个classid检验'
+		if(!csmap.containsKey(class1id)) {
+			System.out.println("课程"+class1id+"不存在");
+			return -1;
+		}
+		if(!csmap.containsKey(class2id)) {
+			System.out.println("课程"+class2id+"不存在");
+			return -1;
+		}
 		int id1= csmap.get(class1id);
 		int id2= csmap.get(class2id);
 		return edges[id1][id2];
@@ -210,6 +270,7 @@ public class CheckClassMap {
 		}
 		return timelist;
 	}
+<<<<<<< HEAD
 	
 
 	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){//时间安排优化函数optimizeExam
@@ -235,50 +296,68 @@ public class CheckClassMap {
 					min=j;
 				}
 					
+=======
+	public ArrayList<ArrayList<TestCheckBean>>  optimizeExam(ArrayList<ArrayList<TestCheckBean>> list){
+		long starttime = System.currentTimeMillis();
+//		ArrayList<ArrayList<TestCheckBean>> newlist = new ArrayList<ArrayList<TestCheckBean>>();
+		List<Integer> sortlist =this.sort(list);//初始化大小序列
+//		for(int i=0;i<list.size();i++) {
+//			newlist.add(new ArrayList<TestCheckBean>());
+//		}
+		int max=0;
+		int min=sortlist.size()-1;
+		while(true) {
+			int maxindex=sortlist.get(max);//得到最大时间块下标
+			int minindex=sortlist.get(min);//得到最小时间块下标
+//			if(maxindex==minindex) {//如果上一个最小的时间块不能从最大时间块拿课程且调整后最大最小时间块所指同一个时间块则说明这个最小时间块已经不能从其他大时间块拿课程了
+//				System.out.println("小时间块调整时状态:"+"时间段"+maxindex+"     max"+max+"     min"+min);
+//				min=min-1;//此时调整最小时间块为次小时间块
+//				max=0;//恢复最大时间块
+//				
+//
+//				maxindex=sortlist.get(max);//得到最大时间块下标
+//				minindex=sortlist.get(min);//得到最小时间块下标
+//			}
+			if(min==0) {
+				max=max+1;
+				min=sortlist.size()-1;
+				maxindex=sortlist.get(max);//得到最大时间块下标
+				minindex=sortlist.get(min);//得到最小时间块下标
+>>>>>>> refs/remotes/origin/yangk
 			}
-			newindexlist.add(oldindexlist.get(min));
-			oldindexlist.remove(min);
-			sizelist.remove(min);
-		}
-		for(int i=0;i<newindexlist.size();i++) {//按从小到打的顺序遍历未优化的list,i为newindexlist时间块大小序列的下标
-			if(list.get(newindexlist.get(i)).size()==0) {//如果时间块中的课程为0,则直接从最大时间块拉课程
-				for(int j =newindexlist.size()-1;j>=0;j--) {//反向遍历优化序列(从最大开始遍历)
-					if(j==i) {
+			
+			if(list.get(maxindex).size()-list.get(minindex).size()<2) {//如果最大时间块减最小时间块小于2则跳出循环j
+				System.out.println("---------跳出时状态:"+"大块时间段"+maxindex+"大小"+String.valueOf(list.get(maxindex).size())+""
+						+ "     和小块时间段"+minindex+"大小"+String.valueOf(list.get(sortlist.get(minindex)).size())+"     max"+max+""
+						+ "     min"+min+"     差值"+String.valueOf(list.get(maxindex).size()-list.get(sortlist.get(minindex)).size()));
+				System.out.println("sort序列:");
+				for(int x=0;x<sortlist.size();x++) {
+					System.out.print("  "+sortlist.get(x));
+				}
+				System.out.println("");
+				break;
+			}else {//否则移动课程
+				for(int i=0;i<list.get(maxindex).size();i++) {
+					if(this.canjoin(list.get(minindex), list.get(maxindex).get(i).getCourseId())) {//判断是否能加入最小时间段
+						System.out.println("大块时间段"+maxindex+"将课程"+list.get(maxindex).get(i).getCheckId()+"移入小块时间段"+minindex);
+						list.get(minindex).add(list.get(maxindex).get(i));//移动课程
+						list.get(maxindex).remove(i);
+						sortlist =this.sort(list);//重新排列大小序列
+						max=0;//重置序列
+						min=sortlist.size()-1;
+						
 						break;
 					}
-					for(int x =newindexlist.size();x<newindexlist.size();x--) {
-						list.get(i).add(list.get(newindexlist.get(j)).get(x));//将最大序列中的
-						list.get(newindexlist.get(j)).remove(x);
-					}
-					
-				}
-			}
-			for(int j =0;j<list.get(newindexlist.get(i)).size();j++) {//遍历小时间块,j为时间块中某一门课程id的下标
-				for(int x =newindexlist.size();x<newindexlist.size();x--) {//按从大到小的顺序遍历未优化的list,x为newindexlist时间块大小序列的下标
-					if(list.get(newindexlist.get(i)).size()>= list.get(newindexlist.get(x)).size()-1) {//判断大时间块是否比小时间块多两门以上课程
-						
-					}
-					else{//如果小时间块比大时间快少两门以上课程则进行遍历操作
-						if(x!=i) {
-							for(int m =0;m<list.get(newindexlist.get(x)).size();m++) {//遍历大时间块,m为时间块中某一门课程id的下标
-								if(this.abs(list.get(newindexlist.get(i)).get(j), list.get(newindexlist.get(x)).get(m))==1) {//如果两个时间块
-//									中的一门课程相互冲突则跳出此大块的遍历
-									break;
-								}
-								if(m==list.get(newindexlist.get(x)).size()-1) {//如果直到最后一个都未冲突跳出并将大时间块中的课程移进小时间块
-									list.get(newindexlist.get(i)).add(list.get(newindexlist.get(x)).get(m));
-									list.get(newindexlist.get(x)).remove(m);
-//									if(list.get(newindexlist.get(i)).size()<=list.get(newindexlist.get(x)).size()-1)//如果小时间块还是小于等于大时间块的课程数-1,则重新
-//										m=0;
-								}
-							}
-						}else break;//如果大时间块等于小时间块则遍历下一个小时间块
+					if(i==list.get(maxindex).size()-1) {
+						System.out.println("*************大块时间段"+maxindex+"和小块时间段"+minindex+"中所有的课程都冲突**********");
+						min=min-1;//调整为次大的时间块
 					}
 				}
-				
 			}
 		}
-		return newlist;
+		long endtime = System.currentTimeMillis();
+		System.out.println("数据库耗时:"+(endtime-starttime)/1000+"秒");
+		return list;
 	}
 	public ArrayList<ArrayList<TestCheckBean>>  planExamClass(ArrayList<ArrayList<TestCheckBean>> list){
 		HashMap<String, Integer> classes = new HashMap<String, Integer>();
@@ -395,5 +474,72 @@ public class CheckClassMap {
 		return list;
 		
 	}
-	
+//	public ArrayList<ArrayList<TestCheckBean>> average (ArrayList<ArrayList<TestCheckBean>> arr) {
+//		long statime = System.currentTimeMillis();
+//		int i,j,k,l;
+//		i=j=k=l=0;
+//		//时间复杂度：n^4
+//		while(true) {
+//			List<Integer> rank = this.sort(arr);
+//			for(i=0;i<rank.size();i++) {
+//				//得到排课最多的时间段的位置
+//				int id = rank.get(i);
+//				int lastid = arr.get(id).size();
+//				for(j=0;j<lastid;j++) {
+//					//取对应时间段的每一个课程
+//					String classid = arr.get(id).get(j).getCourseId();
+//					//从小到大遍历,直到当前列为止
+//					for(k=rank.size()-1;k>i;k--) {
+//						//如果当前列大小等于 最长列-1或者最长列长度的话，不进行放入操作
+//						int nowid = rank.get(k);
+//						if(arr.get(id).size() <= arr.get(nowid).size()+1) continue;
+//						if(this.canjoin(arr.get(nowid), classid)) {
+//							arr.get(nowid).add(arr.get(id).get(j));
+//							arr.get(id).remove(j);
+//							break;
+//						}
+//					}
+//					if(k != i) break;
+//				}
+//				if(j != lastid) break;
+//			}
+//			if(i == arr.size()) break;
+//		}
+//		long endtime = System.currentTimeMillis();
+//		System.out.println("耗时："+(endtime-statime));
+//		return arr;
+//	}
+	//判断是否可以进行插入操作
+	public boolean canjoin(ArrayList<TestCheckBean> time,String classid) {//判断某一门课程是否能加入某一个时间段,传入一个classid和一个time列表
+		int i=0;
+		for(i=0;i<time.size();i++) {//遍历时间段
+			int index = csmap.get(classid);//取得时间段中课程对应的邻接矩阵下标和传入的课程下标
+			int index2 = csmap.get(time.get(i).getCourseId());
+			if(this.edges[index2][index] == 1) return false;//如果冲突返回false
+		}
+		return true;
+	}
+	//排序函数，排一次序消耗时间：n（时间段）*（n+1）
+	public List<Integer> sort(ArrayList<ArrayList<TestCheckBean>> arr) {
+		List<Integer> rank = new ArrayList<Integer>();
+		int[] a = new int[arr.size()+1];
+		//记录列表是否已计算
+		for(int i=0;i<arr.size();i++) {
+			a[i]=0;
+		}
+		for(int i=0;i<arr.size();i++) {
+			int nowmin = Integer.MIN_VALUE;
+			int index = -1;
+			for(int j=0;j<arr.size();j++) {
+				if(a[j] == 1) continue;
+				else if(arr.get(j).size() > nowmin) {
+					nowmin = arr.get(j).size();
+					index = j;
+				}
+			}
+			rank.add(index);
+			a[index] = 1;
+		}
+		return rank;
+	}
 }
