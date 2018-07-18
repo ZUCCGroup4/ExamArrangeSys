@@ -44,7 +44,7 @@ public class CourseDAO {
 	}
 	
 	/**
-	 * 获取日志信息
+	 * 获取课程信息
 	 * @param logid
 	 * @return
 	 */

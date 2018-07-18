@@ -1,5 +1,6 @@
 package cn.edu.zucc.g4.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -48,11 +49,37 @@ public class ManagerController {
 		examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
 		
 		examlist = testTimeService.setCourseName(examlist);
+//		ArrayList<Timestamp> timelist = checkClassMap.modifyExamTime(examlist,"301389");
+//		for(int i=0;i<timelist.size();i++){
+//				System.out.println(timelist.get(i));
+//		}
 		
 		modelAndView.addObject("examlist", examlist);
-		
 		modelAndView.setViewName("text-manager1-2.jsp");
 		return modelAndView;
 	}
-
+	
+	@ResponseBody
+	@RequestMapping("/modifytime")
+	public ModelAndView modifytime(HttpServletRequest request){
+		ModelAndView modelAndView = new ModelAndView();
+		String courseid = request.getParameter("courseid");
+		ArrayList<Timestamp> timelist = checkClassMap.modifyExamTime(examlist,courseid);//可修改时间列表
+		modelAndView.addObject("timelist", timelist); 
+		modelAndView.addObject("examlist", examlist);
+		modelAndView.setViewName("text-manager1-2.jsp");
+		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifytimeresult")
+	public ModelAndView modifytimeresult(HttpServletRequest request){
+		ModelAndView modelAndView = new ModelAndView();
+		String courseid = request.getParameter("courseid");
+		String checktime = request.getParameter("checktime");
+		examlist = testTimeService.modifyExamTime(examlist,courseid,Timestamp.valueOf(checktime));//修改完时间的考试安排表
+		modelAndView.addObject("examlist", examlist); 
+		modelAndView.setViewName("text-manager1-2.jsp");
+		return modelAndView;
+	}
 }
