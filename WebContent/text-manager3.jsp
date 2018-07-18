@@ -140,15 +140,19 @@
         //三种搜索框
             function changedate(value) {
                 var ipt = document.getElementById("search");
+                var btn = document.getElementById('search_btn');
                 if(value == "date") {
                     ipt.innerHTML = "<input id=\"date1\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
                         "&nbsp&nbsp到&nbsp&nbsp<input id=\"date2\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
+                	btn.href = "";
                 }
                 else if(value == "name") {
                     ipt.innerHTML = "<input id=\"name\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
+                    btn.href = "";
                 }
                 else if(value == "ID") {
                     ipt.innerHTML = "<input id=\"selectID\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
+                    btn.href = "";
                 }
             }
         </script>
@@ -222,7 +226,7 @@
               <option value="ID">按课程ID查找</option>
               <option value="date">按日期查找</option>
             </select>
-            <button class="templatemo-blue-button" onclick="searchList()">查找</button>
+            <a class="templatemo-blue-button" id="search_btn" href="www.baidu.com">查找</a>
           </div>
         <form action="text-manager-finally.jsp" class="templatemo-login-form">
           <div class="col-1">
