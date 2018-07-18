@@ -1,5 +1,6 @@
 package cn.edu.zucc.g4.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -179,6 +180,38 @@ public class CheckClassMap {
 		}
 		return list;
 	}
+
+	public ArrayList<Timestamp> modifyExamTime(ArrayList<ArrayList<TestCheckBean>> examlist,String courseid) {
+		//此方法传入某门课程的课程号，找出与其不冲突课程的可安排时间,返回值为时间块下标数组
+		ArrayList<Integer> list = new ArrayList<Integer>();//生成一个list用于存放不冲突课程的时间块下标
+		ArrayList<Timestamp> timelist = new ArrayList<Timestamp>();//生成一个list用于存放不冲突课程的时间
+		if (examlist != null) {
+			for (int i = 0; i < examlist.size(); i++) {
+				if(examlist.get(i).size()==0){
+					list.add(i);
+				}
+				else{
+					for (int j = 0; j < examlist.get(i).size(); j++) {
+						
+						if(this.abs(examlist.get(i).get(j).getCourseId(), courseid)==1) {//如果冲突
+//							System.out.println("课程id="+examlist.get(i).get(j).getCourseId()+"   课程名称="+examlist.get(i).get(j).getCourseName()+"       下标i="+i+"   下标j="+j);
+							break;
+						}
+						if(j==examlist.get(i).size()-1){
+//							System.out.println("课程id="+examlist.get(i).get(j).getCourseId()+"   课程名称="+examlist.get(i).get(j).getCourseName());
+							list.add(i);
+						}
+					}
+				}
+			}
+		}
+		for(int i=0;i<list.size();i++){
+			timelist.add(examlist.get(i).get(0).getCheckTime());
+		}
+		return timelist;
+	}
+	
+
 	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){//时间安排优化函数optimizeExam
 		ArrayList<ArrayList<String>> newlist = list;
 		ArrayList<Integer> sizelist = new ArrayList<Integer>();

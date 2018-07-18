@@ -52,4 +52,17 @@ public class TestTimeService {
 		
 		return examlist;
 	}
+	
+	public ArrayList<ArrayList<TestCheckBean>> modifyExamTime(ArrayList<ArrayList<TestCheckBean>> examlist,String courseid,Timestamp checktime){
+			
+			for(int i=0; i<examlist.size(); i++) {
+				for(int j=0; j<examlist.get(i).size(); j++) {
+					if(examlist.get(i).get(j).getCourseId().equals(courseid)){
+						examlist.get(i).get(j).setCheckTime(checktime);
+					}
+				}
+			}
+			
+			return examlist;
+		}
 }
