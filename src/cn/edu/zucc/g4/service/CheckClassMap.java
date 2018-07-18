@@ -270,33 +270,8 @@ public class CheckClassMap {
 		}
 		return timelist;
 	}
-<<<<<<< HEAD
 	
-
-	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){//时间安排优化函数optimizeExam
-		ArrayList<ArrayList<String>> newlist = list;
-		ArrayList<Integer> sizelist = new ArrayList<Integer>();
-		ArrayList<Integer> oldindexlist = new ArrayList<Integer>();
-		ArrayList<Integer> newindexlist = new ArrayList<Integer>();
-		int classnum = 0;//定义时间段平均课程数
-		for(int i=0;i<list.size();i++) {
-			classnum+=list.get(i).size();
-		}
-		classnum = classnum/list.size();
-		for(int i=0;i<list.size();i++) {//初始化时间块大小序列
-			sizelist.add(list.get(i).size());
-			oldindexlist.add(i);
-		}
-		for(int i=0;i<list.size();i++) {//整理时间块大小序列
-//			int minindex = indexlist2.get(0);
-			int min = 0;
-			for(int j=0;j<oldindexlist.size();j++) {
-				if(list.get(min).size()>newlist.get(j).size()) {
-//					minindex=indexlist2.get(j);
-					min=j;
-				}
 					
-=======
 	public ArrayList<ArrayList<TestCheckBean>>  optimizeExam(ArrayList<ArrayList<TestCheckBean>> list){
 		long starttime = System.currentTimeMillis();
 //		ArrayList<ArrayList<TestCheckBean>> newlist = new ArrayList<ArrayList<TestCheckBean>>();
@@ -323,7 +298,6 @@ public class CheckClassMap {
 				min=sortlist.size()-1;
 				maxindex=sortlist.get(max);//得到最大时间块下标
 				minindex=sortlist.get(min);//得到最小时间块下标
->>>>>>> refs/remotes/origin/yangk
 			}
 			
 			if(list.get(maxindex).size()-list.get(minindex).size()<2) {//如果最大时间块减最小时间块小于2则跳出循环j
