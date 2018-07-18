@@ -211,11 +211,17 @@ public class CheckClassMap {
 		return timelist;
 	}
 	
-	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){
+
+	public ArrayList<ArrayList<String>>  optimizeExam(ArrayList<ArrayList<String>> list){//时间安排优化函数optimizeExam
 		ArrayList<ArrayList<String>> newlist = list;
 		ArrayList<Integer> sizelist = new ArrayList<Integer>();
 		ArrayList<Integer> oldindexlist = new ArrayList<Integer>();
 		ArrayList<Integer> newindexlist = new ArrayList<Integer>();
+		int classnum = 0;//定义时间段平均课程数
+		for(int i=0;i<list.size();i++) {
+			classnum+=list.get(i).size();
+		}
+		classnum = classnum/list.size();
 		for(int i=0;i<list.size();i++) {//初始化时间块大小序列
 			sizelist.add(list.get(i).size());
 			oldindexlist.add(i);
@@ -235,8 +241,17 @@ public class CheckClassMap {
 			sizelist.remove(min);
 		}
 		for(int i=0;i<newindexlist.size();i++) {//按从小到打的顺序遍历未优化的list,i为newindexlist时间块大小序列的下标
-			if(list.get(newindexlist.get(i)).size()==0) {//如果时间块中的课程为0,则直接从其他时间块拉课程
-				
+			if(list.get(newindexlist.get(i)).size()==0) {//如果时间块中的课程为0,则直接从最大时间块拉课程
+				for(int j =newindexlist.size()-1;j>=0;j--) {//反向遍历优化序列(从最大开始遍历)
+					if(j==i) {
+						break;
+					}
+					for(int x =newindexlist.size();x<newindexlist.size();x--) {
+						list.get(i).add(list.get(newindexlist.get(j)).get(x));//将最大序列中的
+						list.get(newindexlist.get(j)).remove(x);
+					}
+					
+				}
 			}
 			for(int j =0;j<list.get(newindexlist.get(i)).size();j++) {//遍历小时间块,j为时间块中某一门课程id的下标
 				for(int x =newindexlist.size();x<newindexlist.size();x--) {//按从大到小的顺序遍历未优化的list,x为newindexlist时间块大小序列的下标
@@ -250,11 +265,11 @@ public class CheckClassMap {
 //									中的一门课程相互冲突则跳出此大块的遍历
 									break;
 								}
-								if(m==list.get(newindexlist.get(x)).size()-1) {//如果直到最后一个都未冲突跳出则将大时间块中的课程移进小时间块
+								if(m==list.get(newindexlist.get(x)).size()-1) {//如果直到最后一个都未冲突跳出并将大时间块中的课程移进小时间块
 									list.get(newindexlist.get(i)).add(list.get(newindexlist.get(x)).get(m));
 									list.get(newindexlist.get(x)).remove(m);
-									if(list.get(newindexlist.get(i)).size()<=list.get(newindexlist.get(x)).size()-1)//如果小时间块还是小于等于大时间块的课程数-1,则重新
-										m=0;
+//									if(list.get(newindexlist.get(i)).size()<=list.get(newindexlist.get(x)).size()-1)//如果小时间块还是小于等于大时间块的课程数-1,则重新
+//										m=0;
 								}
 							}
 						}else break;//如果大时间块等于小时间块则遍历下一个小时间块
@@ -286,10 +301,14 @@ public class CheckClassMap {
 				for(int x=0;x<num;x++) {//将教室信息加入安排数据中并加入新安排表
 					TestCheckBean temp = new TestCheckBean();
 					temp.setCourseId(list.get(i).get(j).getCourseId());
-					temp.setCheckPlace(clalist.get(sum).getClassRoomName());;
+					temp.setCheckPlace(clalist.get(sum).getClassRoomName());
+					temp.setCheckTime(list.get(i).get(j).getCheckTime());
+					temp.setCourseName(list.get(i).get(j).getCourseName());
+					temp.setInvigilator1(list.get(i).get(j).getInvigilator1());
+					temp.setInvigilator2(list.get(i).get(j).getInvigilator2());
 					newTClist.get(i).add(temp);
 					sum++;
-					if(sum>=clalist.size()) {
+					if(sum>=clalist.size()) {//如果被安排的教室数大于现有课程数则返回null并提示教室不足
 						System.out.println("教室不足!!");
 						return null;
 					}
@@ -299,4 +318,82 @@ public class CheckClassMap {
 		}
 		return newTClist;
 	}
+	public ArrayList<ArrayList<TestCheckBean>> planExamTeacher(ArrayList<ArrayList<TestCheckBean>> list){//本函数返回一个安排好教师的LIST如果教师数不够则返回null
+		List<Object[]> templist = srdao.loadcla_tealist();//获取教师列表
+		List<String> originaltealist = srdao.loadtealist();//获取原本教师表序列
+		List<String> tealist = originaltealist;//新建临时教师表序列
+		ArrayList<String[]> cla_tealist = new ArrayList<String[]>();
+		for(int i=0;i<templist.size();i++) {//将从数据库拿到的Object的List转存进String的List
+			String[] temp =  new String[2] ;
+			temp[0] = (String)templist.get(i)[0];
+			temp[1] = (String)templist.get(i)[1];
+			cla_tealist.add(temp);
+		}
+		for(int i=0;i<list.size()-1;i++) {//合并相同数据优化cla_tealist
+			if(cla_tealist.get(i+1)[0].equals(cla_tealist.get(i)[0])&&cla_tealist.get(i+1)[1].equals(cla_tealist.get(i)[1])) {
+				//如果两个数据一样则合并掉
+				cla_tealist.remove(i+1);
+			}
+		}
+//		String nowclaid = null;//定义一个指针保存上次操作的课程的id
+		
+		for(int i=0;i<list.size();i++) {//遍历时间段
+			
+//			for(int j=0;j<originaltealist.size();j++) {//每次重置临时教师表序列
+//				tealist.add(originaltealist.get(j));
+//			}
+			ArrayList<String> blacklist = new ArrayList<String>();//对每个时间段列出一个教师黑名单,黑名单中的教师不可监考该
+			ArrayList<String> availablelist = new ArrayList<String>();//对每个时间段列出一个可用教师名单
+			if(list.get(i).size()==0) {
+				System.out.println("时间段:"+i+"考试数量:"+list.get(i).size()+";所需教师数:0"+"可用教师数:"+tealist.size());
+				break;//如果没有课程则直接跳到下一个时间段
+			}
+			
+			for(int j=0;j<list.get(i).size();j++) {//遍历时间段中的考试安排
+				for(int x=0;x<cla_tealist.size();x++) {//遍历cla_tealist
+					if(cla_tealist.get(x)[0].equals(list.get(i).get(j).getCourseId())) {
+						blacklist.add(cla_tealist.get(x)[1]);
+					}
+				}
+			}
+			for(int j=0;j<tealist.size();j++) {//遍历教师列表
+				for(int x=0;x<blacklist.size();x++) {//遍历黑名单
+					if(tealist.get(j).equals(blacklist.get(x))) {//如果该教师在黑名单内则跳入下一个教师
+						break;
+					}
+					if(x==blacklist.size()-1) {//如果最后一个黑名单中的教教师id都不等于此教师id则加入可用教师名单
+						availablelist.add(tealist.get(j));
+					}
+				}
+			}
+			if(list.get(i).size()*2>=availablelist.size()) {//如果该时间段可用教师没有达到考试科目数量的两倍则返回null并提示可用教师不足
+				System.out.printf("时间段:"+i+"考试数量:"+list.get(i).size()+";所需教师数:"+list.get(i).size()*2+"可用教师数:"+availablelist.size());
+				System.out.println("可用教师不足!");
+				return null;
+			}else {
+				System.out.println("时间段:"+i+"考试数量:"+list.get(i).size()+";所需教师数:"+list.get(i).size()*2+"可用教师数:"+availablelist.size());
+			}
+			for(int j=0;j<list.get(i).size();j++) {//遍历时间段中的考试安排
+				list.get(i).get(j).setInvigilator1(availablelist.get(0));//设置监考老师1
+				list.get(i).get(j).setInvigilator2(availablelist.get(1));//设置监考老师2
+				for(int x=0;x<tealist.size();x++) {//找到tealist中的两个老师并将他们置于列表最后
+					if(availablelist.get(0)==tealist.get(x)) {
+						tealist.remove(x);
+						tealist.add(availablelist.get(0));
+					}else if(availablelist.get(1)==tealist.get(x)) {
+						tealist.remove(x);
+						tealist.add(availablelist.get(1));
+					}
+					
+				}
+				availablelist.remove(0);
+				availablelist.remove(1);
+			}
+			
+			
+		}
+		return list;
+		
+	}
+	
 }

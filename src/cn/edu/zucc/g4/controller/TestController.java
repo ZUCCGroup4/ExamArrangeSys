@@ -58,10 +58,11 @@ public class TestController {
 //		ArrayList<ArrayList<String>> newexamlist = cc.optimizeExam(examlist);
 		
 		ArrayList<ArrayList<TestCheckBean>> newexamlist = cc.planExamClass(examlist);
+		examlist = cc.planExamTeacher(newexamlist);
 		for(int i=0;i<examlist.size();i++) {
 			System.out.print("时间块"+i+"的考试有:");
 			for(int j=0;j<examlist.get(i).size();j++) {
-				System.out.print(newexamlist.get(i).get(j).getCourseId()+":"+newexamlist.get(i).get(j).getCheckPlace()+"     ");
+				System.out.print(examlist.get(i).get(j).getCourseId()+":"+examlist.get(i).get(j).getCheckPlace()+"监考老师:"+examlist.get(i).get(j).getInvigilator1()+"  "+examlist.get(i).get(j).getInvigilator2()+"     ");
 			}
 			System.out.print("一共"+examlist.get(i).size()+"门考试\n");
 		}
