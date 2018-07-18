@@ -1,28 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="utf-8"%>
+	pageEncoding="utf-8"%>
 <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">  
-    <title>Visual Admin Dashboard - Maps</title>
-    <meta name="description" content="">
-    <meta name="author" content="templatemo">
-    
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,300,400italic,700' rel='stylesheet' type='text/css'>
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet" type="text/css" /> 
-    <link href="css/templatemo-style.css" rel="stylesheet">
-    
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visual Admin Dashboard - Maps</title>
+<meta name="description" content="">
+<meta name="author" content="templatemo">
+
+<link
+	href='http://fonts.useso.com/css?family=Open+Sans:400,300,400italic,700'
+	rel='stylesheet' type='text/css'>
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet"
+	type="text/css" />
+<link href="css/templatemo-style.css" rel="stylesheet">
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+<<<<<<< HEAD
     <style>
       #modify {
         border-radius: 5px;
@@ -125,7 +130,6 @@
               <input type="submit" class="templatemo-blue-button" value="查找">
             </div>
           </form>
-          <form action="text-manager2.jsp" class="templatemo-login-form">
             <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
               <div class="table-responsive">
@@ -138,35 +142,44 @@
                     <td>修改</td>
                   </tr>
                   </thead>
-                  <tbody>
-
-                   <%
-						List objlist=(List) request.getAttribute("terlist");
-						  if(objlist!=null){
-					          for(int i=0;i<objlist.size();i++){
-					        	 ViewCheckBean list=(ViewCheckBean) objlist.get(i);
-					%>  
-						<tr>
-							<td><%=list.getCheck_time()%></td>
-							<td><%=list.getCourse_id()%></td>
-							<td><%=list.getCourse_name()%></td>
-							<td><button id="modify">修改</button></td>
-						</tr>
-						<% 
-									}
-						    }
-						%>
-                  </tbody>
+                 
+	                  <tbody id="tablevalue">
+	 <%-- 
+	                   <%
+							List objlist=(List) request.getAttribute("terlist");
+							  if(objlist!=null){
+						          for(int i=0;i<objlist.size();i++){
+						        	 ViewCheckBean list=(ViewCheckBean) objlist.get(i);
+						%>  
+							<tr>
+								<td><%=list.getCheck_time()%></td>
+								<td><%=list.getCourse_id()%></td>
+								<td><%=list.getCourse_name()%></td>
+								<td><button id="modify">修改</button></td>
+							</tr>
+							<% 
+										}
+							    }
+							%> --%>
+	                  </tbody> 
+                  
                 </table>
               </div>
             </div>
           </div>
+          <div id="search_msg" class="text-right" style="margin-right: 10px;">
+          共有<span id="allnum">27</span>条考试安排记录；
+          <button class="fy_btn" data="firstPage">首页</button>|<button class="fy_btn" data="prev">上一页</button>
+          第<span id="nowPage">1</span>/<span id="allPage">3</span>页
+          <button class="fy_btn" data="next">下一页</button>|<button data="lastPage" class="fy_btn">尾页</button>
+          转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
+        </div>
+          
             <a href="selectionjoin" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
             <!--<button class="step" id="lststep">上一步</button>-->
-            <a href="testclassarrange" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
+            <a href="toManager2" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
            <!--  <input type="submit" class="step" id="nxtstep" value="下一步"> -->
-          </form>
           <footer class="text-right">
             <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>
           </footer>
@@ -283,28 +296,139 @@
         });  
       } // end function drawMaps
 
-      $(document).ready(function() {
+    </script>
+    <script type="text/javascript">
+        //数据
+       
+         var testdata=[];
+       <%
+       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
+      		 for(int i=0;i<objlist.size();i++) {
+      			 for(int j=0;j<objlist.get(i).size();j++) {
+		%>    			 
+      		 		var tmp = {time:<%="'"+objlist.get(i).get(j).getCheckTime()+"'"%>, 
+      		 				id:<%="'"+objlist.get(i).get(j).getCourseId()+"'"%>, 
+      		 				name:<%="'"+objlist.get(i).get(j).getCourseName()+"'"%>};
+      		 		testdata.push(tmp);
+      		 		
+		<%
+      			 }
+      		 }
+      	%>
+     
+        var f0 = new loadtable(testdata);
+        function loadtable(testdata){
+          //操作节点
+          var search_msg=document.getElementById('search_msg'),
+//              keyword=document.getElementById('keyword'),
+              table_list=document.getElementById('tablevalue'),
+              Allnum=document.getElementById('allnum'),
+              Allpage=document.getElementById('allPage'),
+              Nowpage=document.getElementById('nowPage'),
+              pagenumber=document.getElementById('pagenumber');
 
-        if($.browser.mozilla) {
-          //refresh page on browser resize
-          // http://www.sitepoint.com/jquery-refresh-page-browser-resize/
-          $(window).bind('resize', function(e)
-          {
-            if (window.RT) clearTimeout(window.RT);
-            window.RT = setTimeout(function()
-            {
-              this.location.reload(false); /* false to get page from cache */
-            }, 200);
-          });      
-        } else {
-          $(window).resize(function(){
-            drawMaps();
-          });  
+          //初始设置;
+          var setnum=10,//设置每页数目
+              nowpage,//当前页
+              allpage,
+              tempdata=[],//存放
+              startnum=0,//数据节点
+              Condition = function(){
+                  var temp=[],allnum=0;
+                  for(var i in this){
+                      if(this[i]['time'].match(arguments[0]) || this[i]['id'].match(arguments[0]) || this[i]['name'].match(arguments[0])){
+                          temp.push(this[i]);
+                          allnum+=1;
+                      }
+                  }
+                  return  [temp,allnum];
+              },
+              Makelist = function(){
+
+                  table_list.innerHTML='';
+                  Nowpage.innerText=nowpage;
+                  if(nowpage==0)return false;
+
+                  var templist=document.createDocumentFragment();
+                  for(var i = startnum;i<Number(startnum+setnum);i++){
+                      if(i>=this.length){
+                          table_list.appendChild(templist);
+                          return false;
+                      }
+
+                      var c_tr = document.createElement('tr');
+                      c_tr.id = 'row'+this[i].rowid;
+                      c_tr.innerHTML='<td>'+this[i].time+'</td>'+
+                          '<td>'+this[i].id+'</td>'+
+                          '<td>'+this[i].name+'</td>'+
+                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                      templist.appendChild(c_tr);
+
+                  }
+                  table_list.appendChild(templist);
+
+
+              },
+              Searchkey=function(Co,Ma,obj,key){
+                  var resdata = Co.apply(obj,[key]);
+                  Allnum.innerText=resdata[1];
+                  Allpage.innerText=Math.ceil(resdata[1]/setnum);
+                  startnum=0;
+                  tempdata = resdata[0];
+                  allpage=Math.ceil(resdata[1]/setnum);
+                  isdata=(resdata[0]!='')?1:0;
+                  nowpage= isdata;
+                  pagenumber.setAttribute('max',allpage);
+                  Ma.apply(resdata[0]);
+              },
+              Optpage = function(){
+                  switch(arguments[0]){
+                      case 'prev':
+                          if(nowpage==1)return false;
+                          nowpage-=1;
+                          startnum-=setnum;
+                          break;
+                      case 'next':
+                          if(nowpage==allpage)return false;
+                          nowpage+=1;
+                          startnum+=setnum;
+                          break;
+                      case 'firstPage':
+                          nowpage=1;
+                          startnum=0;
+
+                          break;
+
+                      case 'lastPage':
+                          nowpage=allpage;
+                          startnum=(nowpage-1)*setnum;
+
+                          break;
+
+                      case 'toPage':
+                          console.log(pagenumber.value)
+                          nowpage=Number(pagenumber.value);
+                          if(nowpage>allpage || nowpage<1)return false;
+                          startnum=(nowpage-1)*setnum;
+                          break;
+                      default:
+                          return false;
+                          break;
+                  }
+                  Makelist.apply(tempdata);
+              }
+
+            Searchkey(Condition,Makelist,testdata,'');
+//点击翻页
+            var btn = search_msg.getElementsByTagName("button");
+            for(var i=0;i<btn.length;i++){
+                btn[i].onclick=(function(index){
+                    return function(){
+                        Optpage(btn[index].getAttribute("data"));
+                    }
+                })(i);
+            }
         }
-        
-        drawMaps();
-
-      });
     </script>
   </body>
 </html>

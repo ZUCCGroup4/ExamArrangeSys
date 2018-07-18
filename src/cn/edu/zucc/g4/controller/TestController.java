@@ -1,8 +1,10 @@
 package cn.edu.zucc.g4.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,14 +14,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.bean.UserBean;
 import cn.edu.zucc.g4.service.CheckClassMap;
 import cn.edu.zucc.g4.service.LoginService;
+import cn.edu.zucc.g4.service.TestTimeService;
 
 @Controller
 public class TestController {
 	@Autowired
 	private LoginService loginService;
+	@Autowired
+	private TestTimeService testTimeService;
+	
 	
 //	@ResponseBody
 //	@RequestMapping(value = "test", method = RequestMethod.POST)
@@ -40,7 +47,10 @@ public class TestController {
 	
 	
 	@Resource(name="checkClassMap")
-	CheckClassMap cc;
+	public CheckClassMap cc;
+	
+	public static ArrayList<ArrayList<TestCheckBean>> examlist;
+
 	@RequestMapping("test")
 	public ModelAndView toIndex(javax.servlet.http.HttpServletRequest request) {
 		cc.LoadCheckClassMap();
@@ -48,9 +58,64 @@ public class TestController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("test.jsp");
 		int out = cc.abs("022", "029");
-		ArrayList<ArrayList<String>> examlist = cc.initializeExam(40);
+
+		examlist = cc.initializeExam(40);
+//		ArrayList<ArrayList<String>> newexamlist = cc.optimizeExam(examlist);
+		
+		ArrayList<ArrayList<TestCheckBean>> newexamlist = cc.planExamClass(examlist);
+		examlist = cc.planExamTeacher(newexamlist);
+		for(int i=0;i<examlist.size();i++) {
+			System.out.print("时间块"+i+"的考试有:");
+			for(int j=0;j<examlist.get(i).size();j++) {
+				System.out.print(examlist.get(i).get(j).getCourseId()+":"+examlist.get(i).get(j).getCheckPlace()+"监考老师:"+examlist.get(i).get(j).getInvigilator1()+"  "+examlist.get(i).get(j).getInvigilator2()+"     ");
+			}
+			System.out.print("一共"+examlist.get(i).size()+"门考试\n");
+		}
+
 		modelAndView.addObject("name",out);
 		return modelAndView;
+	}
+	
+	@RequestMapping("/selectdate")
+	public List selectdate(HttpServletRequest request){
+		String date1=request.getParameter("date1");
+		String date2=request.getParameter("date2");
+		request.setAttribute("terlist",testTimeService.selecttesttimelist(examlist,date1, date2));
+		String year = (String)request.getSession().getAttribute("year");
+		String term = (String)request.getSession().getAttribute("term");
+		request.getSession().setAttribute("year",year);
+		request.getSession().setAttribute("term",term);
+		return null;
+	}
+	
+	@RequestMapping("/selectname")
+	public List selectname(HttpServletRequest request){
+		String name=request.getParameter("name");
+		String year = (String)request.getSession().getAttribute("year");
+		String term = (String)request.getSession().getAttribute("term");
+		request.getSession().setAttribute("year",year);
+		request.getSession().setAttribute("term",term);
+		return testTimeService.selecttestlistbyname(name);
+	}
+	
+	@RequestMapping("/selectid")
+	public List selectid(HttpServletRequest request){
+		String selectid=request.getParameter("selectID");
+		String year = (String)request.getSession().getAttribute("year");
+		String term = (String)request.getSession().getAttribute("term");
+		request.getSession().setAttribute("year",year);
+		request.getSession().setAttribute("term",term);
+		return testTimeService.selecttestlistbyid(selectid);
+	}
+	
+	@ResponseBody
+	@RequestMapping("test2")
+	public ModelAndView test2(javax.servlet.http.HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println(examlist.get(0).get(0));
+		modelAndView.setViewName("test.jsp");
+		return modelAndView;
+		
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.zucc.g4.bean.CheckBean;
+import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.bean.ViewCheckBean;
 
 @Repository
@@ -37,27 +38,9 @@ public class CheckDAO {
 	}
 	
 	//根据日期查找考试列表
-	public List<ViewCheckBean> selectdateCheck(String date1,String date2) {
-		this.setSessionFactory(sessionFactory);
-		Session session = sessionFactory.getCurrentSession();
-		String hql = "from ViewCheckBean";
-		List<ViewCheckBean> list = session.createQuery(hql).list();
-		List<ViewCheckBean> list2=new ArrayList<>();
-		for(int i=0;i<list.size();i++){//通过循环来赋值给另一个List
-			ViewCheckBean object=list.get(i);
-			list2.add(object);
-			}
-		for(int i=0;i<list.size();i++){
-			ViewCheckBean view=(ViewCheckBean) list.get(i);
-       	 	SimpleDateFormat time=new SimpleDateFormat("yyyyMMdd");
-       	 	int strdate=Integer.valueOf(time.format(view.getCheck_time()));
-       		int da1=Integer.valueOf(date1);
-       		int da2=Integer.valueOf(date2);
-       	 	if(strdate<da1||strdate>da2){
-       	 		list2.remove(i);
-       	 	}
-		}
-		return list2;
+	public List<ViewCheckBean> selectdateCheck(ArrayList<ArrayList<TestCheckBean>> examlist,String date1,String date2) {
+		
+		return null;
 	}
 	
 	//根据课程名称查找考试列表
@@ -84,7 +67,7 @@ public class CheckDAO {
 	 * @param userid
 	 * @return
 	 */
-	public CheckBean getUser(String checkid) {
+	public CheckBean getCheck(String checkid) {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		CheckBean bean = session.get(CheckBean.class, checkid);

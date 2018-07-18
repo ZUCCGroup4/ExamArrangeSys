@@ -5,7 +5,6 @@ package cn.edu.zucc.g4.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -52,7 +51,7 @@ public class LoginController {
 		System.out.println("toindex");
 		
 		ModelAndView modelAndView = new ModelAndView();
-		request.setAttribute("loglist", logService.loadalllog());
+		modelAndView.addObject("loglist", logService.loadalllog());
 		modelAndView.setViewName("index.jsp");
 		return modelAndView;
 	}
@@ -71,7 +70,7 @@ public class LoginController {
 	
 	@RequestMapping("manager")
 	public ModelAndView toManager(HttpServletRequest request) {
-		System.out.println("manager");
+		System.out.println("manager");	
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("text-manager1.jsp");
