@@ -2,6 +2,7 @@ package cn.edu.zucc.g4.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -77,10 +78,48 @@ public class ManagerController {
 
 		//examlist = checkClassMap.planExamClass(examlist);
 
-		modelAndView.addObject("examlist", examlist);
-
 		modelAndView.setViewName("text-manager3.jsp");
 		return modelAndView;
 	}
+	
+	//根据日期区间查询
+		@ResponseBody
+		@RequestMapping("/selectdate")
+		public ModelAndView selectdate(HttpServletRequest request){
+			ModelAndView modelAndView = new ModelAndView();
+			String date1=request.getParameter("date1");
+			String date2=request.getParameter("date2");
+			String pagename=request.getParameter("pagename");
+			modelAndView.addObject("examlist", examlist);
+			modelAndView.addObject("examtestlist",testTimeService.selecttesttimelist(examlist,date1,date2));
+			modelAndView.setViewName(pagename);
+			return modelAndView;
+		}
+	//根据课程名称查询
+		@ResponseBody
+		@RequestMapping("/selectname")
+		public ModelAndView selectname(HttpServletRequest request){
+			ModelAndView modelAndView = new ModelAndView();
+			String claname=request.getParameter("claname");
+			String pagename=request.getParameter("pagename");
+			modelAndView.addObject("examlist", examlist);
+			modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyname(examlist,claname));
+			modelAndView.setViewName(pagename);
+			return modelAndView;
+		}
+	//根据课程ID查询
+		@ResponseBody
+		@RequestMapping("/selectid")
+		public ModelAndView selectid(HttpServletRequest request){
+			ModelAndView modelAndView = new ModelAndView();
+			String claid=request.getParameter("claid");
+			String pagename=request.getParameter("pagename");
+			modelAndView.addObject("examlist", examlist);
+			modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyid(examlist,claid));
+			System.out.println("controller 当前长度："+testTimeService.selecttestlistbyid(examlist,claid).size());
+			modelAndView.setViewName(pagename);
+			return modelAndView;
+		}
+		
 
 }

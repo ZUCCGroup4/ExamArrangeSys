@@ -1,7 +1,7 @@
-<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="utf-8"%>
-<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
+<%@ page
+	import="java.util.*,cn.edu.zucc.g4.bean.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,93 +143,52 @@
         //三种搜索框
             function changedate(value) {
                 var ipt = document.getElementById("search");
-                var btn = document.getElementById('search_btn');
+               
                 if(value == "date") {
                     ipt.innerHTML = "<input id=\"date1\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
                         "&nbsp&nbsp到&nbsp&nbsp<input id=\"date2\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
-                	btn.href = "";
                 }
                 else if(value == "name") {
-                    ipt.innerHTML = "<input id=\"name\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
-                    btn.href = "";
+                    ipt.innerHTML = "<input id=\"claname\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
                 }
                 else if(value == "ID") {
-                    ipt.innerHTML = "<input id=\"selectID\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
-                    btn.href = "";
+                    ipt.innerHTML = "<input id=\"claid\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
                 }
             }
         </script>
-        <script>
-				function searchList() {
-					var selectnid = $("#selectnid").val();//三种搜索下拉框
-					if(selectnid=="ID"){//id搜索
-						var searchid = $("#selectID").val();//编号搜索输入框
-						if(searchid == ""){
-							$("tr td").show();
-						}
-						$("tr td").each(function() {
-							var cid = $(this).attr("cid");
-							if(cid.indexOf(searchid) != -1) {
-								$(this).show();
-							} else {
-								$(this).hide();
-							}
-						});
-					}
-					else if(selectnid=="name"){//name搜索
-						var searchname = $("#name").val();//名称搜索输入框
-						if(searchname == ""){
-							$("tr td").show();
-						}
-						$("tr td").each(function() {
-							var cname = $(this).attr("cname");
-							if(cname.indexOf(searchname) != -1) {
-								$(this).show();
-							} else {
-								$(this).hide();
-							}
-						});
-					}
-					else if(selectnid=="date"){//date搜索
-						var searchdate1 = $("#date1").val();//1号日期输入框
-						searchdate1 = searchdate1.replace(/\D/g,'');
-						alert(searchdate1);
-						var searchdate2 = $("#date2").val();//2号日期输入框
-						searchdate2 = searchdate2.replace(/\D/g,'');
-						alert(searchdate2);
-						if(searchdate1 == ""&&searchdate2 == ""){
-							$("tr").show();
-						}
-						$(".shuju").each(function() {
-							var tdate = $(this).attr("data-tdate");
-							if(tdate){
-								if(tdate>=searchdate1&&tdate<=searchdate2){
-									$(this).show();
-								}else{
-									$(this).hide();
-								}
-							}
-							/* if(cname.indexOf(searchname) != -1) {
-								$(this).show();
-							} else {
-								$(this).hide();
-							} */
-							
-							
-						});
-					}
-				}
-		</script>
+         <script >
+        	function searchbtn(){
+        		var ipt = document.getElementById("selecttype").value;
+                var btn = document.getElementById('search_btn');
+                var searchdate1;//1号日期输入框
+                var searchdate2;//2号日期输入框
+                var sname;//课程名称输入框
+                var sid;//课程ID输入框
+                if(ipt=="date"){
+                	searchdate1 = $("#date1").val();
+                    searchdate2 = $("#date2").val();
+                    btn.href = "selectdate?pagename=text-manager3.jsp&date1="+searchdate1+"&date2="+searchdate2;
+                }
+                else if(ipt=="name"){
+                	claname = $("#claname").val();
+                    btn.href = "selectname?pagename=text-manager3.jsp&claname="+claname;
+                }
+                else if(ipt=="ID"){
+                	claid=$("#claid").val();
+                    btn.href = "selectid?pagename=text-manager3.jsp&claid="+claid;
+                }
+        	}
+        </script>
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
               <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
-            <select id="selectnid" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
+            <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
               <option value="name">按课程名称查找</option>
               <option value="ID">按课程ID查找</option>
               <option value="date">按日期查找</option>
             </select>
-            <a class="templatemo-blue-button" id="search_btn" href="www.baidu.com">查找</a>
+            <a id="search_btn" href=""><input type="submit" class="templatemo-blue-button" value="查找" onclick="searchbtn()"></a>
           </div>
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
@@ -428,10 +387,20 @@
         //数据
         alert(1);
          var testdata=[];
-         
-       <%
-       ArrayList<ArrayList<TestCheckBean>> objlist;
-       objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
+         <%
+         ArrayList<ArrayList<TestCheckBean>> objlist=(ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist"); ;
+         ArrayList<ArrayList<TestCheckBean>> examtestlist= (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examtestlist");
+         if(examtestlist!=null&&examtestlist.size()!=0){
+      	   %>
+             console.log(<%= examtestlist.size()%>);
+             <%
+      	   objlist.clear();
+      	   objlist.addAll(examtestlist);
+      	   %>
+             console.log(<%= objlist.size()%>);
+             <%
+         }else{
+         }
       		 for(int i=0;i<objlist.size();i++) {
       			 for(int j=0;j<objlist.get(i).size();j++) {
 		%>    			 

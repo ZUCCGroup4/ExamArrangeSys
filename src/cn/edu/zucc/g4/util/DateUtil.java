@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.sun.org.apache.xml.internal.serializer.ElemDesc;
 
 public class DateUtil {
 	public long getDay(String startTimeStr, String endTimeStr) {
