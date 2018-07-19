@@ -205,5 +205,15 @@ public class ManagerController {
 		request.getSession().setAttribute("examlist3", examlist3);
 		return true;
 	}
+	
+	@ResponseBody
+	@RequestMapping("toManagerfinally")
+	public ModelAndView toManagerFinally(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		testTimeService.addTestCheck(examlist3);
+		modelAndView.addObject("examlist3", examlist3);
+		modelAndView.setViewName("text-manager-finally.jsp");
+		return modelAndView;
+	}
 
 }

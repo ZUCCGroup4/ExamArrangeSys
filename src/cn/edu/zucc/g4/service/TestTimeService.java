@@ -10,26 +10,23 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.zucc.g4.bean.CheckBean;
 import cn.edu.zucc.g4.bean.CourseBean;
+import cn.edu.zucc.g4.bean.LogBean;
 import cn.edu.zucc.g4.bean.SelectionBean;
 import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.bean.ViewCheckBean;
 import cn.edu.zucc.g4.dao.CheckDAO;
 import cn.edu.zucc.g4.dao.CourseDAO;
+import cn.edu.zucc.g4.dao.TestCheckDAO;
 import cn.edu.zucc.g4.util.DateUtil;
 
 @Service
 public class TestTimeService {
 
-	@Resource(name = "checkDAO")
-	CheckDAO checkDAO;
+	@Resource(name = "testCheckDAO")
+	TestCheckDAO testCheckDAO;
 
 	@Resource(name = "courseDAO")
 	CourseDAO courseDAO;
-
-	public List loadalltesttime() {
-		List<ViewCheckBean> terlist = checkDAO.listALLCheck();
-		return terlist;
-	}
 
 	public ArrayList<ArrayList<TestCheckBean>> setExamTime(ArrayList<ArrayList<TestCheckBean>> examlist,
 			String startTime) {
@@ -101,6 +98,14 @@ public class TestTimeService {
 		}
 
 		return examlist;
+	}
+	
+	public void addTestCheck(ArrayList<ArrayList<TestCheckBean>> examlist){
+		for (int i = 0; i < examlist.size(); i++) {
+			for (int j = 0; j < examlist.get(i).size(); j++) {
+				testCheckDAO.addTestCheck(examlist.get(i).get(j));
+			}
+		}
 	}
 	
 }
