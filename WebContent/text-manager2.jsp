@@ -451,18 +451,18 @@
     			  $(".tbl").each(function(){  
     	
     			      var op = 0;
-    			      
     			      var modifyuser=$(this).children().eq(4).children();
+    			      var place=modifyuser.parent().parent().children("td").get(3).innerHTML;
+    			      var time=modifyuser.parent().parent().children("td").get(0).innerHTML; 
     			      modifyuser.bind("click",function(){ 
     			    	  var tr=modifyuser.parent().parent();
     			    	  var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML; 
-    			    	  var place=modifyuser.parent().parent().children("td").get(3).innerHTML; 
-    			    	  var time=modifyuser.parent().parent().children("td").get(0).innerHTML; 
+    			    	
     			    	
     			    	  if(op == 0) {
     		                    op = 1;
     		                    $.ajax({
-    						         url: "modifyclass/"+time,					
+    						         url: "modifyclass/"+time+"/"+place,					
     						         contentType: "application/json;charset=utf-8",	
     						         dataType:"json",
     						         type: "post",			
@@ -488,9 +488,9 @@
     		                }
     		                else {
     		                    op = 0;
-    		                    
+    		                    alert(place)
     		                    $.ajax({
-    						         url: "modifyclassresult/"+time+"/"+tr.children("td").get(3).firstChild.value,					
+    						         url: "modifyclassresult/"+time+"/"+place+"/"+tr.children("td").get(3).firstChild.value,					
     						         contentType: "application/json;charset=utf-8",	
     						         dataType:"json",
     						         type: "post",			
