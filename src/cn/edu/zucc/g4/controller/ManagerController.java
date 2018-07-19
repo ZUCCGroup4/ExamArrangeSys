@@ -86,6 +86,8 @@ public class ManagerController {
 		System.out.println(day + "天");
 
 		examlist = checkClassMap.initializeExam((int) (day * 3));// 安排考试时间
+		
+		examlist = checkClassMap.optimizeExam(examlist);
 
 		examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
 
@@ -135,6 +137,14 @@ public class ManagerController {
 		ModelAndView modelAndView = new ModelAndView();
 
 		examlist2 = checkClassMap.planExamClass(examlist);
+		
+//		Timestamp checktime = Timestamp.valueOf("2018-07-01 08:00:00.0");
+//		ArrayList<String> classlist = checkClassMap.modifyExamClass(examlist2, checktime, "理一106");
+//		System.out.println(examlist2.size()+"++++++++++");
+//		System.out.println(classlist.size()+"----------"); 
+//		for(int i=0;i<classlist.size();i++){
+//			System.out.println(classlist.get(i));
+//		}
 
 		request.getSession().setAttribute("examlist2", examlist2);
 
@@ -142,6 +152,31 @@ public class ManagerController {
 		return modelAndView;
 	}
 
+	@ResponseBody
+	@RequestMapping("/modifyclass")
+	public ModelAndView modifyclass(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		String checkplace = request.getParameter("checkplace");
+		String checktime = request.getParameter("checktime");
+		ArrayList<String> classlist = checkClassMap.modifyExamClass(examlist2, Timestamp.valueOf(checktime), checkplace);// 可修改考场列表
+		modelAndView.addObject("classlist", classlist);
+		modelAndView.addObject("examlist2", examlist2);
+		modelAndView.setViewName("text-manager2.jsp");
+		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyclassresult")
+	public ModelAndView modifyclassresult(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		String checkplace = request.getParameter("checkplace");
+		String checktime = request.getParameter("checktime");
+		examlist = testTimeService.modifyExamClass(examlist2, checkplace, Timestamp.valueOf(checktime));// 修改完考场的考试安排表
+		modelAndView.addObject("examlist2", examlist2);
+		modelAndView.setViewName("text-manager2.jsp");
+		return modelAndView;
+	}
+	
 	@ResponseBody
 	@RequestMapping("toManager3")
 	public ModelAndView toManagerThree(HttpServletRequest request) {

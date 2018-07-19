@@ -315,7 +315,6 @@
          var testdata=[];
        <%
        ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist2");
-       System.out.println("JSP"+objlist.get(0).get(0).getCourseName());
       		 for(int i=0;i<objlist.size();i++) {
       			 for(int j=0;j<objlist.get(i).size();j++) {
 		%>    			 
