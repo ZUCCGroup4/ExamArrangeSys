@@ -460,10 +460,79 @@
                 btn[i].onclick=(function(index){
                     return function(){
                         Optpage(btn[index].getAttribute("data"));
+                        loadmodify();
                     }
                 })(i);
             }
         }
+        $(document).ready(
+        		function(){loadmodify()}		 
+        	 ) 
+        		function loadmodify(){
+    			  $(".tbl").each(function(){  
+    	
+    			      var tmp=$(this).children().eq(5);  
+    			      var btn=tmp.children();
+    			      var op = 0;
+    			      
+    			      var modifyuser=$(this).children().eq(3).children();
+    			      modifyuser.bind("click",function(){ 
+    			    	  var tr=modifyuser.parent().parent();
+    			    	  var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML; 
+    			    	  var time=modifyuser.parent().parent().children("td").get(0).innerHTML; 
+    			    	  alert(courseId);
+    			    	  if(op == 0) {
+    		                    op = 1;
+    		                    $.ajax({
+    						         url: "modifytime/"+courseId,					
+    						         contentType: "application/json;charset=utf-8",	
+    						         dataType:"json",
+    						         type: "post",			
+    						         success:function(data){			
+    						        	 var text = "<select class=\"form-control\">";
+    						        	 for(var i =0 ; i<data.length;i++) {
+    						        		 if(data[i] == time) 
+    						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+    						        		 else 
+    						        			 text = text + "<option>"+data[i]+"</option>";
+    						        	 }
+    						        	 tr.children("td").get(0).innerHTML = text+"</select>";
+    						         },
+    						
+    						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+    						
+    						        	 console.log(XMLHttpRequest.status);
+    				                       console.log(XMLHttpRequest.readyState);
+    				                       console.log(textStatus);
+    						
+    						        }
+    			      			});
+    		                }
+    		                else {
+    		                    op = 0;
+    		                    
+    		                    $.ajax({
+    						         url: "modifytimeresult/"+courseId+"/"+tr.children("td").get(0).firstChild.value,					
+    						         contentType: "application/json;charset=utf-8",	
+    						         dataType:"json",
+    						         type: "post",			
+    						         success:function(){			
+    						        	 tr.children("td").get(0).innerHTML =  tr.children("td").get(0).firstChild.value;
+    						         },
+    						
+    						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+    						
+    						        	 console.log(XMLHttpRequest.status);
+    				                       console.log(XMLHttpRequest.readyState);
+    				                       console.log(textStatus);
+    						
+    						        }
+    			      			});	                    
+    		                }    	  			   
+    				       
+    			      })
+    			  })
+        	 }
     </script>
 </body>
 </html>

@@ -3,11 +3,13 @@ package cn.edu.zucc.g4.controller;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +19,7 @@ import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.service.CheckClassMap;
 import cn.edu.zucc.g4.service.TestTimeService;
 import cn.edu.zucc.g4.util.DateUtil;
+import net.sf.json.JSONArray;
 
 @Controller
 public class ManagerController {
@@ -65,29 +68,24 @@ public class ManagerController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/modifytime")
-	public ModelAndView modifytime(HttpServletRequest request){
-		ModelAndView modelAndView = new ModelAndView();
-		String courseid = request.getParameter("courseid");
+	@RequestMapping("/modifytime/{courseid}")
+	public JSONArray modifytime(@PathVariable("courseid") String courseid){
 		ArrayList<Timestamp> timelist = checkClassMap.modifyExamTime(examlist,courseid);//可修改时间列表
-		modelAndView.addObject("timelist", timelist); 
-		modelAndView.addObject("examlist", examlist);
-		modelAndView.setViewName("text-manager1-2.jsp");
-		return modelAndView;
+		String[] res = new String[timelist.size()];
+		for(int i= 0;i<timelist.size();i++){
+			res[i]=timelist.get(i).toString();
+		}
+		JSONArray result = JSONArray.fromObject(res);
+		return result;
 	}
 	
 	@ResponseBody
-	@RequestMapping("/modifytimeresult")
-	public ModelAndView modifytimeresult(HttpServletRequest request){
-		ModelAndView modelAndView = new ModelAndView();
-		String courseid = request.getParameter("courseid");
-		String checktime = request.getParameter("checktime");
+	@RequestMapping("/modifytimeresult/{courseid}/{checktime}")
+	public boolean modifytimeresult(@PathVariable("courseid") String courseid,@PathVariable("checktime") String checktime){
 		examlist = testTimeService.modifyExamTime(examlist,courseid,Timestamp.valueOf(checktime));//修改完时间的考试安排表
-		modelAndView.addObject("examlist", examlist); 
-		modelAndView.setViewName("text-manager1-2.jsp");
-		return modelAndView;
+		return true;
 	}
-
+	
 	@ResponseBody
 	@RequestMapping("toManager2")
 	public ModelAndView toManagerTwo(HttpServletRequest request) {

@@ -21,13 +21,6 @@
 <link href="css/templatemo-style.css" rel="stylesheet">
 
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<<<<<<< HEAD
     <style>
       #modify {
         border-radius: 5px;
@@ -426,12 +419,16 @@
                 btn[i].onclick=(function(index){
                     return function(){
                         Optpage(btn[index].getAttribute("data"));
+                        loadmodify();
                     }
                 })(i);
             }
         }
         
-    	 $(document).ready(function(){
+    	 $(document).ready(
+    		function(){loadmodify()}		 
+    	 ) 
+    		function loadmodify(){
 			  $(".tbl").each(function(){  
 	
 			      var tmp=$(this).children().eq(5);  
@@ -441,8 +438,9 @@
 			      var modifyuser=$(this).children().eq(3).children();
 			      modifyuser.bind("click",function(){ 
 			    	  var tr=modifyuser.parent().parent();
-			    	  var courseId=modifyuser.parent().parent().children("td").get(0).innerHTML; 
-			    	  alert(coursId);
+			    	  var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML; 
+			    	  var time=modifyuser.parent().parent().children("td").get(0).innerHTML; 
+			    	  alert(courseId);
 			    	  if(op == 0) {
 		                    op = 1;
 		                    $.ajax({
@@ -450,10 +448,10 @@
 						         contentType: "application/json;charset=utf-8",	
 						         dataType:"json",
 						         type: "post",			
-						         success:function(data){
+						         success:function(data){			
 						        	 var text = "<select class=\"form-control\">";
-						        	 for(var i =0 ; i<data.size;i++) {
-						        		 if(data[i] == courseId) 
+						        	 for(var i =0 ; i<data.length;i++) {
+						        		 if(data[i] == time) 
 						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
 						        		 else 
 						        			 text = text + "<option>"+data[i]+"</option>";
@@ -472,18 +470,29 @@
 		                }
 		                else {
 		                    op = 0;
-		                    for(var i = 0; i < tr.children().length - 1; i ++) {
-		                        if(i >= 1 && i <= 2) continue;
-		                        if(tr[i].localName == "td");
-		                        tr.children("td").get(i).innerHTML = tr[i].firstChild.value;
-		                    }
-		                }
-			    	  
-			   
+		                    
+		                    $.ajax({
+						         url: "modifytimeresult/"+courseId+"/"+tr.children("td").get(0).firstChild.value,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(){			
+						        	 tr.children("td").get(0).innerHTML =  tr.children("td").get(0).firstChild.value;
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});	                    
+		                }    	  			   
 				       
 			      })
 			  })
-    	 }) 
+    	 }
     </script>
   </body>
 </html>

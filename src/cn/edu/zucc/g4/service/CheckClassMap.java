@@ -206,6 +206,7 @@ public class CheckClassMap {
 			}
 		}
 		for(int i=0;i<list.size();i++){
+			
 			timelist.add(examlist.get(i).get(0).getCheckTime());
 		}
 		return timelist;
