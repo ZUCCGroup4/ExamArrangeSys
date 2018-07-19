@@ -468,6 +468,32 @@
         $(document).ready(
         		function(){loadmodify()}		 
         	 ) 
+	        	 function(time){
+		        	 $.ajax({
+				         url: "modifytime/"+courseId,					
+				         contentType: "application/json;charset=utf-8",	
+				         dataType:"json",
+				         type: "post",			
+				         success:function(data){			
+				        	 var text = "<select class=\"form-control\" onchange=\"test(this.val)\">";
+				        	 for(var i =0 ; i<data.length;i++) {
+				        		 if(data[i] == time) 
+				        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+				        		 else 
+				        			 text = text + "<option>"+data[i]+"</option>";
+				        	 }
+				        	 tr.children("td").get(0).innerHTML = text+"</select>";
+				         },
+				
+				         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+				
+				        	 console.log(XMLHttpRequest.status);
+		                       console.log(XMLHttpRequest.readyState);
+		                       console.log(textStatus);
+				
+				        }
+		  			});
+	       		 }
         		function loadmodify(){
     			  $(".tbl").each(function(){  
     	
@@ -489,7 +515,7 @@
     						         dataType:"json",
     						         type: "post",			
     						         success:function(data){			
-    						        	 var text = "<select class=\"form-control\">";
+    						        	 var text = "<select class=\"form-control\" onchange=\"test(this.val)\">";
     						        	 for(var i =0 ; i<data.length;i++) {
     						        		 if(data[i] == time) 
     						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
