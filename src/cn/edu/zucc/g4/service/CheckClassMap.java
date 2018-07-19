@@ -275,10 +275,10 @@ public class CheckClassMap {
 		return timelist;
 	}
 
-	public ArrayList<String> modifyExamClass(ArrayList<ArrayList<TestCheckBean>> examlist, Timestamp checktime,
-			String checkplace) {
+	public ArrayList<String> modifyExamClass(ArrayList<ArrayList<TestCheckBean>> examlist, String checkplace,Timestamp checktime) {
 		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的考场
 		ArrayList<String> classlist = new ArrayList<String>();// 存放可修改的考场
+		classlist.add(checkplace);
 		if (examlist != null) {
 			for (int i = 0; i < examlist.size(); i++)
 				for (int j = 0; j < examlist.get(i).size(); j++) {
@@ -299,6 +299,34 @@ public class CheckClassMap {
 		classlist.clear();
 		classlist.addAll(newList);
 		return classlist;
+	}
+	
+	public ArrayList<String> modifyExamTeacher(ArrayList<ArrayList<TestCheckBean>> examlist, String teacher,Timestamp checktime) {
+		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的考场
+		ArrayList<String> teacherlist = new ArrayList<String>();// 存放可修改的考场
+		teacherlist.add(teacher);
+		if (examlist != null) {
+			for (int i = 0; i < examlist.size(); i++)
+				for (int j = 0; j < examlist.get(i).size(); j++) {
+					teacherlist.add(examlist.get(i).get(j).getInvigilator1());
+					teacherlist.add(examlist.get(i).get(j).getInvigilator2());
+					if (examlist.get(i).get(0).getCheckTime().equals(checktime)) {
+						list.add(examlist.get(i).get(j).getInvigilator1());
+						list.add(examlist.get(i).get(j).getInvigilator2());
+					}
+				}
+		}
+		teacherlist.removeAll(list);
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = teacherlist.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		teacherlist.clear();
+		teacherlist.addAll(newList);
+		return teacherlist;
 	}
 
 	public ArrayList<ArrayList<TestCheckBean>> optimizeExam(ArrayList<ArrayList<TestCheckBean>> list) {
@@ -481,7 +509,7 @@ public class CheckClassMap {
 
 				}
 				availablelist.remove(0);
-				availablelist.remove(1);
+				availablelist.remove(0);
 			}
 
 		}

@@ -156,9 +156,9 @@ public class ManagerController {
 	@RequestMapping("/modifyclass")
 	public ModelAndView modifyclass(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-		String checkplace = request.getParameter("checkplace");
 		String checktime = request.getParameter("checktime");
-		ArrayList<String> classlist = checkClassMap.modifyExamClass(examlist2, Timestamp.valueOf(checktime), checkplace);// 可修改考场列表
+		String checkplace = request.getParameter("checkplace");
+		ArrayList<String> classlist = checkClassMap.modifyExamClass(examlist2, checkplace,Timestamp.valueOf(checktime));// 可修改考场列表
 		modelAndView.addObject("classlist", classlist);
 		modelAndView.addObject("examlist2", examlist2);
 		modelAndView.setViewName("text-manager2.jsp");
@@ -171,7 +171,7 @@ public class ManagerController {
 		ModelAndView modelAndView = new ModelAndView();
 		String checkplace = request.getParameter("checkplace");
 		String checktime = request.getParameter("checktime");
-		examlist = testTimeService.modifyExamClass(examlist2, checkplace, Timestamp.valueOf(checktime));// 修改完考场的考试安排表
+		examlist2 = testTimeService.modifyExamClass(examlist2, checkplace, Timestamp.valueOf(checktime));// 修改完考场的考试安排表
 		modelAndView.addObject("examlist2", examlist2);
 		modelAndView.setViewName("text-manager2.jsp");
 		return modelAndView;
@@ -184,9 +184,43 @@ public class ManagerController {
 
 		examlist3.addAll(examlist2);
 		examlist3 = checkClassMap.planExamTeacher(examlist3);
+		
+//		Timestamp checktime = Timestamp.valueOf("2018-07-01 08:00:00.0");
+//		ArrayList<String> teacherlist = checkClassMap.modifyExamTeacher(examlist3, "sss",checktime);
+//		System.out.println(examlist3.size()+"++++++++++");
+//		System.out.println(teacherlist.size()+"----------"); 
+//		for(int i=0;i<teacherlist.size();i++){
+//			System.out.println(teacherlist.get(i));
+//		}
 
 		request.getSession().setAttribute("examlist3", examlist3);
 
+		modelAndView.setViewName("text-manager3.jsp");
+		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyteacher")
+	public ModelAndView modifyteacher(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		String checktime = request.getParameter("checktime");
+		String teacher = request.getParameter("teacher");
+		ArrayList<String> teacherlist = checkClassMap.modifyExamTeacher(examlist3, teacher,Timestamp.valueOf(checktime));// 可修改考场列表
+		modelAndView.addObject("teacherlist", teacherlist);
+		modelAndView.addObject("examlist3", examlist3);
+		modelAndView.setViewName("text-manager3.jsp");
+		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyteacherresult")
+	public ModelAndView modifyteacherresult(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		String checkplace = request.getParameter("checkplace");
+		String checktime = request.getParameter("checktime");
+		String teacher = request.getParameter("teacher");
+		examlist3 = testTimeService.modifyExamTeacher(examlist3, checkplace, teacher,Timestamp.valueOf(checktime));// 修改完考场的考试安排表
+		modelAndView.addObject("examlist3", examlist3);
 		modelAndView.setViewName("text-manager3.jsp");
 		return modelAndView;
 	}
