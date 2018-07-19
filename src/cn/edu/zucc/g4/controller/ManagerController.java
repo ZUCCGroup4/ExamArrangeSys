@@ -31,43 +31,87 @@ public class ManagerController {
 	public TestTimeService testTimeService;
 
 	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>();
+	public static ArrayList<ArrayList<TestCheckBean>> examlist2 = new ArrayList<ArrayList<TestCheckBean>>();
+	public static ArrayList<ArrayList<TestCheckBean>> examlist3 = new ArrayList<ArrayList<TestCheckBean>>();
+
+	@ResponseBody
+	@RequestMapping("backManager1")
+	public ModelAndView backManagerO(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		request.getSession().removeAttribute("examlist1");
+		examlist.clear();
+		System.out.println("examlist" + examlist.isEmpty());
+		modelAndView.setViewName("text-manager1.jsp");
+		return modelAndView;
+	}
+
+	@ResponseBody
+	@RequestMapping("backManager1-2")
+	public ModelAndView backManagerOT(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		request.getSession().removeAttribute("examlist2");
+		examlist2.clear();
+		System.out.println("examlist2" + examlist2.isEmpty());
+		modelAndView.setViewName("text-manager1-2.jsp");
+		return modelAndView;
+	}
+
+	@ResponseBody
+	@RequestMapping("backManager2")
+	public ModelAndView backManagerT(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		ArrayList<ArrayList<TestCheckBean>> examlist4 = new ArrayList<ArrayList<TestCheckBean>>();
+
+		examlist4 = (ArrayList<ArrayList<TestCheckBean>>) request.getSession().getAttribute("examlist2");
+
+		System.out.println("backManager2" + examlist4.get(0).get(0).getCourseName());
+		request.getSession().removeAttribute("examlist3");
+
+		examlist3.clear();
+		System.out.println("examlist3" + examlist3.isEmpty());
+		modelAndView.setViewName("text-manager2.jsp");
+		return modelAndView;
+	}
 
 	@ResponseBody
 	@RequestMapping("toManager1-2")
 	public ModelAndView toManagerOT(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
+
+		checkClassMap.LoadCheckClassMap();
+
+		long day = 0;
+		String startTime = request.getParameter("starttime");
+		String endTime = request.getParameter("endtime");
+
+		day = new DateUtil().getDay(startTime, endTime);// 时间换算成考试时间块
+
+		System.out.println(day + "天");
+
+		examlist = checkClassMap.initializeExam((int) (day * 3));// 安排考试时间
 		
-//		ArrayList<Timestamp> timelist = checkClassMap.modifyExamTime(examlist,"301389");
-//		for(int i=0;i<timelist.size();i++){
-//				System.out.println(timelist.get(i));
-//		}
-		
+		examlist = checkClassMap.optimizeExam(examlist);
 
-		if (examlist.size() == 0) {
-			checkClassMap.LoadCheckClassMap();
+		examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
 
-			long day = 0;
-			String startTime = request.getParameter("starttime");
-			String endTime = request.getParameter("endtime");
+		examlist = testTimeService.setCourseName(examlist);
 
-			day = new DateUtil().getDay(startTime, endTime);// 时间换算成考试时间块
+		request.getSession().setAttribute("examlist1", examlist);
 
-			System.out.println(day + "天");
-
-			examlist = checkClassMap.initializeExam((int) (day * 3));// 安排考试时间
-
-			examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
-
-			examlist = testTimeService.setCourseName(examlist);
-		}
-
-		modelAndView.addObject("examlist", examlist);
+		/*
+		 * ArrayList<Timestamp> timelist =
+		 * checkClassMap.modifyExamTime(examlist,"301389");
+		 * System.out.println(examlist.size()+"++++++++++");
+		 * System.out.println(timelist.size()+"----------"); for(int
+		 * i=0;i<timelist.size();i++){ System.out.println(timelist.get(i)); }
+		 */
 
 		modelAndView.setViewName("text-manager1-2.jsp");
 		return modelAndView;
 	}
-	
+
 	@ResponseBody
+
 	@RequestMapping("/modifytime/{courseid}")
 	public JSONArray modifytime(@PathVariable("courseid") String courseid){
 		ArrayList<Timestamp> timelist = checkClassMap.modifyExamTime(examlist,courseid);//可修改时间列表
@@ -78,25 +122,53 @@ public class ManagerController {
 		JSONArray result = JSONArray.fromObject(res);
 		return result;
 	}
-	
 	@ResponseBody
+
 	@RequestMapping("/modifytimeresult/{courseid}/{checktime}")
 	public boolean modifytimeresult(@PathVariable("courseid") String courseid,@PathVariable("checktime") String checktime){
 		examlist = testTimeService.modifyExamTime(examlist,courseid,Timestamp.valueOf(checktime));//修改完时间的考试安排表
 		return true;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("toManager2")
 	public ModelAndView toManagerTwo(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 
-		examlist = checkClassMap.planExamClass(examlist);
+		examlist2 = checkClassMap.planExamClass(examlist);
+		
+//		Timestamp checktime = Timestamp.valueOf("2018-07-01 08:00:00.0");
+//		ArrayList<String> classlist = checkClassMap.modifyExamClass(examlist2, checktime, "理一106");
+//		System.out.println(examlist2.size()+"++++++++++");
+//		System.out.println(classlist.size()+"----------"); 
+//		for(int i=0;i<classlist.size();i++){
+//			System.out.println(classlist.get(i));
+//		}
 
-		modelAndView.addObject("examlist", examlist);
+		request.getSession().setAttribute("examlist2", examlist2);
 
 		modelAndView.setViewName("text-manager2.jsp");
 		return modelAndView;
+	}
+
+	@ResponseBody
+	@RequestMapping("/modifyclass/{checktime}")
+	public JSONArray modifyclass(@PathVariable("checktime") String checktime) {
+		ArrayList<String> classlist = checkClassMap.modifyExamClass(examlist2, Timestamp.valueOf(checktime));// 可修改考场列表
+		String[] res = new String[classlist.size()];
+		for(int i= 0;i<classlist.size();i++){
+			res[i]=classlist.get(i).toString();
+		}
+		JSONArray result = JSONArray.fromObject(res);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyclassresult/{checktime}/{checkplace}")
+	public boolean modifyclassresult(@PathVariable("checktime") String checktime,@PathVariable("checkplace") String checkplace) {
+		examlist = testTimeService.modifyExamClass(examlist2, checkplace, Timestamp.valueOf(checktime));// 修改完考场的考试安排表
+
+		return true;
 	}
 	
 	@ResponseBody
@@ -104,9 +176,10 @@ public class ManagerController {
 	public ModelAndView toManagerThree(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 
-		examlist = checkClassMap.planExamTeacher(examlist);
+		examlist3.addAll(examlist2);
+		examlist3 = checkClassMap.planExamTeacher(examlist3);
 
-		modelAndView.addObject("examlist", examlist);
+		request.getSession().setAttribute("examlist3", examlist3);
 
 		modelAndView.setViewName("text-manager3.jsp");
 		return modelAndView;

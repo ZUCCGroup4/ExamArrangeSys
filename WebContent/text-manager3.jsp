@@ -85,9 +85,9 @@
         <div class="row">
           <nav class="templatemo-top-nav col-lg-12 col-md-12">
             <ul class="text-uppercase">
-              <li><a href="text-manager1-2.jsp" class="active">第一步 考试时间安排</a></li>
-              <li><a href="text-manager2.jsp" class="active">第二步 考试地点安排  </a></li>
-              <li><a href="#" class="active">第三步 监考老师安排</a></li>
+              <li><a href="text-manager1-2.jsp" >第一步 考试时间安排</a></li>
+              <li><a href="text-manager2.jsp" >第二步 考试地点安排  </a></li>
+              <li><a href="#" >第三步 监考老师安排</a></li>
             </ul>
           </nav>
         </div>
@@ -159,8 +159,8 @@
                     <td>课程编号</td>
                     <td>课程名称</td>
                     <td>考试地点</td>
-                    <td>教师编号</td>
-                    <td>修改</td>
+                    <td>监考老师1</td>
+                    <td>监考老师2</td>
                   </tr>
                   </thead>
                   <tbody id="tablevalue">
@@ -194,7 +194,7 @@
           <button class="fy_btn" data="next">下一页</button>|<button data="lastPage" class="fy_btn">尾页</button>
           转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
         </div>
-          <a href="testclassarrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
+          <a href="backManager2" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
           <!--<button class="step" id="lststep">上一步</button>-->
           <input type="submit" class="step" id="nxtstep" value="下一步">
@@ -340,11 +340,10 @@
 	</script>
 	 <script type="text/javascript">
         //数据
-        alert(1);
          var testdata=[];
          
        <%
-       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
+       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist3");
       		 for(int i=0;i<objlist.size();i++) {
       			 for(int j=0;j<objlist.get(i).size();j++) {
 		%>    			 

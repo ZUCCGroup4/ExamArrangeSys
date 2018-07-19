@@ -21,6 +21,7 @@ public class SelectionjoinController {
 	public ModelAndView tojoin(HttpServletRequest request){
 		ModelAndView modelAndView = new ModelAndView();
 		request.setAttribute("terlist",selectionjoinService.loadallTerm());
+		request.getSession().removeAttribute("examlist1");
 		modelAndView.setViewName("selectjoin.jsp");
 		return modelAndView;
 	}

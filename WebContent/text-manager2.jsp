@@ -4,8 +4,6 @@
 	import="java.util.*,cn.edu.zucc.g4.bean.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-<<<<<<< HEAD
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -81,9 +79,9 @@
         <div class="row">
           <nav class="templatemo-top-nav col-lg-12 col-md-12">
             <ul class="text-uppercase">
-              <li><a href="text-manager1-2.jsp" class="active">第一步 考试时间安排</a></li>
-              <li><a href="#" class="active">第二步 考试地点安排  </a></li>
-              <li><a href="text-manager3.jsp" class="active">第三步 监考老师安排</a></li>
+              <li><a href="text-manager1-2.jsp" >第一步 考试时间安排</a></li>
+              <li><a href="#" >第二步 考试地点安排  </a></li>
+              <li><a href="text-manager3.jsp" >第三步 监考老师安排</a></li>
             </ul>
           </nav>
         </div>
@@ -111,26 +109,7 @@
                     ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
                 }
             }
-            var op = 0;
-            function changevalue(rowid) {
-                var tr = rowid.childNodes;
-                if(op == 0) {
-                    op = 1;
-                    for(var i = 0; i < tr.length - 1; i ++) {
-                        if(i >= 1 && i <= 2) continue;
-                        if(tr[i].localName == "td")
-                            tr[i].innerHTML = "<select class=\"form-control\"><option>"+tr[i].innerHTML+"</option></select>";
-                    }
-                }
-                else {
-                    op = 0;
-                    for(var i = 0; i < tr.length - 1; i ++) {
-                        if(i >= 1 && i <= 2) continue;
-                        if(tr[i].localName == "td");
-                          tr[i].innerHTML = tr[i].firstChild.value;
-                    }
-                }
-            }
+           
         </script>
         <form action="search" class="templatemo-login-form">
           <div class="templatemo-content-widget white-bg">
@@ -188,7 +167,7 @@
           <button class="fy_btn" data="next">下一页</button>|<button data="lastPage" class="fy_btn">尾页</button>
           转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
         </div>
-          <a href="testtimearrange" class="step" id="lststep" style="line-height: 33px">上一步</a>
+          <a href="backManager1-2" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
           <!--<button class="step" id="lststep">上一步</button>-->
           <a href="toManager3" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
@@ -336,7 +315,7 @@
        
          var testdata=[];
        <%
-       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
+       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist2");
       		 for(int i=0;i<objlist.size();i++) {
       			 for(int j=0;j<objlist.get(i).size();j++) {
 		%>    			 
@@ -391,12 +370,12 @@
                       }
 
                       var c_tr = document.createElement('tr');
-                      c_tr.id = 'row'+i;
+                      c_tr.className="tbl";
                       c_tr.innerHTML='<td>'+this[i].time+'</td>'+
                           '<td>'+this[i].id+'</td>'+
                           '<td>'+this[i].name+'</td>'+
                           '<td>'+this[i].place+'</td>'+
-                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                          '<td><button id="modify">修改</button></td>';
                       templist.appendChild(c_tr);
 
                   }
@@ -468,61 +447,34 @@
         $(document).ready(
         		function(){loadmodify()}		 
         	 ) 
-	        	 function(time){
-		        	 $.ajax({
-				         url: "modifytime/"+courseId,					
-				         contentType: "application/json;charset=utf-8",	
-				         dataType:"json",
-				         type: "post",			
-				         success:function(data){			
-				        	 var text = "<select class=\"form-control\" onchange=\"test(this.val)\">";
-				        	 for(var i =0 ; i<data.length;i++) {
-				        		 if(data[i] == time) 
-				        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
-				        		 else 
-				        			 text = text + "<option>"+data[i]+"</option>";
-				        	 }
-				        	 tr.children("td").get(0).innerHTML = text+"</select>";
-				         },
-				
-				         error:function(XMLHttpRequest, textStatus, errorThrown){ 
-				
-				        	 console.log(XMLHttpRequest.status);
-		                       console.log(XMLHttpRequest.readyState);
-		                       console.log(textStatus);
-				
-				        }
-		  			});
-	       		 }
         		function loadmodify(){
     			  $(".tbl").each(function(){  
     	
-    			      var tmp=$(this).children().eq(5);  
-    			      var btn=tmp.children();
     			      var op = 0;
     			      
-    			      var modifyuser=$(this).children().eq(3).children();
+    			      var modifyuser=$(this).children().eq(4).children();
     			      modifyuser.bind("click",function(){ 
     			    	  var tr=modifyuser.parent().parent();
     			    	  var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML; 
+    			    	  var place=modifyuser.parent().parent().children("td").get(3).innerHTML; 
     			    	  var time=modifyuser.parent().parent().children("td").get(0).innerHTML; 
-    			    	  alert(courseId);
+    			    	
     			    	  if(op == 0) {
     		                    op = 1;
     		                    $.ajax({
-    						         url: "modifytime/"+courseId,					
+    						         url: "modifyclass/"+time,					
     						         contentType: "application/json;charset=utf-8",	
     						         dataType:"json",
     						         type: "post",			
     						         success:function(data){			
-    						        	 var text = "<select class=\"form-control\" onchange=\"test(this.val)\">";
+    						        	 var text = "<select class=\"form-control\">";
     						        	 for(var i =0 ; i<data.length;i++) {
-    						        		 if(data[i] == time) 
+    						        		 if(data[i] == place) 
     						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
     						        		 else 
     						        			 text = text + "<option>"+data[i]+"</option>";
     						        	 }
-    						        	 tr.children("td").get(0).innerHTML = text+"</select>";
+    						        	 tr.children("td").get(3).innerHTML = text+"</select>";
     						         },
     						
     						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
@@ -538,12 +490,12 @@
     		                    op = 0;
     		                    
     		                    $.ajax({
-    						         url: "modifytimeresult/"+courseId+"/"+tr.children("td").get(0).firstChild.value,					
+    						         url: "modifyclassresult/"+time+"/"+tr.children("td").get(3).firstChild.value,					
     						         contentType: "application/json;charset=utf-8",	
     						         dataType:"json",
     						         type: "post",			
     						         success:function(){			
-    						        	 tr.children("td").get(0).innerHTML =  tr.children("td").get(0).firstChild.value;
+    						        	 tr.children("td").get(3).innerHTML =  tr.children("td").get(3).firstChild.value;
     						         },
     						
     						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
