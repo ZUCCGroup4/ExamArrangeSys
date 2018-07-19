@@ -304,7 +304,7 @@ public class CheckClassMap {
 		return classlist;
 	}
 	
-	public ArrayList<String> modifyExamTeacher(ArrayList<ArrayList<TestCheckBean>> examlist, String teacher,Timestamp checktime) {
+	public ArrayList<String> modifyExamTeacher(ArrayList<ArrayList<TestCheckBean>> examlist, String teacher1,String teacher2,Timestamp checktime) {
 		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的考场
 		ArrayList<String> teacherlist = new ArrayList<String>();// 存放可修改的考场
 		
@@ -328,7 +328,8 @@ public class CheckClassMap {
 				newList.add(element);
 		}
 		teacherlist.clear();
-		teacherlist.add(teacher);
+		teacherlist.add(teacher1);
+		teacherlist.add(teacher2);
 		teacherlist.addAll(newList);
 		return teacherlist;
 	}

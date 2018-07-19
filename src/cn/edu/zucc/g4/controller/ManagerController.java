@@ -134,19 +134,12 @@ public class ManagerController {
 	@RequestMapping("toManager2")
 	public ModelAndView toManagerTwo(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-
-		examlist2 = checkClassMap.planExamClass(examlist);
 		
-//		Timestamp checktime = Timestamp.valueOf("2018-07-01 08:00:00.0");
-//		ArrayList<String> classlist = checkClassMap.modifyExamClass(examlist2, checktime, "理一106");
-//		System.out.println(examlist2.size()+"++++++++++");
-//		System.out.println(classlist.size()+"----------"); 
-//		for(int i=0;i<classlist.size();i++){
-//			System.out.println(classlist.get(i));
-//		}
-
-		request.getSession().setAttribute("examlist2", examlist2);
-
+		if(examlist2.isEmpty()){
+			examlist2 = checkClassMap.planExamClass(examlist);
+			
+			request.getSession().setAttribute("examlist2", examlist2);
+		}
 		modelAndView.setViewName("text-manager2.jsp");
 		return modelAndView;
 	}
@@ -178,48 +171,39 @@ public class ManagerController {
 	@RequestMapping("toManager3")
 	public ModelAndView toManagerThree(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-
-		examlist3.addAll(examlist2);
-		examlist3 = checkClassMap.planExamTeacher(examlist3);
 		
-//		Timestamp checktime = Timestamp.valueOf("2018-07-01 08:00:00.0");
-//		ArrayList<String> teacherlist = checkClassMap.modifyExamTeacher(examlist3, "sss",checktime);
-//		System.out.println(examlist3.size()+"++++++++++");
-//		System.out.println(teacherlist.size()+"----------"); 
-//		for(int i=0;i<teacherlist.size();i++){
-//			System.out.println(teacherlist.get(i));
-//		}
-
+		if(examlist3.isEmpty()){
+			examlist3.addAll(examlist2);
+			examlist3 = checkClassMap.planExamTeacher(examlist3);
+			request.getSession().setAttribute("examlist3", examlist3);
+		}
+		
+		modelAndView.setViewName("text-manager3.jsp");
+		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyteacher/{checktime}/{teacher1}/{teacher2}")
+	public JSONArray modifyteacher(@PathVariable("checktime") String checktime,@PathVariable("teacher1") String teacher1,@PathVariable("teacher2") String teacher2) {
+		
+		ArrayList<String> teacherlist = checkClassMap.modifyExamTeacher(examlist3, teacher1,teacher2,Timestamp.valueOf(checktime));// 可修改考场列表
+		String[] res = new String[teacherlist.size()];
+		for(int i= 0;i<teacherlist.size();i++){
+			res[i]=teacherlist.get(i).toString();
+		}
+		JSONArray result = JSONArray.fromObject(res);
+		return result;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyteacherresult/{checktime}/{checkplace}/{teacher1}/{teacher2}")
+	public boolean modifyteacherresult(@PathVariable("checktime") String checktime,@PathVariable("teacher1") String teacher1,
+			@PathVariable("teacher2") String teacher2,@PathVariable("checkplace") String checkplace,HttpServletRequest request) {
+		
+		examlist3 = testTimeService.modifyExamTeacher(examlist3, checkplace, teacher1,teacher2,Timestamp.valueOf(checktime));// 修改完考场的考试安排表
 		request.getSession().setAttribute("examlist3", examlist3);
-
-		modelAndView.setViewName("text-manager3.jsp");
-		return modelAndView;
-	}
-	
-	@ResponseBody
-	@RequestMapping("/modifyteacher")
-	public ModelAndView modifyteacher(HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView();
-		String checktime = request.getParameter("checktime");
-		String teacher = request.getParameter("teacher");
-		ArrayList<String> teacherlist = checkClassMap.modifyExamTeacher(examlist3, teacher,Timestamp.valueOf(checktime));// 可修改考场列表
-		modelAndView.addObject("teacherlist", teacherlist);
-		modelAndView.addObject("examlist3", examlist3);
-		modelAndView.setViewName("text-manager3.jsp");
-		return modelAndView;
-	}
-	
-	@ResponseBody
-	@RequestMapping("/modifyteacherresult")
-	public ModelAndView modifyteacherresult(HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView();
-		String checkplace = request.getParameter("checkplace");
-		String checktime = request.getParameter("checktime");
-		String teacher = request.getParameter("teacher");
-		examlist3 = testTimeService.modifyExamTeacher(examlist3, checkplace, teacher,Timestamp.valueOf(checktime));// 修改完考场的考试安排表
-		modelAndView.addObject("examlist3", examlist3);
-		modelAndView.setViewName("text-manager3.jsp");
-		return modelAndView;
+		return true;
 	}
 
 }

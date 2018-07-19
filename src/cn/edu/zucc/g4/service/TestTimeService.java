@@ -89,12 +89,13 @@ public class TestTimeService {
 	}
 	
 	public ArrayList<ArrayList<TestCheckBean>> modifyExamTeacher(ArrayList<ArrayList<TestCheckBean>> examlist,
-			String checkplace,  String teacher, Timestamp checktime) {
+			String checkplace,  String teacher1, String teacher2, Timestamp checktime) {
 
 		for (int i = 0; i < examlist.size(); i++) {
 			for (int j = 0; j < examlist.get(i).size(); j++) {
 				if (examlist.get(i).get(j).getCheckPlace().equals(checkplace)&&examlist.get(i).get(j).getCheckTime().equals(checktime)) {
-					examlist.get(i).get(j).setCheckPlace(teacher);
+					examlist.get(i).get(j).setInvigilator1(teacher1);
+					examlist.get(i).get(j).setInvigilator2(teacher2);
 				}
 			}
 		}
