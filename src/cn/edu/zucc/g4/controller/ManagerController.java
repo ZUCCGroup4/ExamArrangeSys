@@ -50,8 +50,7 @@ public class ManagerController {
 
 			examlist = testTimeService.setCourseName(examlist);
 		}
-
-		modelAndView.addObject("examlist", examlist);
+2.addObject("examlist", examlist);
 
 		modelAndView.setViewName("text-manager1-2.jsp");
 		return modelAndView;

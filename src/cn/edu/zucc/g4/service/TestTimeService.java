@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import cn.edu.zucc.g4.bean.CheckBean;
+import cn.edu.zucc.g4.bean.CourseBean;
 import cn.edu.zucc.g4.bean.SelectionBean;
 import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.bean.ViewCheckBean;
@@ -43,10 +44,15 @@ public class TestTimeService {
 	}
 	
 	public ArrayList<ArrayList<TestCheckBean>> setCourseName(ArrayList<ArrayList<TestCheckBean>> examlist){
-		
+		List<CourseBean> list = courseDAO.listALLCourse();
 		for(int i=0; i<examlist.size(); i++) {
 			for(int j=0; j<examlist.get(i).size(); j++) {
-				examlist.get(i).get(j).setCourseName(courseDAO.getCourse(examlist.get(i).get(j).getCourseId()).getCourse_name());
+				for(int k=0; k<list.size(); k++) {
+					if(examlist.get(i).get(j).getCourseId().equals(list.get(k).getCourse_id())) {
+						examlist.get(i).get(j).setCourseName(list.get(k).getCourse_name());
+						break;
+					}
+				}
 			}
 		}
 		
