@@ -101,34 +101,55 @@
           <h3 class="margin-bottom-10" style="text-align: center;">监考老师安排</h3>
         </div>
         <script>
-            function changedate(value) {
-                var ipt = document.getElementById("search");
-                if(value == "date") {
-                    ipt.innerHTML = "<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
-                        "&nbsp&nbsp到&nbsp&nbsp<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
-                }
-                else if(value == "name") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
-                }
-                else if(value == "ID") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
-                }
+        function changedate(value) {
+            var ipt = document.getElementById("search");
+           
+            if(value == "date") {
+                ipt.innerHTML = "<input id=\"date1\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
+                    "&nbsp&nbsp到&nbsp&nbsp<input id=\"date2\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
             }
-            
+            else if(value == "name") {
+                ipt.innerHTML = "<input id=\"claname\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
+            }
+            else if(value == "ID") {
+                ipt.innerHTML = "<input id=\"claid\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
+            }
+        }
         </script>
-        <form action="search" class="templatemo-login-form">
+          <script >
+      	function searchbtn(){
+      		var ipt = document.getElementById("selecttype").value;
+              var btn = document.getElementById('search_btn');
+              var searchdate1;//1号日期输入框
+              var searchdate2;//2号日期输入框
+              var sname;//课程名称输入框
+              var sid;//课程ID输入框
+              if(ipt=="date"){
+              	searchdate1 = $("#date1").val();
+                  searchdate2 = $("#date2").val();
+                  btn.href = "selectdate?pagename=text-manager1-2.jsp&date1="+searchdate1+"&date2="+searchdate2;
+              }
+              else if(ipt=="name"){
+              	claname = $("#claname").val();
+                  btn.href = "selectname?pagename=text-manager1-2.jsp&claname="+claname;
+              }
+              else if(ipt=="ID"){
+              	claid=$("#claid").val();
+                  btn.href = "selectid?pagename=text-manager1-2.jsp&claid="+claid;
+              }
+      	}
+      </script>
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
               <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
-            <select class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
-              <option value="name">按课程名称查找</option>
-              <option value="ID">按课程ID查找</option>
-              <option value="date">按日期查找</option>
+            <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
+                <option value="name">按课程名称查找</option>
+                <option value="ID">按课程ID查找</option>
+                <option value="date">按日期查找</option>
             </select>
-            <input type="submit" class="templatemo-blue-button" value="查找">
+            <a id="search_btn" href=""><input type="submit" class="templatemo-blue-button" value="查找" onclick="searchbtn()"></a>
           </div>
-        </form>
        
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
@@ -178,7 +199,7 @@
           <a href="backManager2" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
           <!--<button class="step" id="lststep">上一步</button>-->
-          <input type="submit" class="step" id="nxtstep" value="下一步">
+          <a href="toManagerfinally" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
 
         <footer class="text-right">
           <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>
@@ -324,7 +345,10 @@
          var testdata=[];
          
        <%
-       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist3");
+       ArrayList<ArrayList<TestCheckBean>> objlist= (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examtestlist");
+       if(objlist==null||objlist.size()==0){
+    	   objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist3");
+       }
       		 for(int i=0;i<objlist.size();i++) {
       			 for(int j=0;j<objlist.get(i).size();j++) {
 		%>    			 

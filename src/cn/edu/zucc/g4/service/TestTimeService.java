@@ -27,6 +27,9 @@ public class TestTimeService {
 
 	@Resource(name = "courseDAO")
 	CourseDAO courseDAO;
+	
+	@Resource(name="checkDAO")
+	CheckDAO checkDAO;
 
 	public ArrayList<ArrayList<TestCheckBean>> setExamTime(ArrayList<ArrayList<TestCheckBean>> examlist,
 			String startTime) {
@@ -107,5 +110,22 @@ public class TestTimeService {
 			}
 		}
 	}
+	
+	//满足时间搜索
+		public ArrayList<ArrayList<TestCheckBean>> selecttesttimelist(ArrayList<ArrayList<TestCheckBean>> examlist,String date1,String date2){
+			ArrayList<ArrayList<TestCheckBean>> terlist = checkDAO.selectdateCheck(examlist,date1,date2);
+			return terlist;
+		}
+		//满足课程名搜索
+		public ArrayList<ArrayList<TestCheckBean>> selecttestlistbyname(ArrayList<ArrayList<TestCheckBean>> examlist,String name){
+			ArrayList<ArrayList<TestCheckBean>> terlist = checkDAO.selectnameCheck(examlist, name);
+			return terlist;
+		}
+		//满足课程ID搜索
+		public ArrayList<ArrayList<TestCheckBean>> selecttestlistbyid(ArrayList<ArrayList<TestCheckBean>> examlist,String id){
+			ArrayList<ArrayList<TestCheckBean>> terlist = checkDAO.selectidCheck(examlist,id);
+			System.out.println("service 长度："+terlist.size());
+			return terlist;
+		}
 	
 }
