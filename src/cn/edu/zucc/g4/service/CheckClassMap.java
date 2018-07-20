@@ -275,12 +275,37 @@ public class CheckClassMap {
 		return timelist;
 	}
 
+	public ArrayList<Timestamp> modifyFinallyExamTime(ArrayList<TestCheckBean> examlist, String courseid,
+			Timestamp checktime) {
+		// 此方法传入某门课程的课程号，找出与其不冲突课程的可安排时间,返回值为时间块下标数组
+		ArrayList<Timestamp> timelist = new ArrayList<Timestamp>();// 生成一个list用于存放不冲突课程的时间
+		if (examlist != null) {
+			for (int i = 0; i < examlist.size(); i++) {
+				if (this.abs(examlist.get(i).getCourseId(), courseid) == 1) {// 如果冲突
+					break;
+				}
+				timelist.add(examlist.get(i).getCheckTime());
+			}
+		}
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = timelist.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		timelist.clear();
+		timelist.add(checktime);
+		timelist.addAll(newList);
+		return timelist;
+	}
 
-	public ArrayList<String> modifyExamClass(ArrayList<ArrayList<TestCheckBean>> examlist, String checkplace,Timestamp checktime) {
+	public ArrayList<String> modifyExamClass(ArrayList<ArrayList<TestCheckBean>> examlist, String checkplace,
+			Timestamp checktime) {
 
 		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的考场
 		ArrayList<String> classlist = new ArrayList<String>();// 存放可修改的考场
-		
+
 		if (examlist != null) {
 			for (int i = 0; i < examlist.size(); i++)
 				for (int j = 0; j < examlist.get(i).size(); j++) {
@@ -304,10 +329,39 @@ public class CheckClassMap {
 		return classlist;
 	}
 	
-	public ArrayList<String> modifyExamTeacher(ArrayList<ArrayList<TestCheckBean>> examlist, String teacher1,String teacher2,Timestamp checktime) {
+	public ArrayList<String> modifyFinallyExamClass(ArrayList<TestCheckBean> examlist, String checkplace,
+			Timestamp checktime) {
+
 		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的考场
+		ArrayList<String> classlist = new ArrayList<String>();// 存放可修改的考场
+
+		if (examlist != null) {
+			for (int i = 0; i < examlist.size(); i++){
+					classlist.add(examlist.get(i).getCheckPlace());
+					if (examlist.get(i).getCheckTime().equals(checktime)) {
+						list.add(examlist.get(i).getCheckPlace());
+					}
+				}
+		}
+		classlist.removeAll(list);
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = classlist.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		classlist.clear();
+		classlist.add(checkplace);
+		classlist.addAll(newList);
+		return classlist;
+	}
+
+	public ArrayList<String> modifyExamTeacher(ArrayList<ArrayList<TestCheckBean>> examlist, String teacher1,
+			String teacher2, Timestamp checktime) {
+		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的教师
 		ArrayList<String> teacherlist = new ArrayList<String>();// 存放可修改的考场
-		
+
 		if (examlist != null) {
 			for (int i = 0; i < examlist.size(); i++)
 				for (int j = 0; j < examlist.get(i).size(); j++) {
@@ -334,7 +388,35 @@ public class CheckClassMap {
 		return teacherlist;
 	}
 	
-	
+	public ArrayList<String> modifyFinallyExamTeacher(ArrayList<TestCheckBean> examlist, String teacher1,
+			String teacher2, Timestamp checktime) {
+		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的教师
+		ArrayList<String> teacherlist = new ArrayList<String>();// 存放可修改的考场
+
+		if (examlist != null) {
+			for (int i = 0; i < examlist.size(); i++){
+					teacherlist.add(examlist.get(i).getInvigilator1());
+					teacherlist.add(examlist.get(i).getInvigilator2());
+					if (examlist.get(i).getCheckTime().equals(checktime)) {
+						list.add(examlist.get(i).getInvigilator1());
+						list.add(examlist.get(i).getInvigilator2());
+					}
+				}
+		}
+		teacherlist.removeAll(list);
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = teacherlist.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		teacherlist.clear();
+		teacherlist.add(teacher1);
+		teacherlist.add(teacher2);
+		teacherlist.addAll(newList);
+		return teacherlist;
+	}
 
 	public ArrayList<ArrayList<TestCheckBean>> optimizeExam(ArrayList<ArrayList<TestCheckBean>> list) {
 		long starttime = System.currentTimeMillis();

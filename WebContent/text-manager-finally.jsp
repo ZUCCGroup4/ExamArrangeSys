@@ -319,10 +319,12 @@
          var testdata=[];
          
        <%
+
        ArrayList<TestCheckBean> objlist= (ArrayList<TestCheckBean>) request.getAttribute("examtestlist");
        if(objlist==null||objlist.size()==0){
     	   objlist = (ArrayList<TestCheckBean>) session.getAttribute("finallylist");
        }
+
       		 for(int i=0;i<objlist.size();i++) {
 		%>    			 
       		 		var tmp = {time:<%="'"+objlist.get(i).getCheckTime()+"'"%>, 
@@ -473,12 +475,12 @@
 			    	  if(op == 0) {
 		                    op = 1;
 		                    $.ajax({
-						         url: "modifyteacher/"+courseId,					
+						         url: "modifyfinallytime/"+courseId+"/"+time,					
 						         contentType: "application/json;charset=utf-8",	
 						         dataType:"json",
 						         type: "post",			
 						         success:function(data){			
-						        	 var text = "<select class=\"form-control\" onchange=\"changeTime(tr.children("td").get(0).firstChild.value,place,teacher1,teacher2)\">";
+						        	 var text = "<select class=\"form-control\" >";
 						        	 for(var i =0 ; i<data.length;i++) {
 						        		 if(data[i] == time) 
 						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
@@ -499,7 +501,7 @@
 			      			});
 		                    
 		                    $.ajax({
-						         url: "modifyteacher/"+time,					
+						         url: "modifyfinallyclass/"+time+"/"+place,					
 						         contentType: "application/json;charset=utf-8",	
 						         dataType:"json",
 						         type: "post",			
@@ -526,7 +528,7 @@
 				      			});
 		                    
 		                    $.ajax({
-					         url: "modifyteacher/"+time,					
+					         url: "modifyfinallyteacher/"+time+"/"+teacher1+"/"+teacher2,					
 					         contentType: "application/json;charset=utf-8",	
 					         dataType:"json",
 					         type: "post",			
