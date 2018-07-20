@@ -328,6 +328,41 @@ public class CheckClassMap {
 		teacherlist.addAll(newList);
 		return teacherlist;
 	}
+	
+	public ArrayList<ArrayList<String>> modifyExamFinally(ArrayList<TestCheckBean> examlist,Timestamp checktime,String checkplace, String invigilator1,String invigilator2) {
+		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+		ArrayList<String> timelist = new ArrayList<String>();//存放可修改的时间段
+		ArrayList<String> classlist = new ArrayList<String>();//存放可修改的考场
+		ArrayList<String> teacherlist = new ArrayList<String>();//存放可修改该的教师
+		
+		if (examlist != null) {
+			
+			for (int i = 0; i < examlist.size(); i++)
+				for (int j = 0; j < examlist.get(i).size(); j++) { 
+					teacherlist.add(examlist.get(i).get(j).getInvigilator1());
+					teacherlist.add(examlist.get(i).get(j).getInvigilator2());
+					if (examlist.get(i).get(0).getCheckTime().equals(checktime)) {
+						list.add(examlist.get(i).get(j).getInvigilator1());
+						list.add(examlist.get(i).get(j).getInvigilator2());
+					}
+				}
+		}
+		teacherlist.removeAll(list);
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = teacherlist.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		teacherlist.clear();
+		timelist.add(String.valueOf(checktime));
+		classlist.add(checkplace);
+		teacherlist.add(invigilator1);
+		teacherlist.add(invigilator2);
+		teacherlist.addAll(newList);
+		return result;
+	}
 
 	public ArrayList<ArrayList<TestCheckBean>> optimizeExam(ArrayList<ArrayList<TestCheckBean>> list) {
 		long starttime = System.currentTimeMillis();

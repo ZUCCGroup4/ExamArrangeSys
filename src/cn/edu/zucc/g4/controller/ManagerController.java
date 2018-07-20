@@ -3,10 +3,12 @@ package cn.edu.zucc.g4.controller;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.service.CheckClassMap;
+import cn.edu.zucc.g4.service.SelectionjoinService;
 import cn.edu.zucc.g4.service.TestTimeService;
 import cn.edu.zucc.g4.util.DateUtil;
 
@@ -26,6 +29,9 @@ public class ManagerController {
 
 	@Resource(name = "testTimeService")
 	public TestTimeService testTimeService;
+	
+	@Resource(name = "selectionjoinService")
+	public SelectionjoinService selectionjoinService;
 
 	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>();
 	public static ArrayList<ArrayList<TestCheckBean>> examlist2 = new ArrayList<ArrayList<TestCheckBean>>();
@@ -230,8 +236,25 @@ public class ManagerController {
 	public ModelAndView toManagerFinally(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		testTimeService.addTestCheck(examlist3);
-		modelAndView.addObject("examlist3", examlist3);
+		//request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
+		modelAndView.addObject("finallylist", selectionjoinService.loadAllTestCheck());
 		modelAndView.setViewName("text-manager-finally.jsp");
+		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyfinally")
+	public ModelAndView modifyfinally(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		String checktime = request.getParameter("checktime");
+		String checkplace = request.getParameter("checkplace");
+		String invigilator1 = request.getParameter("invigilator1");
+		String invigilator2 = request.getParameter("invigilator2");
+		ArrayList<TestCheckBean> list = (ArrayList<TestCheckBean>) selectionjoinService.loadAllTestCheck();
+		ArrayList<ArrayList<String>> finallylist = checkClassMap.modifyExamFinally(list,Timestamp.valueOf(checktime),checkplace,invigilator1,invigilator2);//可修改列表
+		modelAndView.addObject("teacherlist", finallylist);
+		modelAndView.addObject("examlist3", examlist3);
+		modelAndView.setViewName("text-manager3.jsp");
 		return modelAndView;
 	}
 

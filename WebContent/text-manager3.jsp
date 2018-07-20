@@ -177,7 +177,7 @@
           <a href="backManager2" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
           <!--<button class="step" id="lststep">上一步</button>-->
-          <input type="submit" class="step" id="nxtstep" value="下一步">
+          <input href="toManagerfinally" type="submit" class="step" id="nxtstep" value="下一步">
 
         <footer class="text-right">
           <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>

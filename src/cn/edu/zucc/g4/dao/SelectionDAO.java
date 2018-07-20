@@ -54,7 +54,8 @@ public class SelectionDAO {
 	public List listAllTerm(){
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from SelectionBean group by 'year',term";
+		String hql = "from SelectionBean where course_id not in ("
+				+ "select course_id from CourseBean where check_type = '考察') group by 'year',term ";
 		List<SelectionBean> list = session.createQuery(hql).list();
 		return list;
 	}
