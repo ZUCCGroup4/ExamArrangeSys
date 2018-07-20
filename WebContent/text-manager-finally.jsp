@@ -74,7 +74,7 @@
       <nav class="templatemo-left-nav">
         <ul>
           <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-          <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+          <li><a href="selectionjoin" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
           <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
         </ul>
       </nav>
@@ -297,7 +297,7 @@
          var testdata=[];
          
        <%
-       List<TestCheckBean> objlist = (List<TestCheckBean>) request.getAttribute("finallylist");
+       List<TestCheckBean> objlist = (List<TestCheckBean>) session.getAttribute("finallylist");
       		 for(int i=0;i<objlist.size();i++) {
 		%>    			 
       		 		var tmp = {time:<%="'"+objlist.get(i).getCheckTime()+"'"%>, 
