@@ -28,9 +28,8 @@ public class TestCheckDAO {
 		return list;
 	}
 	
-	public void addTestCheck() {
-		this.setSessionFactory(sessionFactory);
-		Session session = sessionFactory.getCurrentSession();
+	public void addTestCheck(TestCheckBean testCheckBean) {
+		sessionFactory.getCurrentSession().save(testCheckBean);
 	}
 
 }

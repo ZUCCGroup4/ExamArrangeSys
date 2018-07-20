@@ -124,7 +124,7 @@
 	<class name="TestCheckBean" table="testcheck">
 		<id name="checkId" type="java.lang.Integer">
 			<column name="check_id" />
-			<generator class="assigned" />
+			<generator class="native" />
 		</id>
 		<property name="checkTime" type="timestamp" column="check_time" />
 		<property name="checkPlace" type="string" column="check_place" />
