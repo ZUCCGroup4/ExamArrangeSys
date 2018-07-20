@@ -74,7 +74,7 @@
       <nav class="templatemo-left-nav">
         <ul>
           <li><a href="index"><i class="fa fa-home fa-fw"></i>日志查看</a></li>
-          <li><a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
+          <li><a href="selectionjoin" class="active"><i class="fa fa-bar-chart fa-fw"></i>考试安排</a></li>
           <li><a href="outlogin"><i class="fa fa-eject fa-fw"></i>退出登录</a></li>
         </ul>
       </nav>
@@ -97,33 +97,55 @@
           <h3 class="margin-bottom-10" style="text-align: center;">考试安排结果</h3>
         </div>
         <script>
-            function changedate(value) {
-                var ipt = document.getElementById("search");
-                if(value == "date") {
-                    ipt.innerHTML = "<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
-                        "&nbsp&nbsp到&nbsp&nbsp<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
-                }
-                else if(value == "name") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
-                }
-                else if(value == "ID") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
-                }
+        function changedate(value) {
+            var ipt = document.getElementById("search");
+           
+            if(value == "date") {
+                ipt.innerHTML = "<input id=\"date1\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
+                    "&nbsp&nbsp到&nbsp&nbsp<input id=\"date2\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
             }
+            else if(value == "name") {
+                ipt.innerHTML = "<input id=\"claname\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
+            }
+            else if(value == "ID") {
+                ipt.innerHTML = "<input id=\"claid\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
+            }
+        }
         </script>
-        <form action="search" class="templatemo-login-form">
+          <script >
+      	function searchbtn(){
+      		var ipt = document.getElementById("selecttype").value;
+              var btn = document.getElementById('search_btn');
+              var searchdate1;//1号日期输入框
+              var searchdate2;//2号日期输入框
+              var sname;//课程名称输入框
+              var sid;//课程ID输入框
+              if(ipt=="date"){
+              	searchdate1 = $("#date1").val();
+                  searchdate2 = $("#date2").val();
+                  btn.href = "selectdate?pagename=text-manager-finally.jsp&date1="+searchdate1+"&date2="+searchdate2;
+              }
+              else if(ipt=="name"){
+              	claname = $("#claname").val();
+                  btn.href = "selectname?pagename=text-manager-finally.jsp&claname="+claname;
+              }
+              else if(ipt=="ID"){
+              	claid=$("#claid").val();
+                  btn.href = "selectid?pagename=text-manager-finally.jsp&claid="+claid;
+              }
+      	}
+      </script>
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
               <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
-            <select class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
-              <option value="name">按课程名称查找</option>
-              <option value="ID">按课程ID查找</option>
-              <option value="date">按日期查找</option>
-            </select>
-            <input type="submit" class="templatemo-blue-button" value="查找">
+            <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
+                <option value="name">按课程名称查找</option>
+                <option value="ID">按课程ID查找</option>
+                <option value="date">按日期查找</option>
+              </select>
+             <a id="search_btn" href=""><input type="submit" class="templatemo-blue-button" value="查找" onclick="searchbtn()"></a>
           </div>
-        </form>
         <!--<form action="text-manager4.html" class="templatemo-login-form">-->
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
@@ -297,7 +319,10 @@
          var testdata=[];
          
        <%
-       List<TestCheckBean> objlist = (List<TestCheckBean>) request.getAttribute("finallylist");
+       ArrayList<TestCheckBean> objlist= (ArrayList<TestCheckBean>) request.getAttribute("examtestlist");
+       if(objlist==null||objlist.size()==0){
+    	   objlist = (ArrayList<TestCheckBean>) session.getAttribute("finallylist");
+       }
       		 for(int i=0;i<objlist.size();i++) {
 		%>    			 
       		 		var tmp = {time:<%="'"+objlist.get(i).getCheckTime()+"'"%>, 
@@ -352,14 +377,14 @@
                       }
 
                       var c_tr = document.createElement('tr');
-                      c_tr.id = 'row'+this[i].rowid;
+                      c_tr.className="tbl";
                       c_tr.innerHTML='<td>'+this[i].time+'</td>'+
                           '<td>'+this[i].id+'</td>'+
                           '<td>'+this[i].name+'</td>'+
                           '<td>'+this[i].place+'</td>'+
                           '<td>'+this[i].invigilator1+'</td>'+
                           '<td>'+this[i].invigilator2+'</td>'+
-                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                          '<td><button id="modify">修改</button></td>';
                       templist.appendChild(c_tr);
 
                   }
@@ -423,9 +448,202 @@
                 btn[i].onclick=(function(index){
                     return function(){
                         Optpage(btn[index].getAttribute("data"));
+                        loadmodify();
                     }
                 })(i);
             }
+        }
+        
+        
+        $(document).ready(
+        		function(){loadmodify()}		 
+        	 ) 
+  			function loadmodify(){
+			  $(".tbl").each(function(){  
+	
+			      var op = 0;
+			      var modifyuser=$(this).children().eq(6).children();
+			      var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML;
+			      var time=modifyuser.parent().parent().children("td").get(0).innerHTML;
+			      var place=modifyuser.parent().parent().children("td").get(3).innerHTML;
+			      var teacher1=modifyuser.parent().parent().children("td").get(4).innerHTML; 
+			      var teacher2=modifyuser.parent().parent().children("td").get(5).innerHTML; 
+			      modifyuser.bind("click",function(){ 
+			    	  var tr=modifyuser.parent().parent();	    	
+			    	  if(op == 0) {
+		                    op = 1;
+		                    $.ajax({
+						         url: "modifyteacher/"+courseId,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(data){			
+						        	 var text = "<select class=\"form-control\" onchange=\"changeTime(tr.children("td").get(0).firstChild.value,place,teacher1,teacher2)\">";
+						        	 for(var i =0 ; i<data.length;i++) {
+						        		 if(data[i] == time) 
+						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+						        		 else 
+						        			 text = text + "<option>"+data[i]+"</option>";
+						        	 }
+						        	 
+						        	 tr.children("td").get(0).innerHTML = text+"</select>";
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});
+		                    
+		                    $.ajax({
+						         url: "modifyteacher/"+time,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(data){			
+						        	 var text = "<select class=\"form-control\">";
+						        	 for(var i =0 ; i<data.length;i++) {
+						        		 if(data[i] == place) 
+						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+						        		 else 
+						        			 text = text + "<option>"+data[i]+"</option>";
+						        	 }
+						        	 
+						        
+						        	 tr.children("td").get(3).innerHTML = text+"</select>";
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+							
+							        }
+				      			});
+		                    
+		                    $.ajax({
+					         url: "modifyteacher/"+time,					
+					         contentType: "application/json;charset=utf-8",	
+					         dataType:"json",
+					         type: "post",			
+					         success:function(data){			
+					        	 var text = "<select class=\"form-control\"\">";
+					        	 for(var i =0 ; i<data.length;i++) {
+					        		 if(data[i] == teacher1) 
+					        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+					        		 else 
+					        			 text = text + "<option>"+data[i]+"</option>";
+					        	 }
+					        	 
+					        	 var text1 = "<select class=\"form-control\">";
+					        	 for(var i =0 ; i<data.length;i++) {
+					        		 if(data[i] == teacher2) 
+					        			 text1 = text1 + "<option selected = \"selected\">"+data[i]+"</option>";
+					        		 else 
+					        			 text1 = text1 + "<option>"+data[i]+"</option>";
+					        	 }
+					        	 tr.children("td").get(4).innerHTML = text+"</select>";
+					        	 tr.children("td").get(5).innerHTML = text1+"</select>";
+					         },
+					
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});
+		                }
+		                else {
+		                    op = 0;
+		                   
+		                    $.ajax({
+						         url: "modifyteacherresult/"+time+"/"+place+"/"+tr.children("td").get(4).firstChild.value+"/"+tr.children("td").get(5).firstChild.value,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(){			
+						        	 tr.children("td").get(4).innerHTML =  tr.children("td").get(4).firstChild.value;
+						        	 tr.children("td").get(5).innerHTML =  tr.children("td").get(5).firstChild.value;
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});	                    
+		                }    	  			   
+				       
+			      })
+			  })
+   	 	}
+        function changeTime(time,place,teacher1,teacher2){
+        	 $.ajax({
+		         url: "modifyteacher/"+time,					
+		         contentType: "application/json;charset=utf-8",	
+		         dataType:"json",
+		         type: "post",			
+		         success:function(data){			
+		        	 var text = "<select class=\"form-control\" onchange=\"changeTime(tr.children("td").get(0).firstChild.value)\">";
+		        	 for(var i =0 ; i<data.length;i++) {
+		        		 if(data[i] == place) 
+		        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+		        		 else 
+		        			 text = text + "<option>"+data[i]+"</option>";
+		        	 }
+		        	 
+		        	 tr.children("td").get(0).innerHTML = text+"</select>";
+		         },
+		
+		         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+		
+		        	 console.log(XMLHttpRequest.status);
+                       console.log(XMLHttpRequest.readyState);
+                       console.log(textStatus);
+		
+		        }
+  			});
+        	 $.ajax({
+		         url: "modifyteacher/"+time,					
+		         contentType: "application/json;charset=utf-8",	
+		         dataType:"json",
+		         type: "post",			
+		         success:function(data){			
+		        	 var text = "<select class=\"form-control\"\">";
+		        	 for(var i =0 ; i<data.length;i++) {
+		        		 if(data[i] == teacher1) 
+		        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+		        		 else 
+		        			 text = text + "<option>"+data[i]+"</option>";
+		        	 }
+		        	 
+		        	 var text1 = "<select class=\"form-control\">";
+		        	 for(var i =0 ; i<data.length;i++) {
+		        		 if(data[i] == teacher2) 
+		        			 text1 = text1 + "<option selected = \"selected\">"+data[i]+"</option>";
+		        		 else 
+		        			 text1 = text1 + "<option>"+data[i]+"</option>";
+		        	 }
+		        	 tr.children("td").get(4).innerHTML = text+"</select>";
+		        	 tr.children("td").get(5).innerHTML = text1+"</select>";
+		         },
+		
+		         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+		
+		        	 console.log(XMLHttpRequest.status);
+                       console.log(XMLHttpRequest.readyState);
+                       console.log(textStatus);
+		
+		        }
+  			});
         }
     </script>
   </body>

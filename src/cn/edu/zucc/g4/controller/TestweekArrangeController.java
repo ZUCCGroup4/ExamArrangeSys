@@ -26,7 +26,8 @@ public class TestweekArrangeController {
 		System.out.println("to week"+request.getParameter("year"));
 		
 		if(selectionjoinService.checkTerm(year, term)){
-			modelAndView.addObject("finallylist",selectionjoinService.loadAllTestCheck());
+			request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
+			//modelAndView.addObject("finallylist",selectionjoinService.loadAllTestCheck());
 			modelAndView.setViewName("text-manager-finally.jsp");
 		} else{
 			modelAndView.setViewName("text-manager1.jsp");

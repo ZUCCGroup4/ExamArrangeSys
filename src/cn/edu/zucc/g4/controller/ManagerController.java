@@ -242,6 +242,10 @@ public class ManagerController {
 					request.getSession().setAttribute("examlist3", examlist3);
 					modelAndView.addObject("examtestlist",testTimeService.selecttesttimelist(examlist3,date1,date2));
 				}
+				else if(pagename.equals("text-manager-finally.jsp")){
+					request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
+					modelAndView.addObject("examtestlist",testTimeService.selectfintimelist(date1,date2));
+				}
 				modelAndView.setViewName(pagename);
 				return modelAndView;
 			}
@@ -264,6 +268,10 @@ public class ManagerController {
 					request.getSession().setAttribute("examlist3", examlist3);
 					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyname(examlist3,claname));
 				}
+				else if(pagename.equals("text-manager-finally.jsp")){
+					request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
+					modelAndView.addObject("examtestlist",testTimeService.selectfinnamelist(claname));
+				}
 				modelAndView.setViewName(pagename);
 				return modelAndView;
 			}
@@ -285,6 +293,10 @@ public class ManagerController {
 				else if(pagename.equals("text-manager3.jsp")){
 					request.getSession().setAttribute("examlist3", examlist3);
 					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyid(examlist3,claid));
+				}
+				else if(pagename.equals("text-manager-finally.jsp")){
+					request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
+					modelAndView.addObject("examtestlist",testTimeService.selectfinidlist(claid));
 				}
 				modelAndView.setViewName(pagename);
 				return modelAndView;
