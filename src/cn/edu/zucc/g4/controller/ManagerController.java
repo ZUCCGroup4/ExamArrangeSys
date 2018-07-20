@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.service.CheckClassMap;
+import cn.edu.zucc.g4.service.SelectionjoinService;
 import cn.edu.zucc.g4.service.TestTimeService;
 import cn.edu.zucc.g4.util.DateUtil;
 import net.sf.json.JSONArray;
@@ -29,6 +31,9 @@ public class ManagerController {
 
 	@Resource(name = "testTimeService")
 	public TestTimeService testTimeService;
+	
+	@Resource(name = "selectionjoinService")
+	public SelectionjoinService selectionjoinService;
 
 	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>();
 	public static ArrayList<ArrayList<TestCheckBean>> examlist2 = new ArrayList<ArrayList<TestCheckBean>>();
@@ -211,7 +216,8 @@ public class ManagerController {
 	public ModelAndView toManagerFinally(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		testTimeService.addTestCheck(examlist3);
-		modelAndView.addObject("examlist3", examlist3);
+		request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
+		modelAndView.addObject("finallylist", selectionjoinService.loadAllTestCheck());
 		modelAndView.setViewName("text-manager-finally.jsp");
 		return modelAndView;
 	}
@@ -301,6 +307,5 @@ public class ManagerController {
 //				modelAndView.setViewName(pagename);
 //				return modelAndView;
 //			}
-
 
 }

@@ -333,6 +333,8 @@ public class CheckClassMap {
 		teacherlist.addAll(newList);
 		return teacherlist;
 	}
+	
+	
 
 	public ArrayList<ArrayList<TestCheckBean>> optimizeExam(ArrayList<ArrayList<TestCheckBean>> list) {
 		long starttime = System.currentTimeMillis();

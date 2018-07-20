@@ -20,9 +20,11 @@ public class SelectionjoinController {
 	@RequestMapping("/selectionjoin")
 	public ModelAndView tojoin(HttpServletRequest request){
 		ModelAndView modelAndView = new ModelAndView();
+		
 		request.setAttribute("terlist",selectionjoinService.loadallTerm());
-		request.getSession().removeAttribute("examlist1");
 		modelAndView.setViewName("selectjoin.jsp");
+		request.getSession().removeAttribute("examlist1");
+		
 		return modelAndView;
 	}
 }
