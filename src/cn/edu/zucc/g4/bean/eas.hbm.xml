@@ -9,6 +9,7 @@
 		<property name="password" type="string">
 			<column name="password" />
 		</property>
+		<property name="type" type="string" column="type" />
 	</class>
 	
 	<class name="TeacherBean" table="teacher">

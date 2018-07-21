@@ -9,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.edu.zucc.g4.bean.CheckBean;
+import cn.edu.zucc.g4.bean.SelectionBean;
+import cn.edu.zucc.g4.bean.SelectionRecordBean;
+import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.bean.UserBean;
+import cn.edu.zucc.g4.bean.ViewCheckBean;
 
 @Repository
 public class UserDAO {
@@ -48,5 +53,30 @@ public class UserDAO {
 		}
 		return bean;
 	}
+	
+	public List<ViewCheckBean> getTeacherTestCheck(String userid) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ViewCheckBean where invigilator_1 = '"+userid+"' or invigilator_2 = '" +userid+"' group by course_id";
+		Query query= session.createQuery(hql);
+		List<ViewCheckBean> list = query.list();
+		return list;
+	}
 
+	public List<ViewCheckBean> getTeacherClass(String userid) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM ViewCheckBean where teacher_id ='"+userid+"' group by course_id";
+		Query query= session.createQuery(hql);
+		List<ViewCheckBean> list = query.list();
+		return list;
+	}
+
+	public List<SelectionRecordBean> listMyExam(String user_id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "SELECT course_id FROM SelectionRecordBean where student_id= '"+user_id+"' group by course_id";
+		Query query= session.createQuery(hql);
+		List<SelectionRecordBean> list = query.list();
+		return list;
+	}
 }
