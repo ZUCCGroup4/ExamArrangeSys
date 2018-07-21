@@ -35,6 +35,12 @@ public class TestCheckDAO {
 		List<TestCheckBean> list = session.createQuery("from TestCheckBean").list();
 		return list;
 	}
+	
+	public TestCheckBean getTestCheckBeanByCoursIdAndPlace(String courseId, String place){
+		Session session = sessionFactory.getCurrentSession();
+		List<TestCheckBean> list = session.createQuery("from TestCheckBean where courseId = '"+courseId+"'and checkPlace = '"+place+"'").list();
+		return list.get(0);
+	}
 	//最终页面id搜索
 	public List<TestCheckBean> searchTestCheckbyid(String id){
 		this.setSessionFactory(sessionFactory);

@@ -145,10 +145,10 @@
         </script>
             <div class="templatemo-content-widget white-bg">
               <div id="search" style="height: 35px;width: 70%;display: inline-block">
-                <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
+                <input id="claname" type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
               </div>
               <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
-                <option value="name">按课程名称查找</option>
+                <option value="name" selected="true">按课程名称查找</option>
                 <option value="ID">按课程ID查找</option>
                 <option value="date">按日期查找</option>
               </select>

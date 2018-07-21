@@ -137,17 +137,13 @@ public class TestTimeService {
 		return examlist;
 	}
 	
-	public ArrayList<TestCheckBean> modifyFinallyExamTeacher(ArrayList<TestCheckBean> examlist,
-			String checkplace, String teacher1, String teacher2, Timestamp checktime) {
-
-		for (int i = 0; i < examlist.size(); i++) {
-				if (examlist.get(i).getCheckPlace().equals(checkplace)&& examlist.get(i).getCheckTime().equals(checktime)) {
-					examlist.get(i).setInvigilator1(teacher1);
-					examlist.get(i).setInvigilator2(teacher2);
-				}
-			}
-
-		return examlist;
+	public void modifyFinallyExam(String courseid, String oldplace,String checktime, TestCheckBean tcb) {
+		TestCheckBean oldtcb = testCheckDAO.getTestCheckBeanByCoursIdAndPlace(courseid, oldplace);
+		oldtcb.setCheckTime(Timestamp.valueOf(checktime));
+		oldtcb.setCheckPlace(tcb.getCheckPlace());
+		oldtcb.setInvigilator1(tcb.getInvigilator1());
+		oldtcb.setInvigilator2(tcb.getInvigilator2());
+		testCheckDAO.addTestCheck(oldtcb);
 	}
 
 	public void addTestCheck(ArrayList<ArrayList<TestCheckBean>> examlist) {

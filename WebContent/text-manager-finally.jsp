@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="utf-8"%>
-    <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
+<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,11 +9,9 @@
     <title>Visual Admin Dashboard - Maps</title>
     <meta name="description" content="">
     <meta name="author" content="templatemo">
-    
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,300,400italic,700' rel='stylesheet' type='text/css'>
+
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet" type="text/css" /> 
     <link href="css/templatemo-style.css" rel="stylesheet">
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -137,10 +134,10 @@
       </script>
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
-              <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
+              <input id="claname" type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
             <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
-                <option value="name">按课程名称查找</option>
+                <option value="name"  selected="true">按课程名称查找</option>
                 <option value="ID">按课程ID查找</option>
                 <option value="date">按日期查找</option>
               </select>
@@ -198,98 +195,7 @@
     <script src="jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
     <script type="text/javascript">
       
-      function drawMaps(){
-        $('#vmap_world').vectorMap({
-          map: 'world_en',
-          backgroundColor: '#ffffff',
-          color: '#333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_africa').vectorMap({
-          map: 'africa_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        }); 
-        $('#vmap_asia').vectorMap({
-          map: 'asia_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_australia').vectorMap({
-          map: 'australia_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_europe').vectorMap({
-          map: 'europe_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_northamerica').vectorMap({
-          map: 'north-america_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_southamerica').vectorMap({
-          map: 'south-america_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_usa').vectorMap({
-          map: 'usa_en',
-          enableZoom: true,
-          showTooltip: true,
-          selectedRegion: 'MO'
-        });  
-      } // end function drawMaps
+    // end function drawMaps
 
       $(document).ready(function() {
 
@@ -306,11 +212,10 @@
           });      
         } else {
           $(window).resize(function(){
-            drawMaps();
+           
           });  
         }
-        
-        drawMaps();
+     
 
       });
     </script>
@@ -321,8 +226,11 @@
        <%
 
        ArrayList<TestCheckBean> objlist= (ArrayList<TestCheckBean>) request.getAttribute("examtestlist");
+       SimpleDateFormat time=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
        if(objlist==null||objlist.size()==0){
     	   objlist = (ArrayList<TestCheckBean>) session.getAttribute("finallylist");
+    	   
+      	   
        }
 
       		 for(int i=0;i<objlist.size();i++) {
@@ -458,11 +366,14 @@
         
         
         $(document).ready(
-        		function(){loadmodify()}		 
+        		
+        		function(){loadmodify()
+        			}	
+        		
         	 ) 
   			function loadmodify(){
 			  $(".tbl").each(function(){  
-	
+					
 			      var op = 0;
 			      var modifyuser=$(this).children().eq(6).children();
 			      var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML;
@@ -471,19 +382,23 @@
 			      var teacher1=modifyuser.parent().parent().children("td").get(4).innerHTML; 
 			      var teacher2=modifyuser.parent().parent().children("td").get(5).innerHTML; 
 			      modifyuser.bind("click",function(){ 
+			    	  
 			    	  var tr=modifyuser.parent().parent();	    	
 			    	  if(op == 0) {
 		                    op = 1;
+		                  
 		                    $.ajax({
 						         url: "modifyfinallytime/"+courseId+"/"+time,					
 						         contentType: "application/json;charset=utf-8",	
 						         dataType:"json",
 						         type: "post",			
 						         success:function(data){			
-						        	 var text = "<select class=\"form-control\" >";
+						        	 var text = "<select class=\"form-control\" onchange=\"changeTime($(this))\">";
+						        	 console.log(data.length)
 						        	 for(var i =0 ; i<data.length;i++) {
+						        		 console.log(data[i])
 						        		 if(data[i] == time) 
-						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+						        			 text = text + "<option selected = \"selected\" >"+data[i]+"</option>";
 						        		 else 
 						        			 text = text + "<option>"+data[i]+"</option>";
 						        	 }
@@ -563,46 +478,55 @@
 		                }
 		                else {
 		                    op = 0;
-		                   
+		                    data={
+		                    		
+		                    		checkPlace:tr.children("td").get(3).firstChild.value,
+		                    		invigilator1:tr.children("td").get(4).firstChild.value,
+		                    		invigilator2:tr.children("td").get(5).firstChild.value
+		                    }
 		                    $.ajax({
-						         url: "modifyteacherresult/"+time+"/"+place+"/"+tr.children("td").get(4).firstChild.value+"/"+tr.children("td").get(5).firstChild.value,					
+						         url: "modifyfinallyresult/"+courseId+"/"+place+"/"+tr.children("td").get(0).firstChild.value			,	
 						         contentType: "application/json;charset=utf-8",	
+						         data: JSON.stringify(data),	
 						         dataType:"json",
 						         type: "post",			
-						         success:function(){			
-						        	 tr.children("td").get(4).innerHTML =  tr.children("td").get(4).firstChild.value;
-						        	 tr.children("td").get(5).innerHTML =  tr.children("td").get(5).firstChild.value;
+						         success:function(data){			
+						        	location.reload(true);
 						         },
 						
-						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
-						
-						        	 console.log(XMLHttpRequest.status);
-				                       console.log(XMLHttpRequest.readyState);
-				                       console.log(textStatus);
-						
-						        }
-			      			});	                    
+							         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+							
+							        	 console.log(XMLHttpRequest.status);
+					                       console.log(XMLHttpRequest.readyState);
+					                       console.log(textStatus);
+							
+							        }
+				      			});
+		                                       
 		                }    	  			   
 				       
 			      })
 			  })
    	 	}
-        function changeTime(time,place,teacher1,teacher2){
+        function changeTime(tr){
+        	tr = tr.parent().parent();
+        	time=tr.children("td").get(0).firstChild.value;
+        	console.log(time);
+        	var place="请选择考场";
+        	var teacher="请选择监考教师";
+        	alert(12);
         	 $.ajax({
-		         url: "modifyteacher/"+time,					
+		         url: "modifyfinallyclass/"+time+"/"+place,					
 		         contentType: "application/json;charset=utf-8",	
 		         dataType:"json",
 		         type: "post",			
 		         success:function(data){			
-		        	 var text = "<select class=\"form-control\" onchange=\"changeTime(tr.children("td").get(0).firstChild.value)\">";
+		        	 var text = "<select class=\"form-control\">";
 		        	 for(var i =0 ; i<data.length;i++) {
-		        		 if(data[i] == place) 
-		        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
-		        		 else 
 		        			 text = text + "<option>"+data[i]+"</option>";
 		        	 }
 		        	 
-		        	 tr.children("td").get(0).innerHTML = text+"</select>";
+		        	 tr.children("td").get(3).innerHTML = text+"</select>";
 		         },
 		
 		         error:function(XMLHttpRequest, textStatus, errorThrown){ 
@@ -614,28 +538,17 @@
 		        }
   			});
         	 $.ajax({
-		         url: "modifyteacher/"+time,					
+		         url: "modifyfinallyteacher/"+time+"/"+teacher,					
 		         contentType: "application/json;charset=utf-8",	
 		         dataType:"json",
 		         type: "post",			
 		         success:function(data){			
-		        	 var text = "<select class=\"form-control\"\">";
-		        	 for(var i =0 ; i<data.length;i++) {
-		        		 if(data[i] == teacher1) 
-		        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
-		        		 else 
+		        	 var text = "<select class=\"form-control\">";
+		        	 for(var i =0 ; i<data.length;i++) {		
 		        			 text = text + "<option>"+data[i]+"</option>";
-		        	 }
-		        	 
-		        	 var text1 = "<select class=\"form-control\">";
-		        	 for(var i =0 ; i<data.length;i++) {
-		        		 if(data[i] == teacher2) 
-		        			 text1 = text1 + "<option selected = \"selected\">"+data[i]+"</option>";
-		        		 else 
-		        			 text1 = text1 + "<option>"+data[i]+"</option>";
-		        	 }
+		        	 }		        	 		        	
 		        	 tr.children("td").get(4).innerHTML = text+"</select>";
-		        	 tr.children("td").get(5).innerHTML = text1+"</select>";
+		        	 tr.children("td").get(5).innerHTML = text+"</select>";
 		         },
 		
 		         error:function(XMLHttpRequest, textStatus, errorThrown){ 

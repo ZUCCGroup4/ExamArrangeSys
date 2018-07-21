@@ -295,7 +295,6 @@ public class CheckClassMap {
 				newList.add(element);
 		}
 		timelist.clear();
-		timelist.add(checktime);
 		timelist.addAll(newList);
 		return timelist;
 	}
@@ -329,7 +328,7 @@ public class CheckClassMap {
 		return classlist;
 	}
 	
-	public ArrayList<String> modifyFinallyExamClass(ArrayList<TestCheckBean> examlist, String checkplace,
+	public ArrayList<String> modifyFinallyExamClass(ArrayList<TestCheckBean> examlist,String place,
 			Timestamp checktime) {
 
 		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的考场
@@ -352,7 +351,7 @@ public class CheckClassMap {
 				newList.add(element);
 		}
 		classlist.clear();
-		classlist.add(checkplace);
+		classlist.add(place);
 		classlist.addAll(newList);
 		return classlist;
 	}
@@ -417,6 +416,38 @@ public class CheckClassMap {
 		teacherlist.addAll(newList);
 		return teacherlist;
 	}
+	
+
+	public ArrayList<String> modifyFinallyExamTeacher(ArrayList<TestCheckBean> examlist, String teacher1,
+			Timestamp checktime) {
+		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的教师
+		ArrayList<String> teacherlist = new ArrayList<String>();// 存放可修改的考场
+
+		if (examlist != null) {
+			for (int i = 0; i < examlist.size(); i++){
+					teacherlist.add(examlist.get(i).getInvigilator1());
+					teacherlist.add(examlist.get(i).getInvigilator2());
+					if (examlist.get(i).getCheckTime().equals(checktime)) {
+						list.add(examlist.get(i).getInvigilator1());
+						list.add(examlist.get(i).getInvigilator2());
+					}
+				}
+		}
+		teacherlist.removeAll(list);
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = teacherlist.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		teacherlist.clear();
+		teacherlist.add(teacher1);
+		
+		teacherlist.addAll(newList);
+		return teacherlist;
+	}
+	
 
 	public ArrayList<ArrayList<TestCheckBean>> optimizeExam(ArrayList<ArrayList<TestCheckBean>> list) {
 		long starttime = System.currentTimeMillis();

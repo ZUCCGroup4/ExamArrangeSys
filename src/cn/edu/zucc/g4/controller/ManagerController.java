@@ -246,6 +246,9 @@ public class ManagerController {
 		} else if (pagename.equals("text-manager3.jsp")) {
 			request.getSession().setAttribute("examlist3", examlist3);
 			modelAndView.addObject("examtestlist", testTimeService.selecttesttimelist(examlist3, date1, date2));
+		} else if (pagename.equals("text-manager-finally.jsp")){
+			request.getSession().setAttribute("finallylist", finallylist);
+			modelAndView.addObject("examtestlist", testTimeService.selectfintimelist(date1, date2));
 		}
 		modelAndView.setViewName(pagename);
 		return modelAndView;
@@ -267,6 +270,9 @@ public class ManagerController {
 		} else if (pagename.equals("text-manager3.jsp")) {
 			request.getSession().setAttribute("examlist3", examlist3);
 			modelAndView.addObject("examtestlist", testTimeService.selecttestlistbyname(examlist3, claname));
+		} else if (pagename.equals("text-manager-finally.jsp")){
+			request.getSession().setAttribute("finallylist", finallylist);
+			modelAndView.addObject("examtestlist", testTimeService.selectfinnamelist(claname));
 		}
 		modelAndView.setViewName(pagename);
 		return modelAndView;
@@ -288,6 +294,9 @@ public class ManagerController {
 		} else if (pagename.equals("text-manager3.jsp")) {
 			request.getSession().setAttribute("examlist3", examlist3);
 			modelAndView.addObject("examtestlist", testTimeService.selecttestlistbyid(examlist3, claid));
+		} else if (pagename.equals("text-manager-finally.jsp")){
+			request.getSession().setAttribute("finallylist", finallylist);
+			modelAndView.addObject("examtestlist", testTimeService.selectfinidlist(claid));
 		}
 		modelAndView.setViewName(pagename);
 		return modelAndView;
@@ -315,21 +324,15 @@ public class ManagerController {
 	@RequestMapping("/modifyfinallytime/{courseid}/{checktime}")
 	public JSONArray modifyfinallytime(@PathVariable("courseid") String courseid,
 			@PathVariable("checktime") String checktime) {
+		System.out.println(courseid+" "+checktime);
 		ArrayList<Timestamp> timelist = checkClassMap.modifyFinallyExamTime(finallylist, courseid,Timestamp.valueOf(checktime));// 可修改时间列表
 		String[] res = new String[timelist.size()];
 		for (int i = 0; i < timelist.size(); i++) {
 			res[i] = timelist.get(i).toString();
 		}
 		JSONArray result = JSONArray.fromObject(res);
+		System.out.println(timelist);
 		return result;
-	}
-
-	@ResponseBody
-	@RequestMapping("/modifyfinallytimeresult/{courseid}/{checktime}")
-	public boolean modifyfinallytimeresult(@PathVariable("courseid") String courseid,
-			@PathVariable("checktime") String checktime) {
-		finallylist = testTimeService.modifyfinallyExamTime(finallylist, courseid, Timestamp.valueOf(checktime));// 修改完时间的考试安排表
-		return true;
 	}
 
 	@ResponseBody
@@ -345,15 +348,6 @@ public class ManagerController {
 		JSONArray result = JSONArray.fromObject(res);
 		return result;
 
-	}
-
-	@ResponseBody
-	@RequestMapping("/modifyfinallyclassresult/{checktime}/{oldplace}/{checkplace}")
-	public boolean modifyfinallyclassresult(@PathVariable("oldplace") String oldplace,
-			@PathVariable("checktime") String checktime, @PathVariable("checkplace") String checkplace) {
-		finallylist = testTimeService.modifyFinallyExamClass(finallylist, oldplace, checkplace, Timestamp.valueOf(checktime));// 修改完考场的考试安排表
-
-		return true;
 	}
 	
 	@ResponseBody
@@ -371,16 +365,28 @@ public class ManagerController {
 		return result;
 
 	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyfinallyteacher/{checktime}/{teacher1}")
+	public JSONArray modifyfinallyteacher(@PathVariable("checktime") String checktime,
+			@PathVariable("teacher1") String teacher1) {
+		
+		ArrayList<String> teacherlist = checkClassMap.modifyFinallyExamTeacher(finallylist, teacher1,
+				Timestamp.valueOf(checktime));// 可修改考场列表
+		String[] res = new String[teacherlist.size()];
+		for (int i = 0; i < teacherlist.size(); i++) {
+			res[i] = teacherlist.get(i).toString();
+		}
+		JSONArray result = JSONArray.fromObject(res);
+		return result;
+
+	}
 
 	@ResponseBody
-	@RequestMapping("/modifyfinallyteacherresult/{checktime}/{checkplace}/{teacher1}/{teacher2}")
-	public boolean modifyfinallyteacherresult(@PathVariable("checktime") String checktime,
-			@PathVariable("teacher1") String teacher1, @PathVariable("teacher2") String teacher2,
-			@PathVariable("checkplace") String checkplace, HttpServletRequest request) {
-
-		finallylist = testTimeService.modifyFinallyExamTeacher(finallylist, checkplace, teacher1, teacher2,
-				Timestamp.valueOf(checktime));// 修改完考场的考试安排表
-		request.getSession().setAttribute("finallylist", finallylist);
+	@RequestMapping("/modifyfinallyresult/{courseId}/{oldplace}/{checktime}")
+	public boolean modifyfinallyteacherresult(@PathVariable("courseId") String courseId,
+			@PathVariable("oldplace") String oldplace,@PathVariable("checktime") String checktime,@RequestBody TestCheckBean tcb) {
+		testTimeService.modifyFinallyExam(courseId, oldplace,checktime,tcb);// 修改完考场的考试安排表
 		return true;
 	}
 	

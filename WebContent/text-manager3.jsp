@@ -141,7 +141,7 @@
       </script>
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
-              <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
+              <input id="claname" type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
             <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
                 <option value="name">按课程名称查找</option>
@@ -199,11 +199,9 @@
           <a href="backManager2" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
           <!--<button class="step" id="lststep">上一步</button>-->
-<<<<<<< HEAD
+
           <a href="toManagerfinally" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
-=======
-          <input href="toManagerfinally" type="submit" class="step" id="nxtstep" value="下一步">
->>>>>>> refs/remotes/origin/WilsonZL
+
 
         <footer class="text-right">
           <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>
