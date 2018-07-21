@@ -22,13 +22,19 @@
 <link href="css/templatemo-style.css" rel="stylesheet">
 
 
+
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<<<<<<< HEAD
     <![endif]-->
 <style>
+=======
+    <![endif]-->
+    <style>
+>>>>>>> refs/remotes/origin/hezq
       #modify {
         border-radius: 5px;
         border: 0px;
@@ -87,9 +93,9 @@
           <div class="row">
             <nav class="templatemo-top-nav col-lg-12 col-md-12">
               <ul class="text-uppercase">
-                <li><a href="#" class="active">第一步 考试时间安排</a></li>
-                <li><a href="text-manager2.jsp" class="active">第二步 考试地点安排  </a></li>
-                <li><a href="text-manager3.jsp" class="active">第三步 监考老师安排</a></li>
+                <li><a href="#" >第一步 考试时间安排</a></li>
+                <li><a href="text-manager2.jsp" >第二步 考试地点安排  </a></li>
+                <li><a href="text-manager3.jsp" >第三步 监考老师安排</a></li>
               </ul>
             </nav> 
           </div>
@@ -116,7 +122,6 @@
                       ipt.innerHTML = "<input id=\"claid\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
                   }
               }
-          </script>
           <script >
         	function searchbtn(){
         		var ipt = document.getElementById("selecttype").value;
@@ -140,6 +145,33 @@
                 }
         	}
           </script>
+=======
+            <script >
+        	function searchbtn(){
+        		var ipt = document.getElementById("selecttype").value;
+                var btn = document.getElementById('search_btn');
+                var searchdate1;//1号日期输入框
+                var searchdate2;//2号日期输入框
+                var sname;//课程名称输入框
+                var sid;//课程ID输入框
+                if(ipt=="date"){
+                	searchdate1 = $("#date1").val();
+                    searchdate2 = $("#date2").val();
+                    alert(searchdate1);
+                    alert(searchdate2);
+                    btn.href = "selectdate?pagename=text-manager1-2.jsp&date1="+searchdate1+"&date2="+searchdate2;
+                }
+                else if(ipt=="name"){
+                	claname = $("#claname").val();
+                    btn.href = "selectname?pagename=text-manager1-2.jsp&claname="+claname;
+                }
+                else if(ipt=="ID"){
+                	claid=$("#claid").val();
+                    btn.href = "selectid?pagename=text-manager1-2.jsp&claid="+claid;
+                }
+        	}
+        </script>
+>>>>>>> refs/remotes/origin/hezq
             <div class="templatemo-content-widget white-bg">
               <div id="search" style="height: 35px;width: 70%;display: inline-block">
                 <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
@@ -149,7 +181,11 @@
                 <option value="ID">按课程ID查找</option>
                 <option value="date">按日期查找</option>
               </select>
+<<<<<<< HEAD
                <a id="search_btn" href=""><input type="submit" class="templatemo-blue-button" value="查找" onclick="searchbtn()"></a>
+=======
+             <a id="search_btn" href=""><input type="submit" class="templatemo-blue-button" value="查找" onclick="searchbtn()"></a>
+>>>>>>> refs/remotes/origin/hezq
             </div>
             <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
@@ -196,7 +232,7 @@
           转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
         </div>
           
-            <a href="selectionjoin" class="step" id="lststep" style="line-height: 33px">上一步</a>
+            <a href="backManager1" class="step" id="lststep" style="line-height: 33px">上一步</a>
 
             <!--<button class="step" id="lststep">上一步</button>-->
             <a href="toManager2" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
@@ -322,21 +358,15 @@
         //数据
        
          var testdata=[];
+        
        <%
-       ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist");
-       ArrayList<ArrayList<TestCheckBean>> examtestlist= (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examtestlist");
-       if(examtestlist!=null&&examtestlist.size()!=0){
-    	   %>
-           console.log(<%= examtestlist.size()%>);
-           <%
-    	   objlist.clear();
-    	   objlist.addAll(examtestlist);
-    	   %>
-           console.log(<%= objlist.size()%>);
-           <%
-       }else{
-       }	 
-       for(int i=0;i<objlist.size();i++) {
+       
+       //ArrayList<ArrayList<TestCheckBean>> objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist1");
+       ArrayList<ArrayList<TestCheckBean>> objlist= (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examtestlist");
+       if(objlist==null||objlist.size()==0){
+    	   objlist = (ArrayList<ArrayList<TestCheckBean>>) session.getAttribute("examlist1");
+       }
+      		 for(int i=0;i<objlist.size();i++) {
       			 for(int j=0;j<objlist.get(i).size();j++) {
 		%>    			 
       		 		var tmp = {time:<%="'"+objlist.get(i).get(j).getCheckTime()+"'"%>, 
@@ -390,11 +420,12 @@
                       }
 
                       var c_tr = document.createElement('tr');
+                      c_tr.className="tbl";
                       c_tr.id = 'row'+this[i].rowid;
                       c_tr.innerHTML='<td>'+this[i].time+'</td>'+
                           '<td>'+this[i].id+'</td>'+
                           '<td>'+this[i].name+'</td>'+
-                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                          '<td><button id="modify">修改</button></td>';
                       templist.appendChild(c_tr);
 
                   }
@@ -458,10 +489,80 @@
                 btn[i].onclick=(function(index){
                     return function(){
                         Optpage(btn[index].getAttribute("data"));
+                        loadmodify();
                     }
                 })(i);
             }
         }
+        
+    	 $(document).ready(
+    		function(){loadmodify()}		 
+    	 ) 
+    		function loadmodify(){
+			  $(".tbl").each(function(){  
+	
+			      var tmp=$(this).children().eq(5);  
+			      var btn=tmp.children();
+			      var op = 0;
+			      
+			      var modifyuser=$(this).children().eq(3).children();
+			      modifyuser.bind("click",function(){ 
+			    	  var tr=modifyuser.parent().parent();
+			    	  var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML; 
+			    	  var time=modifyuser.parent().parent().children("td").get(0).innerHTML; 
+			    
+			    	  if(op == 0) {
+		                    op = 1;
+		                    $.ajax({
+						         url: "modifytime/"+courseId,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(data){			
+						        	 var text = "<select class=\"form-control\">";
+						        	 for(var i =0 ; i<data.length;i++) {
+						        		 if(data[i] == time) 
+						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+						        		 else 
+						        			 text = text + "<option>"+data[i]+"</option>";
+						        	 }
+						        	 tr.children("td").get(0).innerHTML = text+"</select>";
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});
+		                }
+		                else {
+		                    op = 0;
+		                    
+		                    $.ajax({
+						         url: "modifytimeresult/"+courseId+"/"+tr.children("td").get(0).firstChild.value,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(){			
+						        	 tr.children("td").get(0).innerHTML =  tr.children("td").get(0).firstChild.value;
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});	                    
+		                }    	  			   
+				       
+			      })
+			  })
+    	 }
     </script>
   </body>
 </html>

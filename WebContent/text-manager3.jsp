@@ -124,9 +124,9 @@
         <div class="row">
           <nav class="templatemo-top-nav col-lg-12 col-md-12">
             <ul class="text-uppercase">
-              <li><a href="text-manager1-2.jsp" class="active">第一步 考试时间安排</a></li>
-              <li><a href="text-manager2.jsp" class="active">第二步 考试地点安排  </a></li>
-              <li><a href="#" class="active">第三步 监考老师安排</a></li>
+              <li><a href="text-manager1-2.jsp" >第一步 考试时间安排</a></li>
+              <li><a href="text-manager2.jsp" >第二步 考试地点安排  </a></li>
+              <li><a href="#" >第三步 监考老师安排</a></li>
             </ul>
           </nav>
         </div>
@@ -154,7 +154,7 @@
                 else if(value == "ID") {
                     ipt.innerHTML = "<input id=\"claid\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
                 }
-            }
+        }
         </script>
          <script >
         	function searchbtn(){
@@ -179,17 +179,28 @@
                 }
         	}
         </script>
+         
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
               <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
             <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
+<<<<<<< HEAD
               <option value="name">按课程名称查找</option>
               <option value="ID">按课程ID查找</option>
               <option value="date">按日期查找</option>
+=======
+                <option value="name">按课程名称查找</option>
+                <option value="ID">按课程ID查找</option>
+                <option value="date">按日期查找</option>
+>>>>>>> refs/remotes/origin/hezq
             </select>
             <a id="search_btn" href=""><input type="submit" class="templatemo-blue-button" value="查找" onclick="searchbtn()"></a>
           </div>
+<<<<<<< HEAD
+=======
+       
+>>>>>>> refs/remotes/origin/hezq
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
               <div class="table-responsive">
@@ -200,8 +211,8 @@
                     <td>课程编号</td>
                     <td>课程名称</td>
                     <td>考试地点</td>
-                    <td>教师编号</td>
-                    <td>修改</td>
+                    <td>监考老师1</td>
+                    <td>监考老师2</td>
                   </tr>
                   </thead>
                   <tbody id="tablevalue">
@@ -242,7 +253,19 @@
           第<span id="nowPage">1</span>/<span id="allPage">3</span>页
           <button class="fy_btn" data="next">下一页</button>|<button data="lastPage" class="fy_btn">尾页</button>
           转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
+<<<<<<< HEAD
         </div>
+=======
+        </div>
+          <a href="backManager2" class="step" id="lststep" style="line-height: 33px">上一步</a>
+
+          <!--<button class="step" id="lststep">上一步</button>-->
+<<<<<<< HEAD
+          <a href="toManagerfinally" class="step" id="nxtstep" style="line-height: 33px">下一步</a>
+=======
+          <input href="toManagerfinally" type="submit" class="step" id="nxtstep" value="下一步">
+>>>>>>> refs/remotes/origin/WilsonZL
+>>>>>>> refs/remotes/origin/hezq
 
         <footer class="text-right">
           <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>
@@ -385,7 +408,6 @@
 	</script>
 	 <script type="text/javascript">
         //数据
-        alert(1);
          var testdata=[];
          <%
          ArrayList<ArrayList<TestCheckBean>> objlist=(ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist"); 
@@ -457,14 +479,14 @@
                       }
 
                       var c_tr = document.createElement('tr');
-                      c_tr.id = 'row'+this[i].rowid;
+                      c_tr.className="tbl";
                       c_tr.innerHTML='<td>'+this[i].time+'</td>'+
                           '<td>'+this[i].id+'</td>'+
                           '<td>'+this[i].name+'</td>'+
                           '<td>'+this[i].place+'</td>'+
                           '<td>'+this[i].invigilator1+'</td>'+
                           '<td>'+this[i].invigilator2+'</td>'+
-                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                          '<td><button id="modify" >修改</button></td>';
                       templist.appendChild(c_tr);
 
                   }
@@ -528,10 +550,88 @@
                 btn[i].onclick=(function(index){
                     return function(){
                         Optpage(btn[index].getAttribute("data"));
+                        loadmodify();
                     }
                 })(i);
             }
         }
+        
+        $(document).ready(
+        		function(){loadmodify()}		 
+        	 ) 
+        		function loadmodify(){
+    			  $(".tbl").each(function(){  
+    	
+    			      var op = 0;
+    			      var modifyuser=$(this).children().eq(6).children();
+    			      var time=modifyuser.parent().parent().children("td").get(0).innerHTML;
+    			      var place=modifyuser.parent().parent().children("td").get(3).innerHTML;
+    			      var teacher1=modifyuser.parent().parent().children("td").get(4).innerHTML; 
+    			      var teacher2=modifyuser.parent().parent().children("td").get(5).innerHTML; 
+    			      modifyuser.bind("click",function(){ 
+    			    	  var tr=modifyuser.parent().parent();	    	
+    			    	  if(op == 0) {
+    		                    op = 1;
+    		                    $.ajax({
+    						         url: "modifyteacher/"+time+"/"+teacher1+"/"+teacher2,					
+    						         contentType: "application/json;charset=utf-8",	
+    						         dataType:"json",
+    						         type: "post",			
+    						         success:function(data){			
+    						        	 var text = "<select class=\"form-control\">";
+    						        	 for(var i =0 ; i<data.length;i++) {
+    						        		 if(data[i] == teacher1) 
+    						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+    						        		 else 
+    						        			 text = text + "<option>"+data[i]+"</option>";
+    						        	 }
+    						        	 
+    						        	 var text1 = "<select class=\"form-control\">";
+    						        	 for(var i =0 ; i<data.length;i++) {
+    						        		 if(data[i] == teacher2) 
+    						        			 text1 = text1 + "<option selected = \"selected\">"+data[i]+"</option>";
+    						        		 else 
+    						        			 text1 = text1 + "<option>"+data[i]+"</option>";
+    						        	 }
+    						        	 tr.children("td").get(4).innerHTML = text+"</select>";
+    						        	 tr.children("td").get(5).innerHTML = text1+"</select>";
+    						         },
+    						
+    						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+    						
+    						        	 console.log(XMLHttpRequest.status);
+    				                       console.log(XMLHttpRequest.readyState);
+    				                       console.log(textStatus);
+    						
+    						        }
+    			      			});
+    		                }
+    		                else {
+    		                    op = 0;
+    		                   
+    		                    $.ajax({
+    						         url: "modifyteacherresult/"+time+"/"+place+"/"+tr.children("td").get(4).firstChild.value+"/"+tr.children("td").get(5).firstChild.value,					
+    						         contentType: "application/json;charset=utf-8",	
+    						         dataType:"json",
+    						         type: "post",			
+    						         success:function(){			
+    						        	 tr.children("td").get(4).innerHTML =  tr.children("td").get(4).firstChild.value;
+    						        	 tr.children("td").get(5).innerHTML =  tr.children("td").get(5).firstChild.value;
+    						         },
+    						
+    						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+    						
+    						        	 console.log(XMLHttpRequest.status);
+    				                       console.log(XMLHttpRequest.readyState);
+    				                       console.log(textStatus);
+    						
+    						        }
+    			      			});	                    
+    		                }    	  			   
+    				       
+    			      })
+    			  })
+        	 }
     </script>
 	
 	 

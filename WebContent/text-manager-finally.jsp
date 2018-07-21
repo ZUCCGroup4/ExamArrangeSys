@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
+    <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,44 +25,6 @@
       <script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
       <script>var jq202 = jQuery.noConflict(true); </script>
     <![endif]-->
-    <script>
-      var op = 0;
-      function changevalue() {
-          var tr = document.getElementById("tablevalue").childNodes;
-          if(op == 0) {
-              op = 1;
-              for(var i = 0; i < 2; i ++) {
-                  if(tr[i].localName == "td")
-                      tr[i].innerHTML = "<input type=\"text\" value=\"1111\">";
-              }
-              for(var i = 2; i < tr.length - 2; i ++) {
-                  if(i >= 5 && i <= 6) continue;
-                  if(tr[i].localName == "td")
-                      tr[i].innerHTML = "<select class=\"form-control\"></select>";
-              }
-          }
-          else {
-              op = 0;
-              for(var i = 0; i < tr.length - 2; i ++) {
-                  if(tr[i].localName == "td")
-                    tr[i].innerHTML = "1111";
-              }
-          }
-      }
-      (function($){
-          function loadteacher() {
-              $.ajax({
-                  dataType:"json",    //数据类型
-                  contentType: "application/x-www-form-urlencoded;charset=utf-8", //内容格式
-                  url:"/getteacher",
-                  type:"POST", //传输方式
-                  success:function(data,textStatus){
-                      alert("教师数据得到成功");
-                  }
-              });
-          }
-      })(jq172);
-    </script>
     <style>
       #modify {
         border-radius: 5px;
@@ -74,8 +37,28 @@
       #modify:hover {
         background-color: darkgreen;
       }
-      td {
-        width: 230px;
+      .step {
+        display: inline-block;
+        width: 100px;
+        height: 35px;
+        border-radius: 5px;
+        border: 0px;
+        margin: 0px 10px 0px 10px;
+        color: white;
+        text-align: center;
+      }
+      #lststep {
+        background-color: red;
+      }
+      #nxtstep {
+        background-color: blue;
+        float: right;
+      }
+      #lststep:hover {
+        background-color: darkred;
+      }
+      #nxtstep:hover {
+        background-color: darkblue;
       }
     </style>
   </head>
@@ -107,7 +90,10 @@
       </div>
       <div class="templatemo-content-container">
         <div class="templatemo-content-widget white-bg">
-          <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
+        <%String year= (String) session.getAttribute("year");
+            String term= (String) session.getAttribute("term");
+          %>
+           <h2 class="margin-bottom-10" style="text-align: center;"><%=year%>学年 第<%=term%>学期</h2>
           <h3 class="margin-bottom-10" style="text-align: center;">考试安排结果</h3>
         </div>
         <script>
@@ -149,24 +135,24 @@
                     <td>课程编号</td>
                     <td>课程名称</td>
                     <td>考试地点</td>
-                    <td>教师编号</td>
-                    <td>修改</td>
+                    <td>监考老师1</td>
+                    <td>监考老师2</td>
                   </tr>
                   </thead>
-                  <tbody>
-                  <tr id="tablevalue">
-                    <td>13</td>
-                    <td>13</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td><button id="modify" onclick="changevalue()">修改</button></td>
-                  </tr>
+                  <tbody id="tablevalue">
+
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+           <div id="search_msg" class="text-right" style="margin-right: 10px;">
+          共有<span id="allnum">27</span>条考试安排记录；
+          <button class="fy_btn" data="firstPage">首页</button>|<button class="fy_btn" data="prev">上一页</button>
+          第<span id="nowPage">1</span>/<span id="allPage">3</span>页
+          <button class="fy_btn" data="next">下一页</button>|<button data="lastPage" class="fy_btn">尾页</button>
+          转到<input type="number" id="pagenumber" min="1">页<button data="toPage" class="fy_btn">GO</button>
+        </div>  
         <!--</form>-->
         <footer class="text-right">
           <p>ZUCC JAVA方向短学期第四组--考试安排系统</p>
@@ -305,6 +291,142 @@
         drawMaps();
 
       });
+    </script>
+    <script type="text/javascript">
+        //数据
+         var testdata=[];
+         
+       <%
+       List<TestCheckBean> objlist = (List<TestCheckBean>) request.getAttribute("finallylist");
+      		 for(int i=0;i<objlist.size();i++) {
+		%>    			 
+      		 		var tmp = {time:<%="'"+objlist.get(i).getCheckTime()+"'"%>, 
+      		 				id:<%="'"+objlist.get(i).getCourseId()+"'"%>, 
+      		 				name:<%="'"+objlist.get(i).getCourseName()+"'"%>,
+      		 				place:<%="'"+objlist.get(i).getCheckPlace()+"'"%>,
+      		 				invigilator1:<%="'"+objlist.get(i).getInvigilator1()+"'"%>,
+      		 				invigilator2:<%="'"+objlist.get(i).getInvigilator2()+"'"%>};
+      		 		testdata.push(tmp);
+      		 		
+		<%
+      		 }
+      	%>
+        var f0 = new loadtable(testdata);
+        function loadtable(testdata){
+          //操作节点
+          var search_msg=document.getElementById('search_msg'),
+//              keyword=document.getElementById('keyword'),
+              table_list=document.getElementById('tablevalue'),
+              Allnum=document.getElementById('allnum'),
+              Allpage=document.getElementById('allPage'),
+              Nowpage=document.getElementById('nowPage'),
+              pagenumber=document.getElementById('pagenumber');
+
+          //初始设置;
+          var setnum=10,//设置每页数目
+              nowpage,//当前页
+              allpage,
+              tempdata=[],//存放
+              startnum=0,//数据节点
+              Condition = function(){
+                  var temp=[],allnum=0;
+                  for(var i in this){
+                      if(this[i]['time'].match(arguments[0]) || this[i]['id'].match(arguments[0]) || this[i]['name'].match(arguments[0])){
+                          temp.push(this[i]);
+                          allnum+=1;
+                      }
+                  }
+                  return  [temp,allnum];
+              },
+              Makelist = function(){
+
+                  table_list.innerHTML='';
+                  Nowpage.innerText=nowpage;
+                  if(nowpage==0)return false;
+
+                  var templist=document.createDocumentFragment();
+                  for(var i = startnum;i<Number(startnum+setnum);i++){
+                      if(i>=this.length){
+                          table_list.appendChild(templist);
+                          return false;
+                      }
+
+                      var c_tr = document.createElement('tr');
+                      c_tr.id = 'row'+this[i].rowid;
+                      c_tr.innerHTML='<td>'+this[i].time+'</td>'+
+                          '<td>'+this[i].id+'</td>'+
+                          '<td>'+this[i].name+'</td>'+
+                          '<td>'+this[i].place+'</td>'+
+                          '<td>'+this[i].invigilator1+'</td>'+
+                          '<td>'+this[i].invigilator2+'</td>'+
+                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                      templist.appendChild(c_tr);
+
+                  }
+                  table_list.appendChild(templist);
+
+
+              },
+              Searchkey=function(Co,Ma,obj,key){
+                  var resdata = Co.apply(obj,[key]);
+                  Allnum.innerText=resdata[1];
+                  Allpage.innerText=Math.ceil(resdata[1]/setnum);
+                  startnum=0;
+                  tempdata = resdata[0];
+                  allpage=Math.ceil(resdata[1]/setnum);
+                  isdata=(resdata[0]!='')?1:0;
+                  nowpage= isdata;
+                  pagenumber.setAttribute('max',allpage);
+                  Ma.apply(resdata[0]);
+              },
+              Optpage = function(){
+                  switch(arguments[0]){
+                      case 'prev':
+                          if(nowpage==1)return false;
+                          nowpage-=1;
+                          startnum-=setnum;
+                          break;
+                      case 'next':
+                          if(nowpage==allpage)return false;
+                          nowpage+=1;
+                          startnum+=setnum;
+                          break;
+                      case 'firstPage':
+                          nowpage=1;
+                          startnum=0;
+
+                          break;
+
+                      case 'lastPage':
+                          nowpage=allpage;
+                          startnum=(nowpage-1)*setnum;
+
+                          break;
+
+                      case 'toPage':
+                          console.log(pagenumber.value)
+                          nowpage=Number(pagenumber.value);
+                          if(nowpage>allpage || nowpage<1)return false;
+                          startnum=(nowpage-1)*setnum;
+                          break;
+                      default:
+                          return false;
+                          break;
+                  }
+                  Makelist.apply(tempdata);
+              }
+
+            Searchkey(Condition,Makelist,testdata,'');
+//点击翻页
+            var btn = search_msg.getElementsByTagName("button");
+            for(var i=0;i<btn.length;i++){
+                btn[i].onclick=(function(index){
+                    return function(){
+                        Optpage(btn[index].getAttribute("data"));
+                    }
+                })(i);
+            }
+        }
     </script>
   </body>
 </html>

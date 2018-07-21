@@ -26,12 +26,4 @@ public class TestTimeArrangeController {
 		return modelAndView;
 	}
 	
-	
-	@RequestMapping("/modifytime")
-	public ModelAndView modifytime(HttpServletRequest request){
-		ModelAndView modelAndView = new ModelAndView();
-		String courseid = request.getParameter("courseid");
-		modelAndView.setViewName("text-manager1-2.jsp");
-		return modelAndView;
-	}
 }
