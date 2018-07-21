@@ -422,7 +422,8 @@ public class CheckClassMap {
 			newTClist.add(new ArrayList<TestCheckBean>());
 			sum = 0;// 每次遍历一个新的时间块重新分配教室
 			for (int j = 0; j < list.get(i).size(); j++) {// 遍历老安排表的时间块中的课程
-				num = Math.ceil(classes.get(list.get(i).get(j).getCourseId()) / 40);// 算出所需教室个数
+				num =( classes.get(list.get(i).get(j).getCourseId()) / 40 )+1;// 算出所需教室个数
+				System.out.println("course" + list.get(i).get(j).getCourseId() + " num" + num);
 				for (int x = 0; x < num; x++) {// 将教室信息加入安排数据中并加入新安排表
 					TestCheckBean temp = new TestCheckBean();
 					temp.setCourseId(list.get(i).get(j).getCourseId());
