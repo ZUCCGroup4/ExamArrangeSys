@@ -125,7 +125,7 @@
 	<class name="TestCheckBean" table="testcheck">
 		<id name="checkId" type="java.lang.Integer">
 			<column name="check_id" />
-			<generator class="assigned" />
+			<generator class="native" />
 		</id>
 		<property name="checkTime" type="timestamp" column="check_time" />
 		<property name="checkPlace" type="string" column="check_place" />
@@ -142,6 +142,16 @@
 		</id>
 		<property name="classRoomName" type="string" column="classroom_name" />
 		<property name="size" type="java.lang.Integer" column="size" />
+	</class>
+	
+	<class name="TestCheckDetailBean" table="testcheckdetail">
+		<id name="testCheckDetailId" type="java.lang.Integer">
+			<column name="testcheckdetail_id" />
+			<generator class="native" />
+		</id>
+		<property name="checkId" type="java.lang.Integer" column="check_id" />
+		<property name="studentId" type="string" column="student_id" />
+		<property name="tableNumb" type="java.lang.Integer" column="table_numb" />
 	</class>
 
 </hibernate-mapping>  

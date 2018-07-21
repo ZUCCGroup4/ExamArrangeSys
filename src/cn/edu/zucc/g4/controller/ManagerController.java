@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.zucc.g4.bean.TestCheckBean;
 import cn.edu.zucc.g4.service.CheckClassMap;
+import cn.edu.zucc.g4.service.SelectionjoinService;
 import cn.edu.zucc.g4.service.TestTimeService;
 import cn.edu.zucc.g4.util.DateUtil;
 import net.sf.json.JSONArray;
@@ -29,6 +31,9 @@ public class ManagerController {
 
 	@Resource(name = "testTimeService")
 	public TestTimeService testTimeService;
+	
+	@Resource(name = "selectionjoinService")
+	public SelectionjoinService selectionjoinService;
 
 	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>();
 	public static ArrayList<ArrayList<TestCheckBean>> examlist2 = new ArrayList<ArrayList<TestCheckBean>>();
@@ -205,5 +210,102 @@ public class ManagerController {
 		request.getSession().setAttribute("examlist3", examlist3);
 		return true;
 	}
+	
+	@ResponseBody
+	@RequestMapping("toManagerfinally")
+	public ModelAndView toManagerFinally(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		testTimeService.addTestCheck(examlist3);
+		request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
+		modelAndView.addObject("finallylist", selectionjoinService.loadAllTestCheck());
+		modelAndView.setViewName("text-manager-finally.jsp");
+		return modelAndView;
+	}
+	
+	//根据日期区间查询
+			@ResponseBody
+			@RequestMapping("selectdate")
+			public ModelAndView selectdate(HttpServletRequest request){
+				ModelAndView modelAndView = new ModelAndView();
+				String date1=request.getParameter("date1");
+				String date2=request.getParameter("date2");
+				String pagename=request.getParameter("pagename");
+				if(pagename.equals("text-manager1-2.jsp")){
+					request.getSession().setAttribute("examlist1", examlist);
+					modelAndView.addObject("examtestlist",testTimeService.selecttesttimelist(examlist,date1,date2));
+				}
+				else if(pagename.equals("text-manager2.jsp")){
+					request.getSession().setAttribute("examlist2", examlist2);
+					modelAndView.addObject("examtestlist",testTimeService.selecttesttimelist(examlist2,date1,date2));
+				}
+				else if(pagename.equals("text-manager3.jsp")){
+					request.getSession().setAttribute("examlist3", examlist3);
+					modelAndView.addObject("examtestlist",testTimeService.selecttesttimelist(examlist3,date1,date2));
+				}
+				modelAndView.setViewName(pagename);
+				return modelAndView;
+			}
+		//根据课程名称查询
+			@ResponseBody
+			@RequestMapping("selectname")
+			public ModelAndView selectname(HttpServletRequest request){
+				ModelAndView modelAndView = new ModelAndView();
+				String claname=request.getParameter("claname");
+				String pagename=request.getParameter("pagename");
+				if(pagename.equals("text-manager1-2.jsp")){
+					request.getSession().setAttribute("examlist1", examlist);
+					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyname(examlist,claname));
+				}
+				else if(pagename.equals("text-manager2.jsp")){
+					request.getSession().setAttribute("examlist2", examlist2);
+					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyname(examlist2,claname));
+				}
+				else if(pagename.equals("text-manager3.jsp")){
+					request.getSession().setAttribute("examlist3", examlist3);
+					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyname(examlist3,claname));
+				}
+				modelAndView.setViewName(pagename);
+				return modelAndView;
+			}
+		//根据课程ID查询
+			@ResponseBody
+			@RequestMapping("selectid")
+			public ModelAndView selectid(HttpServletRequest request){
+				ModelAndView modelAndView = new ModelAndView();
+				String claid=request.getParameter("claid");
+				String pagename=request.getParameter("pagename");
+				if(pagename.equals("text-manager1-2.jsp")){
+					request.getSession().setAttribute("examlist1", examlist);
+					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyid(examlist,claid));
+				}
+				else if(pagename.equals("text-manager2.jsp")){
+					request.getSession().setAttribute("examlist2", examlist2);
+					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyid(examlist2,claid));
+				}
+				else if(pagename.equals("text-manager3.jsp")){
+					request.getSession().setAttribute("examlist3", examlist3);
+					modelAndView.addObject("examtestlist",testTimeService.selecttestlistbyid(examlist3,claid));
+				}
+				modelAndView.setViewName(pagename);
+				return modelAndView;
+			}
+//			//根据全局查询
+//			@ResponseBody
+//			@RequestMapping("selectall")
+//			public ModelAndView selectall(HttpServletRequest request){
+//				ModelAndView modelAndView = new ModelAndView();
+//				String pagename=request.getParameter("pagename");
+//				if(pagename.equals("text-manager1-2.jsp")){
+//					request.getSession().setAttribute("examlist1", examlist);
+//				}
+//				else if(pagename.equals("text-manager2.jsp")){
+//					request.getSession().setAttribute("examlist2", examlist2);
+//				}
+//				else if(pagename.equals("text-manager3.jsp")){
+//					request.getSession().setAttribute("examlist3", examlist3);
+//				}
+//				modelAndView.setViewName(pagename);
+//				return modelAndView;
+//			}
 
 }
