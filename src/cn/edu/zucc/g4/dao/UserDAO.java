@@ -13,6 +13,7 @@ import cn.edu.zucc.g4.bean.CheckBean;
 import cn.edu.zucc.g4.bean.SelectionBean;
 import cn.edu.zucc.g4.bean.SelectionRecordBean;
 import cn.edu.zucc.g4.bean.TestCheckBean;
+import cn.edu.zucc.g4.bean.TestCheckDetailBean;
 import cn.edu.zucc.g4.bean.UserBean;
 import cn.edu.zucc.g4.bean.ViewCheckBean;
 
@@ -71,12 +72,12 @@ public class UserDAO {
 		return list;
 	}
 
-	public List<SelectionRecordBean> listMyExam(String user_id) {
+	public List listMyExam(String user_id) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "SELECT course_id FROM SelectionRecordBean where student_id= '"+user_id+"' group by course_id";
+		String hql = "SELECT b.checkTime, a.tableNumb , b.checkPlace,b.courseName FROM TestCheckDetailBean a,TestCheckBean b where a.checkId=b.checkId and a.studentId='"+user_id+"'";
 		Query query= session.createQuery(hql);
-		List<SelectionRecordBean> list = query.list();
+		List<Object[]> list = query.list();
 		return list;
 	}
 }

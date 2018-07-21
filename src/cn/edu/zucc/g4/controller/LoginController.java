@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import cn.edu.zucc.g4.bean.SelectionBean;
 import cn.edu.zucc.g4.bean.SelectionRecordBean;
 import cn.edu.zucc.g4.bean.TestCheckBean;
+import cn.edu.zucc.g4.bean.TestCheckDetailBean;
 import cn.edu.zucc.g4.bean.UserBean;
 import cn.edu.zucc.g4.bean.ViewCheckBean;
 import cn.edu.zucc.g4.service.LogService;
@@ -46,10 +47,11 @@ public class LoginController {
 				ArrayList<ViewCheckBean> jklist=loginService.getTeacherList(getuser);
 				ArrayList<ViewCheckBean> zklist=loginService.getTeacherList2(getuser);
 				session.setAttribute("jklist", jklist);
-				System.out.println("jiazailaoshi"+jklist.size());
+				
 				session.setAttribute("zklist", zklist);
 			}else if(getuser.getType().equals("student")) {
-				ArrayList<SelectionRecordBean> stulist = loginService.getStudentList(getuser);
+				ArrayList<Object[]> stulist = loginService.getStudentList(getuser);
+				System.out.println("考试时间"+stulist.get(0)[0]);
 				session.setAttribute("stulist", stulist);
 			}
 			System.out.println(loginService.checkLogin(user));

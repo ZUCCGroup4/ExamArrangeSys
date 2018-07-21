@@ -1,6 +1,8 @@
+<%@page import="java.sql.Timestamp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
 <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
+<%@ page import="java.text.*"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,10 +13,8 @@
     <meta name="description" content="">
     <meta name="author" content="templatemo">
     
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,300,400italic,700' rel='stylesheet' type='text/css'>
-    <link href="css/font-awesome.min.css" rel="stylesheet">
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet" type="text/css" /> 
     <link href="css/templatemo-style.css" rel="stylesheet">
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -61,7 +61,7 @@
                   }
               });
           }
-      })(jq172);
+      });
     </script>
     <style>
       #modify {
@@ -109,7 +109,7 @@
       </div>
       <div class="templatemo-content-container">
         <div class="templatemo-content-widget white-bg">
-          <h2 class="margin-bottom-10" style="text-align: center;">2018-2019学年 第1学期</h2>
+          <h2 class="margin-bottom-10" style="text-align: center;"><%=session.getAttribute("userId")%><%=session.getAttribute("username")%></h2>
           <h3 class="margin-bottom-10" style="text-align: center;">考试安排</h3>
         </div>
         <!-- <script>
@@ -148,7 +148,7 @@
                   <thead>
                   <tr>
                     <td>考试时间</td>
-                    <td>课程编号</td>
+                    <td>考场座号</td>
                     <td>课程名称</td>
                     <td>考试地点</td>
                     <!-- <td>教师编号</td>
@@ -157,16 +157,21 @@
                   </thead>
                   <tbody>
                   <%
-                    	List objlist=(List) request.getAttribute("stulist");
+                    	List objlist=(List) session.getAttribute("stulist");
+                
 	                    	if(objlist!=null){
 					          for(int i=0;i<objlist.size();i++){
-					        	  SelectionRecordBean list=(SelectionRecordBean) objlist.get(i);
+					        	  Object[] list=(Object[])objlist.get(i);
+					        	  Timestamp time = (Timestamp)list[0];
+					        	  int tablenum = (int)list[1];
+					        	  String place = (String)list[2];
+					        	  String coursename = (String)list[3];
                     %>
-                    <tr>
-								<td><%=list%></td>
-								<td><%=list.%></td>
-								<td><%=list.%></td>
-								<td><%=list.%></td>
+                 		   <tr>
+								<td><%=time%></td>
+								<td><%=tablenum%></td>
+								<td><%=place%></td>
+								<td><%=coursename%></td>
 							</tr>
 							<% 
 										}
@@ -200,121 +205,9 @@
     <script src="jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
     <script type="text/javascript">
       
-      function drawMaps(){
-        $('#vmap_world').vectorMap({
-          map: 'world_en',
-          backgroundColor: '#ffffff',
-          color: '#333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_africa').vectorMap({
-          map: 'africa_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        }); 
-        $('#vmap_asia').vectorMap({
-          map: 'asia_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_australia').vectorMap({
-          map: 'australia_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_europe').vectorMap({
-          map: 'europe_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_northamerica').vectorMap({
-          map: 'north-america_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_southamerica').vectorMap({
-          map: 'south-america_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_usa').vectorMap({
-          map: 'usa_en',
-          enableZoom: true,
-          showTooltip: true,
-          selectedRegion: 'MO'
-        });  
-      } // end function drawMaps
+    
 
-      $(document).ready(function() {
 
-        if($.browser.mozilla) {
-          //refresh page on browser resize
-          // http://www.sitepoint.com/jquery-refresh-page-browser-resize/
-          $(window).bind('resize', function(e)
-          {
-            if (window.RT) clearTimeout(window.RT);
-            window.RT = setTimeout(function()
-            {
-              this.location.reload(false); /* false to get page from cache */
-            }, 200);
-          });      
-        } else {
-          $(window).resize(function(){
-            drawMaps();
-          });  
-        }
-        
-        drawMaps();
-
-      });
     </script>
   </body>
 </html>

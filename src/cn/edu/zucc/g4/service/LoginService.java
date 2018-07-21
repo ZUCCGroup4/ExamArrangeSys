@@ -12,6 +12,7 @@ import cn.edu.zucc.g4.bean.CheckBean;
 import cn.edu.zucc.g4.bean.SelectionBean;
 import cn.edu.zucc.g4.bean.SelectionRecordBean;
 import cn.edu.zucc.g4.bean.TestCheckBean;
+import cn.edu.zucc.g4.bean.TestCheckDetailBean;
 import cn.edu.zucc.g4.bean.UserBean;
 import cn.edu.zucc.g4.bean.ViewCheckBean;
 import cn.edu.zucc.g4.dao.UserDAO;
@@ -39,8 +40,8 @@ public class LoginService {
 		ArrayList<ViewCheckBean> mylist = (ArrayList<ViewCheckBean>) userDAO.getTeacherClass(user.getUser_id());//输出主考的考试
 		return mylist;
 	}
-	public ArrayList<SelectionRecordBean> getStudentList(UserBean user) {
-		ArrayList<SelectionRecordBean> stulist = (ArrayList<SelectionRecordBean>) userDAO.listMyExam(user.getUser_id());
+	public ArrayList<Object[]> getStudentList(UserBean user) {
+		ArrayList<Object[]> stulist = (ArrayList<Object[]>) userDAO.listMyExam(user.getUser_id());
 		
 		return stulist;
 	}
