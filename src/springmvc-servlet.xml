@@ -21,9 +21,9 @@
 
 	<context:component-scan base-package="cn"></context:component-scan>
 	<mvc:annotation-driven />
-	<mvc:interceptors>
+	<!-- <mvc:interceptors>
 		<bean class="cn.edu.zucc.g4.interceptor.LoginInterceptor"></bean>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 
 
 
@@ -133,7 +133,7 @@
 	<mvc:resources location="/fonts/" mapping="/fonts/**" />
 	<mvc:resources location="/images/" mapping="/images/**" />
 
-	<mvc:interceptors>
+	<!-- <mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<bean class="cn.edu.zucc.g4.interceptor.LoginInterceptor"></bean>
@@ -143,7 +143,7 @@
 			<bean class="cn.edu.zucc.g4.interceptor.LogInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
-
+ -->
 	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
 		id="internalResourceViewResolver"> <property name="prefix" value="/" /> <property 
 		name="suffix" value=".jsp" /> </bean> -->

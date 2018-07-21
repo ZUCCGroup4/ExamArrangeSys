@@ -28,6 +28,7 @@ public class ManagerController {
 	public TestTimeService testTimeService;
 
 	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>();
+	//1
 
 	@ResponseBody
 	@RequestMapping("toManager1-2")

@@ -388,7 +388,7 @@
         alert(1);
          var testdata=[];
          <%
-         ArrayList<ArrayList<TestCheckBean>> objlist=(ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist"); ;
+         ArrayList<ArrayList<TestCheckBean>> objlist=(ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examlist"); 
          ArrayList<ArrayList<TestCheckBean>> examtestlist= (ArrayList<ArrayList<TestCheckBean>>) request.getAttribute("examtestlist");
          if(examtestlist!=null&&examtestlist.size()!=0){
       	   %>
