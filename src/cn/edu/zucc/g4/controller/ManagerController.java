@@ -385,9 +385,10 @@ public class ManagerController {
 
 	@ResponseBody
 	@RequestMapping("/modifyfinallyresult/{courseId}/{oldplace}/{checktime}")
-	public boolean modifyfinallyteacherresult(@PathVariable("courseId") String courseId,
+	public boolean modifyfinallyteacherresult(@PathVariable("courseId") String courseId,HttpServletRequest request,
 			@PathVariable("oldplace") String oldplace,@PathVariable("checktime") String checktime,@RequestBody TestCheckBean tcb) {
 		testTimeService.modifyFinallyExam(courseId, oldplace,checktime,tcb);// 修改完考场的考试安排表
+		request.setAttribute("log_msg", "修改了课程号为"+courseId+"在"+oldplace+"的考试安排");
 		return true;
 	}
 	

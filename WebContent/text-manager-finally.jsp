@@ -166,6 +166,7 @@
             </div>
           </div>
            <div id="search_msg" class="text-right" style="margin-right: 10px;">
+            <a style="text-align:center;cursor:pointer;float: left;margin-left: 10px;border-radius: 5px;border: 0px;width: 120px;height: 30px;background-color: green;color: white;" onclick="exput()">导出Excel文件</a>
           共有<span id="allnum">27</span>条考试安排记录；
           <button class="fy_btn" data="firstPage">首页</button>|<button class="fy_btn" data="prev">上一页</button>
           第<span id="nowPage">1</span>/<span id="allPage">3</span>页
@@ -559,6 +560,21 @@
 		
 		        }
   			});
+        }
+    </script>
+    <script src="js/Blob.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+    <script src="js/ExportUtil.js"></script>
+    <script type="text/javascript">
+        function exput() {
+            var excel_file = [];
+            for(var i = 0;i < testdata.length; i++) {
+                if(i == 0) excel_file.push(["考试时间","课程ID","课程名称","考试地点","主考官","监考官"]);
+               	var now_time = testdata[i].time+'\r';
+                   excel_file.push([now_time,testdata[i].id+'\r',testdata[i].name
+                       ,testdata[i].place,testdata[i].invigilator1,testdata[i].invigilator2]);
+            }
+            ExportUtil.toExcel(excel_file,"考试安排结果.xls");
         }
     </script>
   </body>
