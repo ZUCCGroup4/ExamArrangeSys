@@ -31,10 +31,9 @@
 		class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />  <!--数据库连接驱动 -->
-		<property name="jdbcUrl"
-			value="jdbc:mysql://101.132.117.41:3306/examination_arrangement" />     <!--数据库地址 -->
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/examination_arrangement?useSSL=false" />  
 		<property name="user" value="root" />   <!--用户名 -->
-		<property name="password" value="root" />   <!--密码 -->
+		<property name="password" value="889596" />   <!--密码 -->
 		<property name="maxPoolSize" value="40" />      <!--最大连接数 -->
 		<property name="minPoolSize" value="1" />       <!--最小连接数 -->
 		<property name="initialPoolSize" value="10" />      <!--初始化连接池内的数据库连接 -->
@@ -51,7 +50,7 @@
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.connection.autocommit">false</prop>
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
-				<prop key="hibernate.jdbc.batch_size">500</prop>
+				<!-- <prop key="hibernate.jdbc.batch_size">500</prop> -->
 			</props>
 		</property>
 

@@ -120,7 +120,7 @@ public class CheckClassMap {
 					// edges[index1][index2]=1;//将邻接矩阵中相应的值置为1;
 					// edges[index2][index1]=1;
 				} else {
-					System.out.println("课程表和选课表中的课程id相互不对应:");
+					System.out.println("课程表和选课表中的课程id相互不对应1:");
 					if (csmap.containsKey(claid1)) {
 						System.out.println(claid2);
 					} else {
@@ -145,7 +145,7 @@ public class CheckClassMap {
 					idnexlist.clear();// 清空缓存表
 					idnexlist.add(index2);// 加入第二条数据
 				} else {
-					System.out.println("课程表和选课表中的课程id相互不对应:");
+					System.out.println("课程表和选课表中的课程id相互不对应2:");
 					if (csmap.containsKey(claid1)) {
 						System.out.println(claid2);
 					} else {
@@ -163,7 +163,7 @@ public class CheckClassMap {
 						}
 					}
 				} else {
-					System.out.println("课程表和选课表中的课程id相互不对应:");
+					System.out.println("课程表和选课表中的课程id相互不对应3:");
 					if (csmap.containsKey(claid1)) {
 						System.out.println(claid2);
 					} else {

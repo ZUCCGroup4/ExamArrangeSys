@@ -35,7 +35,7 @@ public class ManagerController {
 	@Resource(name = "selectionjoinService")
 	public SelectionjoinService selectionjoinService;
 
-	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>();
+	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>(); // 
 	public static ArrayList<ArrayList<TestCheckBean>> examlist2 = new ArrayList<ArrayList<TestCheckBean>>();
 	public static ArrayList<ArrayList<TestCheckBean>> examlist3 = new ArrayList<ArrayList<TestCheckBean>>();
 
@@ -83,7 +83,7 @@ public class ManagerController {
 	public ModelAndView toManagerOT(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 
-		checkClassMap.LoadCheckClassMap();
+		checkClassMap.LoadCheckClassMap(); // 加载一个邻接矩阵
 
 		long day = 0;
 		String startTime = request.getParameter("starttime");
@@ -91,32 +91,29 @@ public class ManagerController {
 
 		day = new DateUtil().getDay(startTime, endTime);// 时间换算成考试时间块
 
-		System.out.println(day + "天");
-
 		examlist = checkClassMap.initializeExam((int) (day * 3));// 安排考试时间
 		
-		examlist = checkClassMap.optimizeExam(examlist);
+		if(examlist == null) { // 给予的时间不够安排
+			
+			modelAndView.addObject("error", "考试时间安排不足，请重新安排时间！");
+			
+			modelAndView.setViewName("text-manager1.jsp");
+			return modelAndView;
+		}
+		
+		examlist = checkClassMap.optimizeExam(examlist); // 优化时间安排
 
 		examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
 
-		examlist = testTimeService.setCourseName(examlist);
+		examlist = testTimeService.setCourseName(examlist); // 插入考试课程名字
 
 		request.getSession().setAttribute("examlist1", examlist);
-
-		/*
-		 * ArrayList<Timestamp> timelist =
-		 * checkClassMap.modifyExamTime(examlist,"301389");
-		 * System.out.println(examlist.size()+"++++++++++");
-		 * System.out.println(timelist.size()+"----------"); for(int
-		 * i=0;i<timelist.size();i++){ System.out.println(timelist.get(i)); }
-		 */
 
 		modelAndView.setViewName("text-manager1-2.jsp");
 		return modelAndView;
 	}
 
 	@ResponseBody
-
 	@RequestMapping("/modifytime/{courseid}")
 	public JSONArray modifytime(@PathVariable("courseid") String courseid){
 		ArrayList<Timestamp> timelist = checkClassMap.modifyExamTime(examlist,courseid);//可修改时间列表
@@ -140,8 +137,8 @@ public class ManagerController {
 	public ModelAndView toManagerTwo(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		
-		if(examlist2.isEmpty()){
-			examlist2 = checkClassMap.planExamClass(examlist);
+		if(examlist2.isEmpty()){ 
+			examlist2 = checkClassMap.planExamClass(examlist); // 安排考场算法
 			
 			request.getSession().setAttribute("examlist2", examlist2);
 		}
@@ -289,23 +286,4 @@ public class ManagerController {
 				modelAndView.setViewName(pagename);
 				return modelAndView;
 			}
-//			//根据全局查询
-//			@ResponseBody
-//			@RequestMapping("selectall")
-//			public ModelAndView selectall(HttpServletRequest request){
-//				ModelAndView modelAndView = new ModelAndView();
-//				String pagename=request.getParameter("pagename");
-//				if(pagename.equals("text-manager1-2.jsp")){
-//					request.getSession().setAttribute("examlist1", examlist);
-//				}
-//				else if(pagename.equals("text-manager2.jsp")){
-//					request.getSession().setAttribute("examlist2", examlist2);
-//				}
-//				else if(pagename.equals("text-manager3.jsp")){
-//					request.getSession().setAttribute("examlist3", examlist3);
-//				}
-//				modelAndView.setViewName(pagename);
-//				return modelAndView;
-//			}
-
 }

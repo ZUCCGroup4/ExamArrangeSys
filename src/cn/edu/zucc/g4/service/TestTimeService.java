@@ -147,9 +147,6 @@ public class TestTimeService {
 				testCheckDetailBean.setStudentId(student.get(0));
 				System.out.println("studentid = " + student.get(0));
 				student.remove(0);
-				if(i==1536) {
-					System.out.println("check_id = " + tcb.get(i).getCheckId());
-				}
 				System.out.println("check_id = " + tcb.get(i).getCheckId());
 				testCheckDetailBean.setCheckId(tcb.get(i).getCheckId());
 				testCheckDetailBean.setTableNumb(j+1);
