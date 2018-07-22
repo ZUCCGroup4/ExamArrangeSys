@@ -27,7 +27,7 @@ public class SelectionDAO {
 	 * 遍历所有选课
 	 * @return
 	 */
-	public List<SelectionBean> listALLLog() {
+	public List<SelectionBean> listAllSelection() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from SelectionBean";

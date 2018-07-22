@@ -26,7 +26,7 @@ public class SelectionDetailDAO {
 	 * 遍历所有选课详情
 	 * @return
 	 */
-	public List<SelectionDetailBean> listALLLog() {
+	public List<SelectionDetailBean> listAllSelectionDetail() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from SelectionDetailBean";

@@ -1,5 +1,7 @@
 package cn.edu.zucc.g4.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.edu.zucc.g4.service.SelectionjoinService;
 import cn.edu.zucc.g4.service.TestTimeService;
+import cn.edu.zucc.g4.bean.TestCheckBean;
+import cn.edu.zucc.g4.controller.*;
 @Controller
 public class TestweekArrangeController {
 	
@@ -29,6 +33,7 @@ public class TestweekArrangeController {
 			request.getSession().setAttribute("finallylist", selectionjoinService.loadAllTestCheck());
 			//modelAndView.addObject("finallylist",selectionjoinService.loadAllTestCheck());
 			modelAndView.setViewName("text-manager-finally.jsp");
+			ManagerController.finallylist= (ArrayList<TestCheckBean>) selectionjoinService.loadAllTestCheck();
 		} else{
 			modelAndView.setViewName("text-manager1.jsp");
 		}

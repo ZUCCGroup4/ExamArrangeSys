@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -324,7 +325,7 @@ public class ManagerController {
 	@RequestMapping("/modifyfinallytime/{courseid}/{checktime}")
 	public JSONArray modifyfinallytime(@PathVariable("courseid") String courseid,
 			@PathVariable("checktime") String checktime) {
-		System.out.println(courseid+" "+checktime);
+		System.out.println("fa"+finallylist);
 		ArrayList<Timestamp> timelist = checkClassMap.modifyFinallyExamTime(finallylist, courseid,Timestamp.valueOf(checktime));// 可修改时间列表
 		String[] res = new String[timelist.size()];
 		for (int i = 0; i < timelist.size(); i++) {
@@ -338,7 +339,7 @@ public class ManagerController {
 	@ResponseBody
 	@RequestMapping("/modifyfinallyclass/{checktime}/{checkplace}")
 	public JSONArray modifyfinallyclass(@PathVariable("checktime") String checktime,
-			@PathVariable("checkplace") String checkplace) {
+			@PathVariable("checkplace") String checkplace,HttpSession session) {
 		ArrayList<String> classlist = checkClassMap.modifyFinallyExamClass(finallylist, checkplace,
 				Timestamp.valueOf(checktime));// 可修改考场列表
 		String[] res = new String[classlist.size()];
