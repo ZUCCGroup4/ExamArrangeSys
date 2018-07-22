@@ -356,7 +356,7 @@ public class ManagerController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/modifyteacher/{checktime}/{teacher1}/{teacher2}")
+	@RequestMapping("/modifyfinallyteacher/{checktime}/{teacher1}/{teacher2}")
 	public JSONArray modifyfinallyteacher(@PathVariable("checktime") String checktime,
 			@PathVariable("teacher1") String teacher1, @PathVariable("teacher2") String teacher2) {
 
@@ -372,7 +372,7 @@ public class ManagerController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/modifyteacherresult/{checktime}/{checkplace}/{teacher1}/{teacher2}")
+	@RequestMapping("/modifyfinallyteacherresult/{checktime}/{checkplace}/{teacher1}/{teacher2}")
 	public boolean modifyfinallyteacherresult(@PathVariable("checktime") String checktime,
 			@PathVariable("teacher1") String teacher1, @PathVariable("teacher2") String teacher2,
 			@PathVariable("checkplace") String checkplace, HttpServletRequest request) {
