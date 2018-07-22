@@ -30,10 +30,10 @@ public class TestTimeService {
 
 	@Resource(name = "testCheckDAO")
 	TestCheckDAO testCheckDAO;
-	
+
 	@Resource(name = "selectionDAO")
-	SelectionDAO selectionDAO ;
-	
+	SelectionDAO selectionDAO;
+
 	@Resource(name = "selectionDetailDAO")
 	SelectionDetailDAO selectionDetailDAO;
 
@@ -86,6 +86,24 @@ public class TestTimeService {
 		return examlist;
 	}
 
+	public ArrayList<TestCheckBean> modifyfinallyExamTime(ArrayList<TestCheckBean> examlist, String courseid,
+			Timestamp checktime) {
+
+		for (int i = 0; i < examlist.size(); i++) {
+			if (examlist.get(i).getCourseId().equals(courseid)) {
+				if (!examlist.get(i).getCheckTime().equals(checktime)) {
+					examlist.get(i).setCheckPlace(null);
+					examlist.get(i).setInvigilator1(null);
+					examlist.get(i).setInvigilator2(null);
+				}
+				examlist.get(i).setCheckTime(checktime);
+			}
+
+		}
+
+		return examlist;
+	}
+
 	public ArrayList<ArrayList<TestCheckBean>> modifyExamClass(ArrayList<ArrayList<TestCheckBean>> examlist,
 			String oldplace, String checkplace, Timestamp checktime) {
 
@@ -95,6 +113,18 @@ public class TestTimeService {
 						&& examlist.get(i).get(j).getCheckTime().equals(checktime)) {
 					examlist.get(i).get(j).setCheckPlace(checkplace);
 				}
+			}
+		}
+
+		return examlist;
+	}
+
+	public ArrayList<TestCheckBean> modifyFinallyExamClass(ArrayList<TestCheckBean> examlist, String oldplace,
+			String checkplace, Timestamp checktime) {
+
+		for (int i = 0; i < examlist.size(); i++) {
+			if (examlist.get(i).getCheckPlace().equals(oldplace) && examlist.get(i).getCheckTime().equals(checktime)) {
+				examlist.get(i).setCheckPlace(checkplace);
 			}
 		}
 
@@ -117,6 +147,15 @@ public class TestTimeService {
 		return examlist;
 	}
 
+	public void modifyFinallyExam(String courseid, String oldplace, String checktime, TestCheckBean tcb) {
+		TestCheckBean oldtcb = testCheckDAO.getTestCheckBeanByCoursIdAndPlace(courseid, oldplace);
+		oldtcb.setCheckTime(Timestamp.valueOf(checktime));
+		oldtcb.setCheckPlace(tcb.getCheckPlace());
+		oldtcb.setInvigilator1(tcb.getInvigilator1());
+		oldtcb.setInvigilator2(tcb.getInvigilator2());
+		testCheckDAO.addTestCheck(oldtcb);
+	}
+
 	public void addTestCheck(ArrayList<ArrayList<TestCheckBean>> examlist) {
 		List<TestCheckBean> testCheckBeans = new ArrayList<TestCheckBean>();
 		List<TestCheckDetailBean> testCheckDetailBeans = new ArrayList<TestCheckDetailBean>();
@@ -129,34 +168,32 @@ public class TestTimeService {
 		List<TestCheckBean> tcb = testCheckDAO.loadAllTestCheck();
 		List<SelectionBean> sb = selectionDAO.listAllSelection();
 		List<SelectionDetailBean> sdb = selectionDetailDAO.listAllSelectionDetail();
-		
+
 		int i = 0;
-		while(i<tcb.size()) {
+		while (i < tcb.size()) {
 			List<String> student = new ArrayList<String>();
-			for(int j=0; j<sb.size(); j++) {
-				
+			for (int j = 0; j < sb.size(); j++) {
+
 				if (tcb.get(i).getCourseId().equals(sb.get(j).getCourse_id())) {
-					
+
 					student.addAll(this.setStudent(sb.get(j).getSelection_id(), sdb));
 				}
 			}
 			int j = 0;
 			while (student.size() != 0) {
-				System.out.println("studentsize = " + student.size());
 				TestCheckDetailBean testCheckDetailBean = new TestCheckDetailBean();
 				testCheckDetailBean.setStudentId(student.get(0));
-				System.out.println("studentid = " + student.get(0));
 				student.remove(0);
-				System.out.println("check_id = " + tcb.get(i).getCheckId());
 				testCheckDetailBean.setCheckId(tcb.get(i).getCheckId());
-				testCheckDetailBean.setTableNumb(j+1);
+				testCheckDetailBean.setTableNumb(j + 1);
 				testCheckDetailBeans.add(testCheckDetailBean);
-				//testCheckDAO.addTestCheckDetail(testCheckDetailBean);
+				// testCheckDAO.addTestCheckDetail(testCheckDetailBean);
 				j++;
-				if (j>39 || student.size()==0) {
+				if (j > 39 || student.size() == 0) {
 					++i;
-					//System.out.println("i = " + i + " courseid" + tcb.get(i).getCourseId());
-					j=0;
+					// System.out.println("i = " + i + " courseid" +
+					// tcb.get(i).getCourseId());
+					j = 0;
 				}
 			}
 		}
@@ -170,10 +207,23 @@ public class TestTimeService {
 		return terlist;
 	}
 
-	// 满足课程名搜索
+	// 完成页面时间搜索
+	public List<TestCheckBean> selectfintimelist(String date1,String date2){
+			List<TestCheckBean> terlist = testCheckDAO.searchTestCheckbydate(date1,date2);
+			return terlist;
+	}
+
+	
+		//满足课程名搜索
 	public ArrayList<ArrayList<TestCheckBean>> selecttestlistbyname(ArrayList<ArrayList<TestCheckBean>> examlist,
 			String name) {
 		ArrayList<ArrayList<TestCheckBean>> terlist = checkDAO.selectnameCheck(examlist, name);
+		return terlist;
+	}
+
+	// 完成页面name搜索
+	public List<TestCheckBean> selectfinnamelist(String name) {
+		List<TestCheckBean> terlist = testCheckDAO.searchTestCheckbyname(name);
 		return terlist;
 	}
 
@@ -181,13 +231,18 @@ public class TestTimeService {
 	public ArrayList<ArrayList<TestCheckBean>> selecttestlistbyid(ArrayList<ArrayList<TestCheckBean>> examlist,
 			String id) {
 		ArrayList<ArrayList<TestCheckBean>> terlist = checkDAO.selectidCheck(examlist, id);
-		System.out.println("service 长度：" + terlist.size());
+		return terlist;
+	}
+
+	// 完成页面id搜索
+	public List<TestCheckBean> selectfinidlist(String id) {
+		List<TestCheckBean> terlist = testCheckDAO.searchTestCheckbyid(id);
 		return terlist;
 	}
 
 	private List<String> setStudent(String selectionId, List<SelectionDetailBean> sdb) {
 		List<String> student = new ArrayList<>();
-		for(int i=0; i<sdb.size(); i++) {
+		for (int i = 0; i < sdb.size(); i++) {
 			String selectionId2 = sdb.get(i).getSelection_id();
 			if (selectionId2.equals(selectionId)) {
 				student.add(sdb.get(i).getStudent_id());
@@ -195,5 +250,4 @@ public class TestTimeService {
 		}
 		return student;
 	}
-
 }
