@@ -17,7 +17,7 @@ public class TestTimeArrangeController {
 	@RequestMapping("/testtimearrange")
 	public ModelAndView arrangetime(HttpServletRequest request){
 		ModelAndView modelAndView = new ModelAndView();
-		request.setAttribute("terlist",testTimeService.loadalltesttime());
+		//request.setAttribute("terlist",testTimeService.loadalltesttime());
 		String year = (String)request.getSession().getAttribute("year");
 		String term = (String)request.getSession().getAttribute("term");
 		request.getSession().setAttribute("year",year);

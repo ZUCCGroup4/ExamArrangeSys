@@ -120,7 +120,7 @@ public class CheckClassMap {
 					// edges[index1][index2]=1;//将邻接矩阵中相应的值置为1;
 					// edges[index2][index1]=1;
 				} else {
-					System.out.println("课程表和选课表中的课程id相互不对应:");
+					System.out.println("课程表和选课表中的课程id相互不对应1:");
 					if (csmap.containsKey(claid1)) {
 						System.out.println(claid2);
 					} else {
@@ -145,7 +145,7 @@ public class CheckClassMap {
 					idnexlist.clear();// 清空缓存表
 					idnexlist.add(index2);// 加入第二条数据
 				} else {
-					System.out.println("课程表和选课表中的课程id相互不对应:");
+					System.out.println("课程表和选课表中的课程id相互不对应2:");
 					if (csmap.containsKey(claid1)) {
 						System.out.println(claid2);
 					} else {
@@ -163,7 +163,7 @@ public class CheckClassMap {
 						}
 					}
 				} else {
-					System.out.println("课程表和选课表中的课程id相互不对应:");
+					System.out.println("课程表和选课表中的课程id相互不对应3:");
 					if (csmap.containsKey(claid1)) {
 						System.out.println(claid2);
 					} else {
@@ -295,8 +295,8 @@ public class CheckClassMap {
 				newList.add(element);
 		}
 		timelist.clear();
-		timelist.add(checktime);
 		timelist.addAll(newList);
+		
 		return timelist;
 	}
 
@@ -329,7 +329,7 @@ public class CheckClassMap {
 		return classlist;
 	}
 	
-	public ArrayList<String> modifyFinallyExamClass(ArrayList<TestCheckBean> examlist, String checkplace,
+	public ArrayList<String> modifyFinallyExamClass(ArrayList<TestCheckBean> examlist,String place,
 			Timestamp checktime) {
 
 		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的考场
@@ -352,7 +352,7 @@ public class CheckClassMap {
 				newList.add(element);
 		}
 		classlist.clear();
-		classlist.add(checkplace);
+		classlist.add(place);
 		classlist.addAll(newList);
 		return classlist;
 	}
@@ -417,6 +417,37 @@ public class CheckClassMap {
 		teacherlist.addAll(newList);
 		return teacherlist;
 	}
+	
+
+	public ArrayList<String> modifyFinallyExamTeacher(ArrayList<TestCheckBean> examlist, String teacher1,
+			Timestamp checktime) {
+		ArrayList<String> list = new ArrayList<String>();// 生成一个list用于不可修改的教师
+		ArrayList<String> teacherlist = new ArrayList<String>();// 存放可修改的考场
+
+		if (examlist != null) {
+			for (int i = 0; i < examlist.size(); i++){
+					teacherlist.add(examlist.get(i).getInvigilator1());
+					teacherlist.add(examlist.get(i).getInvigilator2());
+					if (examlist.get(i).getCheckTime().equals(checktime)) {
+						list.add(examlist.get(i).getInvigilator1());
+						list.add(examlist.get(i).getInvigilator2());
+					}
+				}
+		}
+		teacherlist.removeAll(list);
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = teacherlist.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		teacherlist.clear();
+		teacherlist.add(teacher1);
+		teacherlist.addAll(newList);
+		return teacherlist;
+	}
+	
 
 	public ArrayList<ArrayList<TestCheckBean>> optimizeExam(ArrayList<ArrayList<TestCheckBean>> list) {
 		long starttime = System.currentTimeMillis();
@@ -504,7 +535,8 @@ public class CheckClassMap {
 			newTClist.add(new ArrayList<TestCheckBean>());
 			sum = 0;// 每次遍历一个新的时间块重新分配教室
 			for (int j = 0; j < list.get(i).size(); j++) {// 遍历老安排表的时间块中的课程
-				num = Math.ceil(classes.get(list.get(i).get(j).getCourseId()) / 40);// 算出所需教室个数
+				num =( classes.get(list.get(i).get(j).getCourseId()) / 40 )+1;// 算出所需教室个数
+				System.out.println("course" + list.get(i).get(j).getCourseId() + " num" + num);
 				for (int x = 0; x < num; x++) {// 将教室信息加入安排数据中并加入新安排表
 					TestCheckBean temp = new TestCheckBean();
 					temp.setCourseId(list.get(i).get(j).getCourseId());

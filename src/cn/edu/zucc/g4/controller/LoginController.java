@@ -2,6 +2,8 @@ package cn.edu.zucc.g4.controller;
 
 
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.edu.zucc.g4.bean.SelectionBean;
+import cn.edu.zucc.g4.bean.SelectionRecordBean;
+import cn.edu.zucc.g4.bean.TestCheckBean;
+import cn.edu.zucc.g4.bean.TestCheckDetailBean;
 import cn.edu.zucc.g4.bean.UserBean;
+import cn.edu.zucc.g4.bean.ViewCheckBean;
 import cn.edu.zucc.g4.service.LogService;
 import cn.edu.zucc.g4.service.LoginService;
 
@@ -32,12 +39,26 @@ public class LoginController {
 	public boolean login(@RequestBody UserBean user, HttpSession session, HttpServletRequest request) {
 		
 		System.out.println("用户名：" + user.getUser_id() + " 密码：" + user.getPassword());
+		UserBean getuser = loginService.checkLogin(user);
 		
-		if(loginService.checkLogin(user).equals("success")) {
-			System.out.println(loginService.checkLogin(user).equals("success"));
-
-			session.setAttribute("userId", user.getUser_id());
-			request.setAttribute("log_msg", user.getUser_id() + "登录成功");
+		
+		if(getuser!=null) {
+			if(getuser.getType().equals("teacher")) {
+				ArrayList<ViewCheckBean> jklist=loginService.getTeacherList(getuser);
+				ArrayList<ViewCheckBean> zklist=loginService.getTeacherList2(getuser);
+				session.setAttribute("jklist", jklist);
+				
+				session.setAttribute("zklist", zklist);
+			}else if(getuser.getType().equals("student")) {
+				ArrayList<Object[]> stulist = loginService.getStudentList(getuser);
+				System.out.println("考试时间"+stulist.get(0)[0]);
+				session.setAttribute("stulist", stulist);
+			}
+			System.out.println(loginService.checkLogin(user));
+			session.setAttribute("type", getuser.getType());
+			session.setAttribute("userId", getuser.getUser_id());
+			session.setAttribute("username", getuser.getUser_name());
+			request.setAttribute("log_msg", getuser.getUser_id() + "登录成功");
 			
 			return true ;
 		}else {

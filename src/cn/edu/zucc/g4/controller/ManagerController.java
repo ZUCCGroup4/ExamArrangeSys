@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,7 @@ public class ManagerController {
 	@Resource(name = "selectionjoinService")
 	public SelectionjoinService selectionjoinService;
 
-	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>();
+	public static ArrayList<ArrayList<TestCheckBean>> examlist = new ArrayList<ArrayList<TestCheckBean>>(); // 
 	public static ArrayList<ArrayList<TestCheckBean>> examlist2 = new ArrayList<ArrayList<TestCheckBean>>();
 	public static ArrayList<ArrayList<TestCheckBean>> examlist3 = new ArrayList<ArrayList<TestCheckBean>>();
 	public static ArrayList<TestCheckBean> finallylist = new ArrayList<TestCheckBean>();
@@ -84,7 +85,7 @@ public class ManagerController {
 	public ModelAndView toManagerOT(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 
-		checkClassMap.LoadCheckClassMap();
+		checkClassMap.LoadCheckClassMap(); // 加载一个邻接矩阵
 
 		long day = 0;
 		String startTime = request.getParameter("starttime");
@@ -92,25 +93,23 @@ public class ManagerController {
 
 		day = new DateUtil().getDay(startTime, endTime);// 时间换算成考试时间块
 
-		System.out.println(day + "天");
-
 		examlist = checkClassMap.initializeExam((int) (day * 3));// 安排考试时间
-
-		examlist = checkClassMap.optimizeExam(examlist);
+		
+		if(examlist == null) { // 给予的时间不够安排
+			
+			modelAndView.addObject("error", "考试时间安排不足，请重新安排时间！");
+			
+			modelAndView.setViewName("text-manager1.jsp");
+			return modelAndView;
+		}
+		
+		examlist = checkClassMap.optimizeExam(examlist); // 优化时间安排
 
 		examlist = testTimeService.setExamTime(examlist, startTime);// 插入考试时间
 
-		examlist = testTimeService.setCourseName(examlist);
+		examlist = testTimeService.setCourseName(examlist); // 插入考试课程名字
 
 		request.getSession().setAttribute("examlist1", examlist);
-
-		/*
-		 * ArrayList<Timestamp> timelist =
-		 * checkClassMap.modifyExamTime(examlist,"301389");
-		 * System.out.println(examlist.size()+"++++++++++");
-		 * System.out.println(timelist.size()+"----------"); for(int
-		 * i=0;i<timelist.size();i++){ System.out.println(timelist.get(i)); }
-		 */
 
 		modelAndView.setViewName("text-manager1-2.jsp");
 		return modelAndView;
@@ -140,10 +139,8 @@ public class ManagerController {
 	@RequestMapping("toManager2")
 	public ModelAndView toManagerTwo(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
-
 		if (examlist2.isEmpty()) {
 			examlist2 = checkClassMap.planExamClass(examlist);
-
 			request.getSession().setAttribute("examlist2", examlist2);
 		}
 		modelAndView.setViewName("text-manager2.jsp");
@@ -245,6 +242,9 @@ public class ManagerController {
 		} else if (pagename.equals("text-manager3.jsp")) {
 			request.getSession().setAttribute("examlist3", examlist3);
 			modelAndView.addObject("examtestlist", testTimeService.selecttesttimelist(examlist3, date1, date2));
+		} else if (pagename.equals("text-manager-finally.jsp")){
+			request.getSession().setAttribute("finallylist", finallylist);
+			modelAndView.addObject("examtestlist", testTimeService.selectfintimelist(date1, date2));
 		}
 		modelAndView.setViewName(pagename);
 		return modelAndView;
@@ -266,6 +266,9 @@ public class ManagerController {
 		} else if (pagename.equals("text-manager3.jsp")) {
 			request.getSession().setAttribute("examlist3", examlist3);
 			modelAndView.addObject("examtestlist", testTimeService.selecttestlistbyname(examlist3, claname));
+		} else if (pagename.equals("text-manager-finally.jsp")){
+			request.getSession().setAttribute("finallylist", finallylist);
+			modelAndView.addObject("examtestlist", testTimeService.selectfinnamelist(claname));
 		}
 		modelAndView.setViewName(pagename);
 		return modelAndView;
@@ -287,6 +290,9 @@ public class ManagerController {
 		} else if (pagename.equals("text-manager3.jsp")) {
 			request.getSession().setAttribute("examlist3", examlist3);
 			modelAndView.addObject("examtestlist", testTimeService.selecttestlistbyid(examlist3, claid));
+		} else if (pagename.equals("text-manager-finally.jsp")){
+			request.getSession().setAttribute("finallylist", finallylist);
+			modelAndView.addObject("examtestlist", testTimeService.selectfinidlist(claid));
 		}
 		modelAndView.setViewName(pagename);
 		return modelAndView;
@@ -314,27 +320,21 @@ public class ManagerController {
 	@RequestMapping("/modifyfinallytime/{courseid}/{checktime}")
 	public JSONArray modifyfinallytime(@PathVariable("courseid") String courseid,
 			@PathVariable("checktime") String checktime) {
+		System.out.println("fa"+finallylist);
 		ArrayList<Timestamp> timelist = checkClassMap.modifyFinallyExamTime(finallylist, courseid,Timestamp.valueOf(checktime));// 可修改时间列表
 		String[] res = new String[timelist.size()];
 		for (int i = 0; i < timelist.size(); i++) {
 			res[i] = timelist.get(i).toString();
 		}
 		JSONArray result = JSONArray.fromObject(res);
+		System.out.println(timelist);
 		return result;
-	}
-
-	@ResponseBody
-	@RequestMapping("/modifyfinallytimeresult/{courseid}/{checktime}")
-	public boolean modifyfinallytimeresult(@PathVariable("courseid") String courseid,
-			@PathVariable("checktime") String checktime) {
-		finallylist = testTimeService.modifyfinallyExamTime(finallylist, courseid, Timestamp.valueOf(checktime));// 修改完时间的考试安排表
-		return true;
 	}
 
 	@ResponseBody
 	@RequestMapping("/modifyfinallyclass/{checktime}/{checkplace}")
 	public JSONArray modifyfinallyclass(@PathVariable("checktime") String checktime,
-			@PathVariable("checkplace") String checkplace) {
+			@PathVariable("checkplace") String checkplace,HttpSession session) {
 		ArrayList<String> classlist = checkClassMap.modifyFinallyExamClass(finallylist, checkplace,
 				Timestamp.valueOf(checktime));// 可修改考场列表
 		String[] res = new String[classlist.size()];
@@ -344,15 +344,6 @@ public class ManagerController {
 		JSONArray result = JSONArray.fromObject(res);
 		return result;
 
-	}
-
-	@ResponseBody
-	@RequestMapping("/modifyfinallyclassresult/{checktime}/{oldplace}/{checkplace}")
-	public boolean modifyfinallyclassresult(@PathVariable("oldplace") String oldplace,
-			@PathVariable("checktime") String checktime, @PathVariable("checkplace") String checkplace) {
-		finallylist = testTimeService.modifyFinallyExamClass(finallylist, oldplace, checkplace, Timestamp.valueOf(checktime));// 修改完考场的考试安排表
-
-		return true;
 	}
 	
 	@ResponseBody
@@ -370,17 +361,29 @@ public class ManagerController {
 		return result;
 
 	}
+	
+	@ResponseBody
+	@RequestMapping("/modifyfinallyteacher/{checktime}/{teacher1}")
+	public JSONArray modifyfinallyteacher(@PathVariable("checktime") String checktime,
+			@PathVariable("teacher1") String teacher1) {
+		
+		ArrayList<String> teacherlist = checkClassMap.modifyFinallyExamTeacher(finallylist, teacher1,
+				Timestamp.valueOf(checktime));// 可修改考场列表
+		String[] res = new String[teacherlist.size()];
+		for (int i = 0; i < teacherlist.size(); i++) {
+			res[i] = teacherlist.get(i).toString();
+		}
+		JSONArray result = JSONArray.fromObject(res);
+		return result;
+
+	}
 
 	@ResponseBody
-	@RequestMapping("/modifyfinallyteacherresult/{checktime}/{checkplace}/{teacher1}/{teacher2}")
-	public boolean modifyfinallyteacherresult(@PathVariable("checktime") String checktime,
-			@PathVariable("teacher1") String teacher1, @PathVariable("teacher2") String teacher2,
-			@PathVariable("checkplace") String checkplace, HttpServletRequest request) {
-
-		finallylist = testTimeService.modifyFinallyExamTeacher(finallylist, checkplace, teacher1, teacher2,
-				Timestamp.valueOf(checktime));// 修改完考场的考试安排表
-		request.getSession().setAttribute("finallylist", finallylist);
+	@RequestMapping("/modifyfinallyresult/{courseId}/{oldplace}/{checktime}")
+	public boolean modifyfinallyteacherresult(@PathVariable("courseId") String courseId,HttpServletRequest request,
+			@PathVariable("oldplace") String oldplace,@PathVariable("checktime") String checktime,@RequestBody TestCheckBean tcb) {
+		testTimeService.modifyFinallyExam(courseId, oldplace,checktime,tcb);// 修改完考场的考试安排表
+		request.setAttribute("log_msg", "修改了课程号为"+courseId+"在"+oldplace+"的考试安排");
 		return true;
 	}
-	
 }

@@ -24,14 +24,22 @@ public class LoginInterceptor implements HandlerInterceptor {
 		System.out.println(333);
 		String url = request.getRequestURI();
 		
-		if(url.indexOf("/login")>=0 || url.indexOf("/test")>=0 || url.indexOf("/test2")>=0){
-			
+		if(url.indexOf("/login")>=0){
 			return true;
 		}
 		HttpSession  session = request.getSession();
 		String userId = (String) session.getAttribute("userId");
+		String type = (String) session.getAttribute("type");
 		if(userId==null||userId.equals("")){
 			request.getRequestDispatcher("login.html").forward(request, response);;
+			return false;
+		}
+		if(type.equals("teacher")){
+			request.getRequestDispatcher("teacherindex.jsp").forward(request, response);;
+			return false;
+		}
+		else if(type.equals("student")){
+			request.getRequestDispatcher("studentindex.jsp").forward(request, response);;
 			return false;
 		}
 		else{

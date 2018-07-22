@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="utf-8"%>
-    <%@ page import="java.util.*,cn.edu.zucc.g4.bean.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
+<%@ page import="java.util.*,cn.edu.zucc.g4.bean.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,11 +9,9 @@
     <title>Visual Admin Dashboard - Maps</title>
     <meta name="description" content="">
     <meta name="author" content="templatemo">
-    
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,300,400italic,700' rel='stylesheet' type='text/css'>
+
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet" type="text/css" /> 
     <link href="css/templatemo-style.css" rel="stylesheet">
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -97,33 +94,55 @@
           <h3 class="margin-bottom-10" style="text-align: center;">考试安排结果</h3>
         </div>
         <script>
-            function changedate(value) {
-                var ipt = document.getElementById("search");
-                if(value == "date") {
-                    ipt.innerHTML = "<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
-                        "&nbsp&nbsp到&nbsp&nbsp<input type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
-                }
-                else if(value == "name") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
-                }
-                else if(value == "ID") {
-                    ipt.innerHTML = "<input type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
-                }
+        function changedate(value) {
+            var ipt = document.getElementById("search");
+           
+            if(value == "date") {
+                ipt.innerHTML = "<input id=\"date1\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">" +
+                    "&nbsp&nbsp到&nbsp&nbsp<input id=\"date2\" type=\"date\" class=\"form-control\"  style=\"height: 35px;width: 45%;display: inline-block\">";
             }
+            else if(value == "name") {
+                ipt.innerHTML = "<input id=\"claname\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程名称\">";
+            }
+            else if(value == "ID") {
+                ipt.innerHTML = "<input id=\"claid\" type=\"text\" class=\"form-control\"  style=\"height: 35px;\" placeholder=\"请输入课程ID\">";
+            }
+        }
         </script>
-        <form action="search" class="templatemo-login-form">
+          <script >
+      	function searchbtn(){
+      		var ipt = document.getElementById("selecttype").value;
+              var btn = document.getElementById('search_btn');
+              var searchdate1;//1号日期输入框
+              var searchdate2;//2号日期输入框
+              var sname;//课程名称输入框
+              var sid;//课程ID输入框
+              if(ipt=="date"){
+              	searchdate1 = $("#date1").val();
+                  searchdate2 = $("#date2").val();
+                  btn.href = "selectdate?pagename=text-manager-finally.jsp&date1="+searchdate1+"&date2="+searchdate2;
+              }
+              else if(ipt=="name"){
+              	claname = $("#claname").val();
+                  btn.href = "selectname?pagename=text-manager-finally.jsp&claname="+claname;
+              }
+              else if(ipt=="ID"){
+              	claid=$("#claid").val();
+                  btn.href = "selectid?pagename=text-manager-finally.jsp&claid="+claid;
+              }
+      	}
+      </script>
           <div class="templatemo-content-widget white-bg">
             <div id="search" style="height: 35px;width: 70%;display: inline-block">
-              <input type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
+              <input id="claname" type="text" class="form-control"  style="height: 35px;" placeholder="请输入课程名称">
             </div>
-            <select class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
-              <option value="name">按课程名称查找</option>
-              <option value="ID">按课程ID查找</option>
-              <option value="date">按日期查找</option>
-            </select>
-            <input type="submit" class="templatemo-blue-button" value="查找">
+            <select id="selecttype" class="form-control" style="width: 20%;display: inline-block;" onchange="changedate(this.value)">
+                <option value="name"  selected="true">按课程名称查找</option>
+                <option value="ID">按课程ID查找</option>
+                <option value="date">按日期查找</option>
+              </select>
+             <a id="search_btn" href=""><input type="submit" class="templatemo-blue-button" value="查找" onclick="searchbtn()"></a>
           </div>
-        </form>
         <!--<form action="text-manager4.html" class="templatemo-login-form">-->
           <div class="col-1">
             <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
@@ -147,6 +166,7 @@
             </div>
           </div>
            <div id="search_msg" class="text-right" style="margin-right: 10px;">
+            <a style="text-align:center;cursor:pointer;float: left;margin-left: 10px;border-radius: 5px;border: 0px;width: 120px;height: 30px;background-color: green;color: white;" onclick="exput()">导出Excel文件</a>
           共有<span id="allnum">27</span>条考试安排记录；
           <button class="fy_btn" data="firstPage">首页</button>|<button class="fy_btn" data="prev">上一页</button>
           第<span id="nowPage">1</span>/<span id="allPage">3</span>页
@@ -176,98 +196,7 @@
     <script src="jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
     <script type="text/javascript">
       
-      function drawMaps(){
-        $('#vmap_world').vectorMap({
-          map: 'world_en',
-          backgroundColor: '#ffffff',
-          color: '#333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_africa').vectorMap({
-          map: 'africa_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        }); 
-        $('#vmap_asia').vectorMap({
-          map: 'asia_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_australia').vectorMap({
-          map: 'australia_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_europe').vectorMap({
-          map: 'europe_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_northamerica').vectorMap({
-          map: 'north-america_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_southamerica').vectorMap({
-          map: 'south-america_en',
-          backgroundColor: '#ffffff',
-          color: '#333333',
-          hoverOpacity: 0.7,
-          selectedColor: '#666666',
-          enableZoom: true,
-          showTooltip: true,
-          values: sample_data,
-          scaleColors: ['#C8EEFF', '#006491'],
-          normalizeFunction: 'polynomial'
-        });
-        $('#vmap_usa').vectorMap({
-          map: 'usa_en',
-          enableZoom: true,
-          showTooltip: true,
-          selectedRegion: 'MO'
-        });  
-      } // end function drawMaps
+    // end function drawMaps
 
       $(document).ready(function() {
 
@@ -284,11 +213,10 @@
           });      
         } else {
           $(window).resize(function(){
-            drawMaps();
+           
           });  
         }
-        
-        drawMaps();
+     
 
       });
     </script>
@@ -297,7 +225,15 @@
          var testdata=[];
          
        <%
-       List<TestCheckBean> objlist = (List<TestCheckBean>) session.getAttribute("finallylist");
+
+       ArrayList<TestCheckBean> objlist= (ArrayList<TestCheckBean>) request.getAttribute("examtestlist");
+       SimpleDateFormat time=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+       if(objlist==null||objlist.size()==0){
+    	   objlist = (ArrayList<TestCheckBean>) session.getAttribute("finallylist");
+    	   
+      	   
+       }
+
       		 for(int i=0;i<objlist.size();i++) {
 		%>    			 
       		 		var tmp = {time:<%="'"+objlist.get(i).getCheckTime()+"'"%>, 
@@ -352,14 +288,14 @@
                       }
 
                       var c_tr = document.createElement('tr');
-                      c_tr.id = 'row'+this[i].rowid;
+                      c_tr.className="tbl";
                       c_tr.innerHTML='<td>'+this[i].time+'</td>'+
                           '<td>'+this[i].id+'</td>'+
                           '<td>'+this[i].name+'</td>'+
                           '<td>'+this[i].place+'</td>'+
                           '<td>'+this[i].invigilator1+'</td>'+
                           '<td>'+this[i].invigilator2+'</td>'+
-                          '<td><button id="modify" onclick="changevalue('+c_tr.id+')">修改</button></td>';
+                          '<td><button id="modify">修改</button></td>';
                       templist.appendChild(c_tr);
 
                   }
@@ -423,9 +359,222 @@
                 btn[i].onclick=(function(index){
                     return function(){
                         Optpage(btn[index].getAttribute("data"));
+                        loadmodify();
                     }
                 })(i);
             }
+        }
+        
+        
+        $(document).ready(
+        		
+        		function(){loadmodify()
+        			}	
+        		
+        	 ) 
+  			function loadmodify(){
+			  $(".tbl").each(function(){  
+					
+			      var op = 0;
+			      var modifyuser=$(this).children().eq(6).children();
+			      var courseId=modifyuser.parent().parent().children("td").get(1).innerHTML;
+			      var time=modifyuser.parent().parent().children("td").get(0).innerHTML;
+			      var place=modifyuser.parent().parent().children("td").get(3).innerHTML;
+			      var teacher1=modifyuser.parent().parent().children("td").get(4).innerHTML; 
+			      var teacher2=modifyuser.parent().parent().children("td").get(5).innerHTML; 
+			      modifyuser.bind("click",function(){ 
+			    	  
+			    	  var tr=modifyuser.parent().parent();	    	
+			    	  if(op == 0) {
+		                    op = 1;
+		                  
+		                    $.ajax({
+						         url: "modifyfinallytime/"+courseId+"/"+time,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(data){			
+						        	 var text = "<select class=\"form-control\" onchange=\"changeTime($(this))\">";
+						        	 console.log(data.length)
+						        	 for(var i =0 ; i<data.length;i++) {
+						        		 console.log(data[i])
+						        		 if(data[i] == time) 
+						        			 text = text + "<option selected = \"selected\" >"+data[i]+"</option>";
+						        		 else 
+						        			 text = text + "<option>"+data[i]+"</option>";
+						        	 }
+						        	 
+						        	 tr.children("td").get(0).innerHTML = text+"</select>";
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});
+		                    
+		                    $.ajax({
+						         url: "modifyfinallyclass/"+time+"/"+place,					
+						         contentType: "application/json;charset=utf-8",	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(data){			
+						        	 var text = "<select class=\"form-control\">";
+						        	 for(var i =0 ; i<data.length;i++) {
+						        		 if(data[i] == place) 
+						        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+						        		 else 
+						        			 text = text + "<option>"+data[i]+"</option>";
+						        	 }
+						        	 
+						        
+						        	 tr.children("td").get(3).innerHTML = text+"</select>";
+						         },
+						
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+							
+							        }
+				      			});
+		                    
+		                    $.ajax({
+					         url: "modifyfinallyteacher/"+time+"/"+teacher1+"/"+teacher2,					
+					         contentType: "application/json;charset=utf-8",	
+					         dataType:"json",
+					         type: "post",			
+					         success:function(data){			
+					        	 var text = "<select class=\"form-control\"\">";
+					        	 for(var i =0 ; i<data.length;i++) {
+					        		 if(data[i] == teacher1) 
+					        			 text = text + "<option selected = \"selected\">"+data[i]+"</option>";
+					        		 else 
+					        			 text = text + "<option>"+data[i]+"</option>";
+					        	 }
+					        	 
+					        	 var text1 = "<select class=\"form-control\">";
+					        	 for(var i =0 ; i<data.length;i++) {
+					        		 if(data[i] == teacher2) 
+					        			 text1 = text1 + "<option selected = \"selected\">"+data[i]+"</option>";
+					        		 else 
+					        			 text1 = text1 + "<option>"+data[i]+"</option>";
+					        	 }
+					        	 tr.children("td").get(4).innerHTML = text+"</select>";
+					        	 tr.children("td").get(5).innerHTML = text1+"</select>";
+					         },
+					
+						         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+						
+						        	 console.log(XMLHttpRequest.status);
+				                       console.log(XMLHttpRequest.readyState);
+				                       console.log(textStatus);
+						
+						        }
+			      			});
+		                }
+		                else {
+		                    op = 0;
+		                    data={
+		                    		
+		                    		checkPlace:tr.children("td").get(3).firstChild.value,
+		                    		invigilator1:tr.children("td").get(4).firstChild.value,
+		                    		invigilator2:tr.children("td").get(5).firstChild.value
+		                    }
+		                    $.ajax({
+						         url: "modifyfinallyresult/"+courseId+"/"+place+"/"+tr.children("td").get(0).firstChild.value			,	
+						         contentType: "application/json;charset=utf-8",	
+						         data: JSON.stringify(data),	
+						         dataType:"json",
+						         type: "post",			
+						         success:function(data){			
+						        	location.reload(true);
+						         },
+						
+							         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+							
+							        	 console.log(XMLHttpRequest.status);
+					                       console.log(XMLHttpRequest.readyState);
+					                       console.log(textStatus);
+							
+							        }
+				      			});
+		                                       
+		                }    	  			   
+				       
+			      })
+			  })
+   	 	}
+        function changeTime(tr){
+        	tr = tr.parent().parent();
+        	time=tr.children("td").get(0).firstChild.value;
+        	console.log(time);
+        	var place="请选择考场";
+        	var teacher="请选择监考教师";
+        	alert(12);
+        	 $.ajax({
+		         url: "modifyfinallyclass/"+time+"/"+place,					
+		         contentType: "application/json;charset=utf-8",	
+		         dataType:"json",
+		         type: "post",			
+		         success:function(data){			
+		        	 var text = "<select class=\"form-control\">";
+		        	 for(var i =0 ; i<data.length;i++) {
+		        			 text = text + "<option>"+data[i]+"</option>";
+		        	 }
+		        	 
+		        	 tr.children("td").get(3).innerHTML = text+"</select>";
+		         },
+		
+		         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+		
+		        	 console.log(XMLHttpRequest.status);
+                       console.log(XMLHttpRequest.readyState);
+                       console.log(textStatus);
+		
+		        }
+  			});
+        	 $.ajax({
+		         url: "modifyfinallyteacher/"+time+"/"+teacher,					
+		         contentType: "application/json;charset=utf-8",	
+		         dataType:"json",
+		         type: "post",			
+		         success:function(data){			
+		        	 var text = "<select class=\"form-control\">";
+		        	 for(var i =0 ; i<data.length;i++) {		
+		        			 text = text + "<option>"+data[i]+"</option>";
+		        	 }		        	 		        	
+		        	 tr.children("td").get(4).innerHTML = text+"</select>";
+		        	 tr.children("td").get(5).innerHTML = text+"</select>";
+		         },
+		
+		         error:function(XMLHttpRequest, textStatus, errorThrown){ 
+		
+		        	 console.log(XMLHttpRequest.status);
+                       console.log(XMLHttpRequest.readyState);
+                       console.log(textStatus);
+		
+		        }
+  			});
+        }
+    </script>
+    <script src="js/Blob.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+    <script src="js/ExportUtil.js"></script>
+    <script type="text/javascript">
+        function exput() {
+            var excel_file = [];
+            for(var i = 0;i < testdata.length; i++) {
+                if(i == 0) excel_file.push(["考试时间","课程ID","课程名称","考试地点","主考官","监考官"]);
+               	var now_time = testdata[i].time+'\r';
+                   excel_file.push([now_time,testdata[i].id+'\r',testdata[i].name
+                       ,testdata[i].place,testdata[i].invigilator1,testdata[i].invigilator2]);
+            }
+            ExportUtil.toExcel(excel_file,"考试安排结果.xls");
         }
     </script>
   </body>

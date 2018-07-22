@@ -38,9 +38,15 @@ public class CourseDAO {
 	public List<CourseBean> listCourseByType() {
 		this.setSessionFactory(sessionFactory);
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from CourseBean where check_type = '考试'";
+		String hql = "from CourseBean";
 		List<CourseBean> list = session.createQuery(hql).list();
-		return list;
+		List<CourseBean> result = new ArrayList<CourseBean>();
+		for(int i=0; i<listALLCourse().size(); i++) {
+			if(list.get(i).getCheck_type().equals("考试")) {
+				result.add(list.get(i));
+			}
+		}
+		return result;
 	}
 	
 	/**
